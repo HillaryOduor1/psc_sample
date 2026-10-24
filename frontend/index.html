@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <!-- CRITICAL: THEME SCRIPT — runs synchronously before any paint -->
+    <script>
+      (function () {
+        var KEY = 'theme';
+        var BG_DARK = '#121212';
+        var BG_LIGHT = '#f9f7f0';
+        var theme, resolved;
+        try {
+          theme = localStorage.getItem(KEY);
+          theme = (theme === 'light' || theme === 'dark') ? theme : 'system';
+          resolved =
+            theme === 'system'
+              ? window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
+              : theme;
+          document.documentElement.classList.add(resolved);
+          document.documentElement.setAttribute('data-theme', resolved);
+          document.documentElement.style.backgroundColor =
+            resolved === 'dark' ? BG_DARK : BG_LIGHT;
+          document.documentElement.style.color =
+            resolved === 'dark' ? '#f5f5f5' : '#1a1a1a';
+        } catch (_) {
+          resolved = 'light';
+          document.documentElement.classList.add('light');
+          document.documentElement.setAttribute('data-theme', 'light');
+          document.documentElement.style.backgroundColor = BG_LIGHT;
+          document.documentElement.style.color = '#1a1a1a';
+        }
+
+        function setFavicon(theme) {
+          var basePath = theme === 'dark' ? '/dark-mode-favicon/' : '/light-mode-favicon/';
+          var links = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]');
+          for (var i = 0; i < links.length; i++) {
+            var link = links[i];
+            if (link.hasAttribute('media')) {
+              var filename = link.getAttribute('href').split('/').pop();
+              link.href = basePath + filename;
+            }
+          }
+        }
+
+        setFavicon(resolved);
+
+        if (window.matchMedia) {
+          var mq = window.matchMedia('(prefers-color-scheme: dark)');
+          mq.addListener(function (e) {
+            var stored = localStorage.getItem(KEY);
+            if (!stored || stored === 'system') {
+              var newTheme = e.matches ? 'dark' : 'light';
+              setFavicon(newTheme);
+            }
+          });
+        }
+
+        document.addEventListener('themeChanged', function (e) {
+          var newTheme = e.detail && e.detail.theme ? e.detail.theme : 'light';
+          setFavicon(newTheme);
+        });
+
+        function setManifest(theme) {
+          var manifestPath = theme === 'dark' 
+            ? '/dark-mode-favicon/site.webmanifest' 
+            : '/light-mode-favicon/site.webmanifest';
+          
+          var manifestLink = document.querySelector('link[rel="manifest"]');
+          if (manifestLink) {
+            manifestLink.href = manifestPath;
+          } else {
+            var link = document.createElement('link');
+            link.rel = 'manifest';
+            link.href = manifestPath;
+            document.head.appendChild(link);
+          }
+        }
+
+        setManifest(resolved);
+
+        document.addEventListener('themeChanged', function (e) {
+          var newTheme = e.detail && e.detail.theme ? e.detail.theme : 'light';
+          setManifest(newTheme);
+        });
+
+        if (window.matchMedia) {
+          var mq = window.matchMedia('(prefers-color-scheme: dark)');
+          mq.addListener(function (e) {
+            var stored = localStorage.getItem(KEY);
+            if (!stored || stored === 'system') {
+              var newTheme = e.matches ? 'dark' : 'light';
+              setManifest(newTheme);
+            }
+          });
+        }
+      })();
+    </script>
+
+    <!-- ENCODING & VIEWPORT -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, shrink-to-fit=no"
+    />
+
+    <!-- PRIMARY SEO -->
+    <title>Public Service Commission Kenya</title>
+    <meta
+      name="description"
+      content="Public Service Commission Kenya - A Citizen-Centric Public Service. We drive excellence in public service through integrity, innovation, transparency and teamwork."
+    />
+    <meta
+      name="keywords"
+      content="Public Service Commission, PSC Kenya, public service, career management, government jobs, Kenya, civil service, public administration"
+    />
+    <meta name="author" content="Public Service Commission Kenya" />
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+    <meta name="googlebot" content="index, follow" />
+
+    <!-- Manifest -->
+    <link rel="manifest" href="/light-mode-favicon/site.webmanifest" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://publicservice.go.ke/" />
+
+    <!-- Language alternates -->
+    <link rel="alternate" hreflang="en" href="https://publicservice.go.ke/" />
+    <link rel="alternate" hreflang="x-default" href="https://publicservice.go.ke/" />
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Public Service Commission Kenya" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://publicservice.go.ke/" />
+    <meta property="og:title" content="Public Service Commission Kenya – A Citizen-Centric Public Service" />
+    <meta property="og:description" content="Public Service Commission Kenya - We drive excellence in public service through integrity, innovation, transparency and teamwork." />
+    <meta property="og:image" content="https://publicservice.go.ke/assets/psc-og-image.webp" />
+    <meta property="og:image:secure_url" content="https://publicservice.go.ke/assets/psc-og-image.webp" />
+    <meta property="og:image:type" content="image/webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Public Service Commission Kenya – A Citizen-Centric Public Service" />
+
+    <!-- TWITTER / X CARDS -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@PSCKenya" />
+    <meta name="twitter:creator" content="@PSCKenya" />
+    <meta name="twitter:url" content="https://publicservice.go.ke/" />
+    <meta name="twitter:title" content="Public Service Commission Kenya – A Citizen-Centric Public Service" />
+    <meta name="twitter:description" content="Public Service Commission Kenya - We drive excellence in public service through integrity, innovation, transparency and teamwork." />
+    <meta name="twitter:image" content="https://publicservice.go.ke/assets/psc-twitter-og.png" />
+    <meta name="twitter:image:alt" content="Public Service Commission Kenya – A Citizen-Centric Public Service" />
+
+    <!-- ANDROID / CHROME PWA -->
+    <meta name="theme-color" content="#f9f7f0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- APPLE / iOS PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="PSC Kenya" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+    <!-- FAVICON SET -->
+    <!-- Light mode favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/light-mode-favicon/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/light-mode-favicon/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/light-mode-favicon/favicon.ico" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/light-mode-favicon/android-chrome-192x192.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/light-mode-favicon/android-chrome-512x512.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/light-mode-favicon/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+
+    <!-- Dark mode favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/dark-mode-favicon/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/dark-mode-favicon/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/dark-mode-favicon/favicon.ico" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/dark-mode-favicon/android-chrome-192x192.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/dark-mode-favicon/android-chrome-512x512.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/dark-mode-favicon/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+
+    <!-- PERFORMANCE — FONT LOADING -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" crossorigin="anonymous" />
+
+    <!-- ACCESSIBILITY — SKIP LINK -->
+    <style>
+      .skip-to-content {
+        position: absolute;
+        top: -100%;
+        left: 1rem;
+        padding: 0.5rem 1rem;
+        background: #e68c00;
+        color: #ffffff;
+        font-weight: 700;
+        border-radius: 0 0 6px 6px;
+        text-decoration: none;
+        z-index: 9999;
+        transition: top 0.2s ease;
+      }
+      .skip-to-content:focus {
+        top: 0;
+      }
+      html {
+        background-color: #f9f7f0;
+        color: #1a1a1a;
+      }
+      html.dark {
+        background-color: #121212;
+        color: #f5f5f5;
+      }
+    </style>
+
+    <!-- STRUCTURED DATA — JSON-LD -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "GovernmentOrganization",
+        "name": "Public Service Commission Kenya",
+        "alternateName": "PSC Kenya",
+        "url": "https://publicservice.go.ke/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://publicservice.go.ke/assets/psc-logo-1.webp",
+          "width": 386,
+          "height": 374
+        },
+        "description": "Public Service Commission Kenya - A Citizen-Centric Public Service driving excellence through integrity, innovation, transparency and teamwork.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Commission House, Harambee Avenue",
+          "addressLocality": "Nairobi",
+          "postalCode": "00100",
+          "addressCountry": "Kenya"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+254-20-2223901",
+          "contactType": "General Inquiries",
+          "availableLanguage": ["English", "Swahili"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/PSCKenya",
+          "https://twitter.com/PSCKenya",
+          "https://ke.linkedin.com/company/public-service-commission-kenya",
+          "https://www.youtube.com/user/PSCKenya"
+        ]
+      }
+    </script>
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

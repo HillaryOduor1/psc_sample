@@ -1,0 +1,25 @@
+{
+  "name": "Landscapes Integrity Solutions",
+  "short_name": "LIS",
+  "description": "Advancing Policy for Sustainable Landscapes",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#0D2418",
+  "background_color": "#F6F8F7",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/",
+  "scope": "/"
+}

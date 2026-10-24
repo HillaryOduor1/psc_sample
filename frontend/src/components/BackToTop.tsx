@@ -1,0 +1,57 @@
+import * as React from 'react';
+
+const BackToTop = () => {
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const toggleVisible = () => {
+      setVisible(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', toggleVisible);
+    return () => window.removeEventListener('scroll', toggleVisible);
+  }, []);
+
+  const scrollToTop = () => {
+    if ('scrollBehavior' in document.documentElement.style) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Fallback for older browsers (IE, older Android)
+      window.scrollTo(0, 0);
+    }
+  };
+
+  return (
+    <button
+      onClick={scrollToTop}
+      className={`
+        fixed bottom-6 right-6 z-50 
+        p-3 rounded-full shadow-lg 
+        transition-all duration-300 
+        focus:outline-none focus:ring-2 focus:ring-[#FCB300] focus:ring-offset-2 focus:ring-offset-[#1A1A1A]
+        hover:scale-110 hover:shadow-xl
+        ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}
+        /* Light mode */
+        bg-[#FCB300] text-[#1A1A1A] hover:bg-[#E6A300]
+        /* Dark mode */
+        dark:bg-[#FCB300] dark:text-[#1A1A1A] dark:hover:bg-[#E6A300]
+      `}
+      aria-label="Back to top"
+    >
+      <svg 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="2.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+        className="transition-transform duration-300 group-hover:-translate-y-1"
+      >
+        <polyline points="18 15 12 9 6 15" />
+      </svg>
+    </button>
+  );
+};
+
+export default BackToTop;
