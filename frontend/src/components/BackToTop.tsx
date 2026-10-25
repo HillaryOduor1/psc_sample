@@ -12,10 +12,11 @@ const BackToTop = () => {
   }, []);
 
   const scrollToTop = () => {
-    if ('scrollBehavior' in document.documentElement.style) {
+    try {
+      // Attempt smooth scroll with object signature
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      // Fallback for older browsers (IE, older Android)
+    } catch (error) {
+      // Fallback to numeric signature which is universally supported
       window.scrollTo(0, 0);
     }
   };
@@ -30,9 +31,7 @@ const BackToTop = () => {
         focus:outline-none focus:ring-2 focus:ring-[#FCB300] focus:ring-offset-2 focus:ring-offset-[#1A1A1A]
         hover:scale-110 hover:shadow-xl
         ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}
-        /* Light mode */
         bg-[#FCB300] text-[#1A1A1A] hover:bg-[#E6A300]
-        /* Dark mode */
         dark:bg-[#FCB300] dark:text-[#1A1A1A] dark:hover:bg-[#E6A300]
       `}
       aria-label="Back to top"

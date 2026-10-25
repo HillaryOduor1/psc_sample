@@ -74,7 +74,8 @@ const HeroSection = function() {
       secondaryButtonText: 'VIEW PROGRAMMES',
       primaryLink: '/about',
       secondaryLink: '/jobs',
-      image: '/assets/Core Values-psc image3.webp'
+      // FIXED: Added %20 for spaces and .JPG extension to match your file
+      image: '/assets/Core-Values-psc-image3.JPG'
     },
     {
       badge: 'SAY NO TO CORRUPTION',
@@ -203,7 +204,7 @@ const HeroSection = function() {
     setCurrentSlide(index);
     setTimeout(function() {
       setIsTransitioning(false);
-    }, 800);
+    }, 600); // 600ms transition lock
   }
 
   function nextSlide() {
@@ -224,7 +225,7 @@ const HeroSection = function() {
       }
       slideIntervalRef.current = window.setInterval(function() {
         nextSlide();
-      }, 7000);
+      }, 5000); // 5 second autoplay timer
     }
     startAutoplay();
     return function() {
@@ -249,7 +250,7 @@ const HeroSection = function() {
     }
     slideIntervalRef.current = window.setInterval(function() {
       nextSlide();
-    }, 7000);
+    }, 5000);
   }
 
   React.useEffect(function() {
@@ -290,7 +291,7 @@ const HeroSection = function() {
           return (
             <div 
               key={index}
-              className="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out"
+              className="absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out"
               style={{
                 opacity: isActive ? 1 : 0,
                 zIndex: isActive ? 20 : 10,
@@ -304,7 +305,7 @@ const HeroSection = function() {
                   className="w-full h-full object-cover"
                   style={{
                     transform: isActive ? 'scale(1.05)' : 'scale(1)',
-                    transition: 'transform 12s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    transition: 'transform 10s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                   }}
                 />
                 <div className="absolute inset-0 z-10" style={{

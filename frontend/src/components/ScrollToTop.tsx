@@ -2,10 +2,6 @@
 import * as React from "react";
 import { useLocation } from "react-router-dom";
 
-/**
- * Scrolls the window to the top whenever the route pathname changes.
- * Also handles hash links (#section) by scrolling to the target element.
- */
 export default function ScrollToTop() {
   const { pathname, hash } = useLocation();
 
@@ -14,18 +10,23 @@ export default function ScrollToTop() {
     if (hash) {
       // Wait a tick for the target page to render
       const timeoutId = window.setTimeout(() => {
-        const el = document.querySelector(hash);
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        } else {
-          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        try {
+          const el = document.querySelector(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
+          } else {
+            // Use numeric fallback to prevent the signature error
+            window.scrollTo(0, 0);
+          }
+        } catch (error) {
+          window.scrollTo(0, 0);
         }
       }, 50);
       return () => window.clearTimeout(timeoutId);
     }
 
-    // Otherwise jump to top of the page
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    // Otherwise jump to top of the page using numeric arguments
+    window.scrollTo(0, 0);
 
     // Also reset any custom scroll containers if present
     const main = document.getElementById("main-content");
