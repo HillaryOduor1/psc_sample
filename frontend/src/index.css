@@ -796,3 +796,118 @@ select:focus-visible {
   outline: none !important;
   box-shadow: none !important;
 }
+/* =========================================================
+   HERO — VIEWPORT & MOBILE RESPONSIVENESS
+   ========================================================= */
+
+.hero-viewport {
+  height: 100svh;
+  height: 100dvh;
+  min-height: 560px;
+  max-height: 100svh;
+  max-height: 100dvh;
+  margin-top: -4rem; /* -mt-16 */
+}
+
+@media (min-width: 768px) {
+  .hero-viewport {
+    margin-top: -5rem; /* -mt-20 */
+  }
+}
+
+/* On very short screens, allow natural height instead of forcing overflow */
+@media (max-height: 640px) {
+  .hero-viewport {
+    height: auto;
+    min-height: 560px;
+    max-height: none;
+  }
+}
+
+/* Touch-action for swipe support */
+#hero-section {
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.hero-slide {
+  transition: opacity 0.7s ease-in-out;
+  will-change: opacity;
+}
+
+/* Content wrapper — vertical centering with safe padding on mobile */
+.hero-content-wrap {
+  padding-top: 4.5rem;
+  padding-bottom: 3.5rem;
+}
+
+@media (min-width: 640px) {
+  .hero-content-wrap {
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+  }
+}
+
+/* Headline line-height tightening on mobile for long headlines */
+.hero-headline .hero-headline-line {
+  line-height: 1.15;
+}
+
+@media (max-width: 480px) {
+  .hero-headline .hero-headline-line {
+    line-height: 1.12;
+  }
+  .hero-subtext {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .hero-btn {
+    padding-left: 0.875rem !important;
+    padding-right: 0.875rem !important;
+    padding-top: 0.625rem !important;
+    padding-bottom: 0.625rem !important;
+    font-size: 0.7rem !important;
+  }
+}
+
+/* Better tap targets for dots & nav buttons on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .hero-dot {
+    min-width: 14px;
+    min-height: 14px;
+  }
+  .hero-dot[aria-current="true"] {
+    min-width: 26px;
+  }
+  .hero-nav-btn {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+}
+
+/* Nav buttons — hide on very small screens (dots + swipe suffice) */
+@media (max-width: 380px) {
+  .hero-nav-btn {
+    display: none;
+  }
+}
+
+/* Prevent image overflow clipping during zoom on mobile */
+@media (max-width: 640px) {
+  #hero-section img {
+    transform-origin: center center;
+  }
+  #hero-section .hero-slide img {
+    /* Force GPU compositing for smoother transitions on mobile */
+    transform: translateZ(0);
+  }
+}
+
+/* xs breakpoint (Tailwind doesn't ship one by default; add if using it) */
+@media (min-width: 420px) {
+  /* Only needed if you use xs: classes; if not using tailwind config,
+     replace xs: classes above with sm: or remove them. */
+}

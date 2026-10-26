@@ -1,3 +1,37 @@
+import * as React from "react";
+import { useLocation } from "react-router-dom";
+
+export default function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+
+  React.useEffect(() => {
+    if (hash) {
+      const timeoutId = window.setTimeout(() => {
+        try {
+          const el = document.querySelector(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
+          } else {
+            window.scrollTo(0, 0);
+          }
+        } catch (error) {
+          window.scrollTo(0, 0);
+        }
+      }, 50);
+      return () => window.clearTimeout(timeoutId);
+    }
+
+    window.scrollTo(0, 0);
+    const main = document.getElementById("main-content");
+    if (main) main.scrollTop = 0;
+
+    return undefined;
+  }, [pathname, hash]);
+
+  return null;
+}
+
+/*
 // src/components/ScrollToTop.tsx
 import * as React from "react";
 import { useLocation } from "react-router-dom";
@@ -36,4 +70,4 @@ export default function ScrollToTop() {
   }, [pathname, hash]);
 
   return null;
-}
+}*/

@@ -1,3 +1,53 @@
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
+import App from "./App";
+import "./index.css";
+import { ErrorBoundary } from './ErrorBoundary';
+
+// Fallback for smooth scrolling on ES5 browsers
+if (typeof window !== 'undefined' && !('scrollBehavior' in document.documentElement.style)) {
+  const originalScrollTo = window.scrollTo;
+  window.scrollTo = function(x, y) {
+    if (typeof x === 'object') {
+      originalScrollTo.call(window, x.left || 0, x.top || 0);
+    } else {
+      originalScrollTo.call(window, x, y);
+    }
+  };
+}
+
+// Register service worker
+function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(function() {});
+    });
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', registerServiceWorker);
+} else {
+  registerServiceWorker();
+}
+
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+  throw new Error("Root element not found");
+}
+
+ReactDOM.createRoot(rootElement).render(
+  <React.StrictMode>
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  </React.StrictMode>
+);
+
+/*
 // frontend/src/main.tsx
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
@@ -131,5 +181,5 @@ ReactDOM.createRoot(rootElement).render(
       React.createElement(App, null)
     )
   )
-);
+);*/
 

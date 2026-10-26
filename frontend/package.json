@@ -1,7 +1,7 @@
 {
-  "name": "LIS",
+  "name": "psc_sample",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "generate:content": "node scripts/generateContentTypes.js",
