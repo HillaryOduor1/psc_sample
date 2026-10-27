@@ -1,45 +1,23 @@
-# ============================================================
-# OpenGraph Image Converter (v2.4 — final, verified)
-# Converts any image to a WhatsApp/LinkedIn/X/Facebook
-# large-preview-compliant OG image (1200x630, 1.91:1, <300 KB)
-# ============================================================
-# Usage:
-#   .\Make-OGImage.ps1 -Source "C:\path\to\input.png"
-#   .\Make-OGImage.ps1 -Source "C:\path\to\input.png" -Output "C:\path\to\out.jpg"
-#   .\Make-OGImage.ps1 -Source "input.png" -Quality 78 -MaxKB 250
-#   .\Make-OGImage.ps1 -Source "input.png" -Fit Pad -Background "#ffffff"
-#   .\Make-OGImage.ps1 -Source "input.png" -Force -Verbose
-#
-# Requires: Windows (uses System.Drawing / System.Drawing.Common).
-# Works on Windows PowerShell 5.1 and PowerShell 7+.
+﻿# ============================================================
+# OpenGraph Image Converter (v2.4 — verified)
 # ============================================================
 
 [CmdletBinding()]
 param(
     [Parameter(Mandatory=$true, Position=0)]
     [string]$Source,
-
     [string]$Output = "",
-
     [ValidateRange(50, 100)]
     [int]$Quality = 82,
-
     [ValidateRange(100, 5000)]
     [int]$MaxKB = 280,
-
     [ValidateSet("Crop","Pad")]
     [string]$Fit = "Crop",
-
     [string]$Background = "#ffffff",
-
     [switch]$Force
 )
 
-# ------------------------------------------------------------
-# Step 0: load System.Drawing (must come AFTER param()).
-# ------------------------------------------------------------
 $script:AssembliesLoaded = $false
-
 try {
     Add-Type -AssemblyName System.Drawing.Common -ErrorAction Stop
     $script:AssembliesLoaded = $true
@@ -59,35 +37,7 @@ if (-not $script:AssembliesLoaded) {
 }
 
 if (-not $script:AssembliesLoaded) {
-    try {
-        $rid = if ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64') { 'win-arm64' } else { 'win-x64' }
-        $candidates = @(
-            Join-Path $env:USERPROFILE ".nuget\packages\system.drawing.common\*\runtimes\$rid\lib\net*\System.Drawing.Common.dll"
-            Join-Path $env:ProgramFiles "dotnet\shared\Microsoft.WindowsDesktop.App\*\System.Drawing.Common.dll"
-        ) | ForEach-Object { Get-ChildItem -Path $_ -ErrorAction SilentlyContinue } |
-            Select-Object -ExpandProperty FullName
-
-        foreach ($c in $candidates) {
-            try {
-                Add-Type -Path $c -ErrorAction Stop
-                $script:AssembliesLoaded = $true
-                Write-Verbose "Loaded assembly from path: $c"
-                break
-            } catch { }
-        }
-    } catch { }
-}
-
-if (-not $script:AssembliesLoaded) {
-    throw @"
-Could not load System.Drawing. This script requires Windows.
-
-Try running it from Windows PowerShell 5.1 (Start Menu -> "Windows PowerShell")
-- System.Drawing is built in there. Or install the NuGet package once:
-
-    Install-Package System.Drawing.Common -Source nuget.org ``
-        -Destination "$env:USERPROFILE\.nuget\packages"
-"@
+    throw "Could not load System.Drawing. This script requires Windows. Try Windows PowerShell 5.1."
 }
 
 try { [void][System.Drawing.Color]::White }
@@ -96,9 +46,6 @@ catch { throw "System.Drawing loaded but [System.Drawing.Color] is unresolvable:
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-# ------------------------------------------------------------
-# Helpers
-# ------------------------------------------------------------
 function ConvertTo-Color {
     param([string]$Hex)
     if ($Hex -notmatch '^#?([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$') {
@@ -165,18 +112,11 @@ function Get-ExifOrientedImage {
     }
 }
 
-# ------------------------------------------------------------
-# Validate source
-# ------------------------------------------------------------
 if (-not (Test-Path -LiteralPath $Source)) {
     throw "Source file not found: $Source"
 }
 $srcFull = (Resolve-Path -LiteralPath $Source).Path
 
-# ------------------------------------------------------------
-# Resolve output -- normalize with GetFullPath so .NET FromFile
-# does not choke on a literal ".\" segment in the middle.
-# ------------------------------------------------------------
 if ([string]::IsNullOrWhiteSpace($Output)) {
     $dir  = [System.IO.Path]::GetDirectoryName($srcFull)
     $base = [System.IO.Path]::GetFileNameWithoutExtension($srcFull)
@@ -303,7 +243,10 @@ try {
         $acceptedQ = 60
     }
 
-    # ---------- Verify (defensive) ----------
+    Write-Host ""
+    Write-Host "=== Attempts (quality -> size) ===" -ForegroundColor Cyan
+    $attempts | ForEach-Object { Write-Host "  $_" }
+
     if (-not (Test-Path -LiteralPath $Output)) {
         throw "Output missing after processing: $Output"
     }
@@ -320,10 +263,6 @@ try {
         $finalH = $verify.Height
         $finalRatio = $finalW / $finalH
     } finally { $verify.Dispose() }
-
-    Write-Host ""
-    Write-Host "=== Attempts (quality -> size) ===" -ForegroundColor Cyan
-    $attempts | ForEach-Object { Write-Host "  $_" }
 
     Write-Host ""
     Write-Host "=== Result ===" -ForegroundColor Cyan
@@ -366,20 +305,9 @@ try {
     Write-Host ""
     Write-Host "Next steps:" -ForegroundColor Cyan
     Write-Host "  1. The file is already at: $($finalFile.FullName)"
-    Write-Host "  2. Update your <head>:"
-    Write-Host "       <meta property='og:image'        content='https://your-site.com/assets/$($finalFile.Name)' />"
-    Write-Host "       <meta property='og:image:type'   content='image/jpeg' />"
-    Write-Host "       <meta property='og:image:width'  content='${finalW}' />"
-    Write-Host "       <meta property='og:image:height' content='${finalH}' />"
-    Write-Host "       <meta name='twitter:card'        content='summary_large_image' />"
-    Write-Host "       <meta name='twitter:image'       content='https://your-site.com/assets/$($finalFile.Name)' />"
+    Write-Host "  2. Update your <head> with the og:image and twitter:image meta tags."
     Write-Host "  3. Deploy."
-    Write-Host "  4. Clear caches:"
-    Write-Host "       WhatsApp -> https://developers.facebook.com/tools/debug/  (Scrape Again)"
-    Write-Host "       LinkedIn -> https://www.linkedin.com/post-inspector/"
-    Write-Host "       X        -> https://cards-dev.twitter.com/validator"
-    Write-Host "       Facebook -> https://developers.facebook.com/tools/debug/"
-    Write-Host "  5. Force-refresh WhatsApp by sharing the URL with ?v=1 (bump the number each test)."
+    Write-Host "  4. Clear caches (Facebook Sharing Debugger, LinkedIn Post Inspector, X Card Validator)."
 }
 finally {
     if ($g)    { $g.Dispose() }
@@ -389,10 +317,3 @@ finally {
         Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
     }
 }
-##.\Make-OGImage.ps1 `
-#  -Source ".\frontend\public\assets\Public Service Commission Kenya Banner.png" `
-#  -Output ".\frontend\public\assets\psc-og.jpg" `
-#  -Quality 82 `
-#  -MaxKB 280 `
-#  -Fit Crop `
-#  -Force
