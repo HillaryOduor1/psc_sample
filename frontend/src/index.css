@@ -66,6 +66,9 @@
 
   /* Focus */
   --psc-focus-ring: rgba(230, 140, 0, 0.4);
+
+  --navbar-height: 4rem;    /* h-16 = 64px */
+  --navbar-height-md: 5rem; /* md:h-20 = 80px */
 }
 
 /* =========================================================
@@ -800,18 +803,36 @@ select:focus-visible {
    HERO — VIEWPORT & MOBILE RESPONSIVENESS
    ========================================================= */
 
+/*
+ * The hero section is ALWAYS 100vh tall. The navbar floats above it
+ * via `position: fixed` (see Navbar.tsx), and the hero uses
+ * `padding-top` to push its content below the navbar. This way:
+ *   - The hero section's total box is exactly 100vh (no crop).
+ *   - The image fills the section from top to bottom.
+ *   - The content is pushed down by the navbar height so it's visible.
+ * The navbar is transparent until the user scrolls past the hero,
+ * so the image is visible *behind* the navbar.
+ */
+
 .hero-viewport {
-  height: 100svh;
+  position: relative;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   height: 100dvh;
-  min-height: 560px;
-  max-height: 100svh;
+  min-height: 480px;
+  max-height: 100vh;
+  max-height: calc(var(--vh, 1vh) * 100);
   max-height: 100dvh;
-  margin-top: -4rem; /* -mt-16 */
+  /* No negative margin — the navbar is fixed and floats above. */
+  margin-top: 0;
+  /* Push content past the fixed navbar height */
+  padding-top: var(--navbar-height, 4rem);
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
   .hero-viewport {
-    margin-top: -5rem; /* -mt-20 */
+    padding-top: var(--navbar-height-md, 5rem);
   }
 }
 
@@ -819,8 +840,28 @@ select:focus-visible {
 @media (max-height: 640px) {
   .hero-viewport {
     height: auto;
-    min-height: 560px;
+    min-height: 480px;
     max-height: none;
+  }
+}
+
+/* Content wrapper inside the hero */
+.hero-content-wrap {
+  padding-top: 1.5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 640px) {
+  .hero-content-wrap {
+    padding-top: 2rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-content-wrap {
+    padding-top: 2.5rem;
+    padding-bottom: 7rem;
   }
 }
 
