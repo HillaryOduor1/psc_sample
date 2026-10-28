@@ -952,3 +952,440 @@ select:focus-visible {
   /* Only needed if you use xs: classes; if not using tailwind config,
      replace xs: classes above with sm: or remove them. */
 }
+/* =========================================================
+   PSC HERO CAROUSEL — SMOOTH, LEGACY-SAFE TRANSITIONS
+   Replaces all earlier .hero-slide / .hero-image / zoomIn /
+   dotPulse hero rules. Android 6 (Chrome 44) / ES5 safe.
+   ========================================================= */
+
+/* ---------- Slide stage ---------- */
+
+#hero-section .hero-stage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 0;
+  background-color: #171717;
+}
+
+/* ---------- Crossfade between slides ----------
+   Incoming slide sits ABOVE the outgoing one (.is-active z:3
+   over .is-leaving z:2) and fades 0 -> 1. The outgoing slide
+   stays fully opaque underneath, so the midpoint of the fade
+   never dims. Only one element animates per transition.
+   ---------------------------------------------- */
+
+#hero-section .hero-slide {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transition: opacity 800ms ease-in-out;
+  transition: opacity 800ms ease-in-out;
+}
+
+/* Outgoing slide: holds at full opacity while the next fades in. */
+#hero-section .hero-slide.is-leaving {
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Incoming slide: fades in on top. */
+#hero-section .hero-slide.is-active {
+  opacity: 1;
+  z-index: 3;
+  pointer-events: auto;
+  will-change: opacity;
+}
+
+/* Slides that are neither active nor leaving snap to 0 with no
+   transition — saves the compositor a pointless 1->0 fade under
+   the active slide on every transition. */
+#hero-section .hero-slide:not(.is-active):not(.is-leaving) {
+  -webkit-transition: none;
+  transition: none;
+}
+
+/* ---------- Background images ---------- */
+
+#hero-section .hero-slide img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+  object-position: center center;
+  -webkit-transform: translate3d(0, 0, 0) scale(1.035);
+  transform: translate3d(0, 0, 0) scale(1.035);
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Only the ACTIVE slide animates. At most 2 composited layers exist
+   at any time (active + leaving) instead of 6. */
+#hero-section .hero-slide.is-active img {
+  -webkit-animation: pscHeroImageMotion 8000ms ease-out forwards;
+  animation: pscHeroImageMotion 8000ms ease-out forwards;
+}
+
+@-webkit-keyframes pscHeroImageMotion {
+  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1.035); }
+  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.085); }
+}
+
+@keyframes pscHeroImageMotion {
+  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1.035); transform: translate3d(0, 0, 0) scale(1.035); }
+  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.085); transform: translate3d(0, 0, 0) scale(1.085); }
+}
+
+/* ---------- Background contrast overlay ---------- */
+
+#hero-section .hero-slide-scrim {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: -webkit-linear-gradient(
+    left,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.52) 38%,
+    rgba(0, 0, 0, 0.18) 72%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.52) 38%,
+    rgba(0, 0, 0, 0.18) 72%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+}
+
+#hero-section .hero-slide-scrim.is-mobile {
+  background: -webkit-linear-gradient(
+    top,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.32) 45%,
+    rgba(0, 0, 0, 0.58) 100%
+  );
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.32) 45%,
+    rgba(0, 0, 0, 0.58) 100%
+  );
+}
+
+/* ---------- Text entrance ---------- */
+
+#hero-section .hero-content-anim {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+#hero-section .hero-content-anim > * {
+  -webkit-animation: pscHeroTextInNext 600ms ease-out both;
+  animation: pscHeroTextInNext 600ms ease-out both;
+}
+
+#hero-section .hero-content-anim.dir-prev > * {
+  -webkit-animation-name: pscHeroTextInPrev;
+  animation-name: pscHeroTextInPrev;
+}
+
+/* Short stagger — enough to feel polished, not enough to delay reading. */
+#hero-section .hero-content-anim > *:nth-child(1) { -webkit-animation-delay: 40ms;  animation-delay: 40ms; }
+#hero-section .hero-content-anim > *:nth-child(2) { -webkit-animation-delay: 100ms; animation-delay: 100ms; }
+#hero-section .hero-content-anim > *:nth-child(3) { -webkit-animation-delay: 160ms; animation-delay: 160ms; }
+#hero-section .hero-content-anim > *:nth-child(4) { -webkit-animation-delay: 220ms; animation-delay: 220ms; }
+#hero-section .hero-content-anim > *:nth-child(5) { -webkit-animation-delay: 260ms; animation-delay: 260ms; }
+
+@-webkit-keyframes pscHeroTextInNext {
+  0%   { opacity: 0; -webkit-transform: translate3d(12px, 14px, 0); }
+  100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0); }
+}
+
+@keyframes pscHeroTextInNext {
+  0%   { opacity: 0; -webkit-transform: translate3d(12px, 14px, 0);  transform: translate3d(12px, 14px, 0); }
+  100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0);        transform: translate3d(0, 0, 0); }
+}
+
+@-webkit-keyframes pscHeroTextInPrev {
+  0%   { opacity: 0; -webkit-transform: translate3d(-12px, 14px, 0); }
+  100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0); }
+}
+
+@keyframes pscHeroTextInPrev {
+  0%   { opacity: 0; -webkit-transform: translate3d(-12px, 14px, 0); transform: translate3d(-12px, 14px, 0); }
+  100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0);        transform: translate3d(0, 0, 0); }
+}
+
+/* ---------- Headline accent colours ----------
+   Fallback value FIRST, then var(). Chrome 44 does not support
+   CSS custom properties, so the literal must stand on its own.
+   ---------------------------------------------- */
+
+#hero-section .hero-accent {
+  color: #e68c00;
+  color: var(--psc-primary-container, #e68c00);
+}
+
+#hero-section .hero-plain {
+  color: #ffffff;
+}
+
+#hero-section .hero-badge-accent {
+  background-color: #e68c00;
+  background-color: var(--psc-primary-container, #e68c00);
+}
+
+#hero-section .hero-badge-plain {
+  background-color: #ffffff;
+}
+
+/* ---------- CTA buttons ---------- */
+
+#hero-section .hero-btn {
+  border: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transition: background-color 200ms ease, border-color 200ms ease;
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+#hero-section .hero-btn-primary {
+  background-color: #e68c00;
+  background-color: var(--psc-primary-container, #e68c00);
+  color: #ffffff;
+}
+
+#hero-section .hero-btn-primary:hover {
+  background-color: #d47d00;
+}
+
+#hero-section .hero-btn-secondary {
+  background-color: rgba(0, 0, 0, 0.62);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+#hero-section .hero-btn-secondary:hover {
+  background-color: rgba(0, 0, 0, 0.82);
+  border-color: rgba(255, 255, 255, 0.40);
+}
+
+/* ---------- Navigation arrows ---------- */
+
+#hero-section .hero-nav-btn {
+  background-color: rgba(0, 0, 0, 0.42);
+  color: #ffffff;
+  border: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transition: background-color 200ms ease, opacity 200ms ease;
+  transition: background-color 200ms ease, opacity 200ms ease;
+}
+
+#hero-section .hero-nav-btn:hover {
+  background-color: rgba(0, 0, 0, 0.68);
+}
+
+/* ---------- Dot indicators ---------- */
+
+#hero-section .hero-dot {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.42);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transition: width 260ms ease, background-color 260ms ease;
+  transition: width 260ms ease, background-color 260ms ease;
+}
+
+#hero-section .hero-dot:hover {
+  background-color: rgba(255, 255, 255, 0.72);
+}
+
+#hero-section .hero-dot.is-active {
+  width: 24px;
+  background-color: #e68c00;
+  background-color: var(--psc-primary-container, #e68c00);
+}
+
+/* ---------- Focus rings (visible against the dark hero) ---------- */
+
+#hero-section .hero-nav-btn:focus-visible,
+#hero-section .hero-dot:focus-visible,
+#hero-section .hero-btn:focus-visible {
+  outline: 2px solid #ffb23e;
+  outline-offset: 3px;
+}
+
+/* ---------- Mobile: slower, shorter zoom ----------
+   Mobile has its OWN keyframes whose start value matches the
+   base scale, so there is no snap when a slide activates.
+   ---------------------------------------------- */
+
+#hero-section .hero-slide img {
+  /* Mobile-safe start; overridden by the keyframe above on desktop
+     (which starts at 1.035 — same value, no visual difference). */
+}
+
+@media (max-width: 640px) {
+  #hero-section .hero-slide img {
+    -webkit-transform: translate3d(0, 0, 0) scale(1.02);
+    transform: translate3d(0, 0, 0) scale(1.02);
+  }
+
+  #hero-section .hero-slide.is-active img {
+    -webkit-animation-name: pscHeroImageMotionMobile;
+    animation-name: pscHeroImageMotionMobile;
+    -webkit-animation-duration: 9000ms;
+    animation-duration: 9000ms;
+  }
+}
+
+@-webkit-keyframes pscHeroImageMotionMobile {
+  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.06); }
+}
+
+@keyframes pscHeroImageMotionMobile {
+  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1.02); transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.06); transform: translate3d(0, 0, 0) scale(1.06); }
+}
+
+/* ---------- Reduced motion: kill every hero animation ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  #hero-section .hero-slide,
+  #hero-section .hero-slide:not(.is-active):not(.is-leaving) {
+    -webkit-transition: none !important;
+    transition: none !important;
+  }
+
+  #hero-section .hero-slide.is-active img {
+    -webkit-animation: none !important;
+    animation: none !important;
+    -webkit-transform: none !important;
+    transform: none !important;
+  }
+
+  #hero-section .hero-content-anim > * {
+    -webkit-animation: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    -webkit-transform: none !important;
+    transform: none !important;
+  }
+}
+/* =========================================================
+   PSC LOADER — box-shadow orbit
+   Theme-aware via --psc-primary-container.
+   Falls back to a solid dot where CSS vars are unsupported.
+   ========================================================= */
+
+.psc-loader {
+  --size: 1px;
+
+  display: block;
+  width: calc(12 * var(--size));
+  height: calc(12 * var(--size));
+  margin: calc(15 * var(--size)) auto;
+  border-radius: 50%;
+  position: relative;
+  box-sizing: border-box;
+  color: var(--psc-primary-container, #e68c00);
+  background-color: transparent;
+  animation: pscLoaderOrbit 2s linear infinite;
+}
+
+@keyframes pscLoaderOrbit {
+  0% {
+    box-shadow:
+      calc(14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(38 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-38 * var(--size)) 0 0 calc(-2 * var(--size));
+  }
+  25% {
+    box-shadow:
+      calc(14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(38 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-38 * var(--size)) 0 0 calc(2 * var(--size));
+  }
+  50% {
+    box-shadow:
+      calc(14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(38 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-14 * var(--size)) 0 0 calc(2 * var(--size)),
+      calc(-38 * var(--size)) 0 0 calc(-2 * var(--size));
+  }
+  75% {
+    box-shadow:
+      calc(14 * var(--size)) 0 0 calc(2 * var(--size)),
+      calc(38 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-38 * var(--size)) 0 0 calc(-2 * var(--size));
+  }
+  100% {
+    box-shadow:
+      calc(14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(38 * var(--size)) 0 0 calc(2 * var(--size)),
+      calc(-14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-38 * var(--size)) 0 0 calc(-2 * var(--size));
+  }
+}
+
+/* Chrome < 49 / older Safari: no CSS custom properties.
+   The whole box-shadow animation is invalid there, so swap
+   in a plain solid dot. */
+@supports not (--test: 1) {
+  .psc-loader {
+    width: 24px;
+    height: 24px;
+    background-color: #e68c00;
+    box-shadow: none;
+    animation: none;
+  }
+}
+
+/* Slower, calmer rhythm for reduced-motion users — the loader
+   still communicates "working", just without the busy pulse. */
+@media (prefers-reduced-motion: reduce) {
+  .psc-loader {
+    animation-duration: 4s;
+  }
+}

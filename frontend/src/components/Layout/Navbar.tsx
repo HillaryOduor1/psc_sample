@@ -34,15 +34,6 @@ export default function Navbar(props: NavbarProps) {
   var { content } = useContent();
   var location = useLocation();
 
-  /*
-   * isScrolled semantics:
-   *   false  → navbar is transparent, icon color is white (works over dark hero)
-   *   true   → navbar is solid, icon color follows theme
-   *
-   * We start FALSE by default. The scroll handler will flip it based
-   * on the hero's actual bottom on every scroll. If there is NO hero
-   * on the page, we fall back to solid immediately.
-   */
   var [isScrolled, setIsScrolled] = React.useState<boolean>(false);
   var [hasHero, setHasHero] = React.useState<boolean>(false);
   var [isDarkMode, setIsDarkMode] = React.useState(false);
@@ -142,19 +133,11 @@ export default function Navbar(props: NavbarProps) {
     return function () { observer.disconnect(); };
   }, []);
 
-  /*
-   * Detect hero presence AFTER layout has settled. We do this once on
-   * mount + on every route change, and we set hasHero accordingly. We
-   * do NOT flip isScrolled here — the scroll effect below does that.
-   */
   React.useEffect(function () {
-    // run after layout: use rAF to wait for paint
     var rafId = window.requestAnimationFrame(function () {
       var heroElement = document.getElementById("hero-section");
       if (heroElement) {
         setHasHero(true);
-        // isScrolled is false because we are at the top (or we re-scroll)
-        // Compute current state based on scroll position now.
         var heroBottom = heroElement.getBoundingClientRect().bottom;
         setIsScrolled(heroBottom <= 0);
       } else {
@@ -165,11 +148,6 @@ export default function Navbar(props: NavbarProps) {
     return function () { window.cancelAnimationFrame(rafId); };
   }, [location.pathname]);
 
-  /*
-   * Scroll handler: flip isScrolled when the hero leaves the viewport.
-   * We only register this if a hero exists — no point listening to
-   * scroll on pages that have no hero.
-   */
   React.useEffect(function () {
     if (!hasHero) return;
     function handleScroll() {
@@ -179,8 +157,6 @@ export default function Navbar(props: NavbarProps) {
         return;
       }
       var heroBottom = heroElement.getBoundingClientRect().bottom;
-      // navbar is 64px (h-16) or 80px (md:h-20). Use 1px threshold;
-      // solid kicks in as soon as hero bottom passes under the navbar.
       var navbarHeight = window.matchMedia("(min-width: 768px)").matches ? 80 : 64;
       setIsScrolled(heroBottom <= navbarHeight);
     }
@@ -225,8 +201,6 @@ export default function Navbar(props: NavbarProps) {
   }
 
   function getIconColor() {
-    // On the transparent navbar (over hero) icons must be WHITE for contrast.
-    // On the solid navbar, icons follow the theme.
     if (!isScrolled) return "#ffffff";
     return isDarkMode ? "#e5e7eb" : "#0f172a";
   }
@@ -338,14 +312,11 @@ export default function Navbar(props: NavbarProps) {
 
   return (
     <>
-      {/*
-       * Navbar is `fixed` so it always sits on top of the hero image.
-       * The hero compensates with negative top margin (see index.css).
-       * The navbar itself is transparent until scroll passes the hero.
-       */}
-      <header className={"psc-navbar fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out " + navbarShadow} style={{ backgroundColor: navbarBg, borderBottom: "1px solid " + navbarBorder }}>
+      {/* 
+        z-index changed from z-50 to z-[100] to ensure it always stays above the main content. 
+      */}
+      <header className={"psc-navbar fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ease-in-out " + navbarShadow} style={{ backgroundColor: navbarBg, borderBottom: "1px solid " + navbarBorder }}>
         <div className="mx-auto flex h-16 w-full max-w-[1400px] items-center justify-between pl-3 pr-6 sm:pl-4 sm:pr-6 md:h-16 md:pl-3 md:pr-8 lg:h-20 lg:pl-6 lg:pr-10 xl:pl-8 xl:pr-12">
-          {/* Left: hamburger + CoA logo */}
           <div className="flex items-center">
             <button
               type="button"
@@ -365,7 +336,6 @@ export default function Navbar(props: NavbarProps) {
             </Link>
           </div>
 
-          {/* Center: nav (desktop only) */}
           <nav className="hidden h-full items-center md:flex" aria-label="Primary navigation">
             {navItems.map(function (link) {
               var hasChildren = !!link.children && link.children.length > 0;
@@ -380,7 +350,6 @@ export default function Navbar(props: NavbarProps) {
             })}
           </nav>
 
-          {/* Right: search, theme toggle, PSC logo — WITH right padding to prevent edge-hug */}
           <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
             <button
               type="button"
@@ -403,7 +372,6 @@ export default function Navbar(props: NavbarProps) {
         </div>
       </header>
 
-      {/* Search overlay — unchanged from previous batch */}
       {isSearchOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 px-4" style={{ backdropFilter: "blur(8px)" }} onClick={closeSearch} role="dialog" aria-modal="true">
           <div className="w-full max-w-2xl" onClick={function (e) { e.stopPropagation(); }}>

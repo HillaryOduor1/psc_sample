@@ -254,12 +254,12 @@ const Footer = function() {
 
           <div className="text-center md:text-right">
             <a 
-              href="https://peakanddale.com/" 
+              href="https://hillary-porfolio-v2.vercel.app/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="hover:text-[#FCB300] transition-colors duration-200 min-h-[44px] inline-block"
             >
-              Website Design by Peak & Dale | Powered by Mozilla Africa
+              Website Redesigned by Hillary Oduor
             </a>
           </div>
         </div>

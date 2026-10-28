@@ -1,6 +1,5 @@
 // src/pages/jobs/JobsPage.tsx
 import * as React from "react";
-import { Link } from "react-router-dom";
 import { trackEvent } from "../../analytics";
 
 interface JobItem {
@@ -14,11 +13,23 @@ interface JobItem {
   link: string;
 }
 
+const PSCIMS_URL = "https://pscims-demo-abdae3amewazb9ae.uaenorth-01.azurewebsites.net/jobs/Default.aspx";
+
+// Helper for section headers to replace the vertical bars
+const SectionHeader = ({ eyebrow, title }: { eyebrow: string; title: string }) => (
+  <div className="mb-8">
+    <span className="block text-xs font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "var(--psc-primary)" }}>
+      {eyebrow}
+    </span>
+    <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight" style={{ color: "var(--psc-on-surface)" }}>
+      {title}
+    </h2>
+  </div>
+);
+
 const JobsPage = () => {
   const [activeTab, setActiveTab] = React.useState<"jobs" | "shortlisted" | "appointments" | "instructions" | "archived">("jobs");
-  const sectionRefs = React.useRef<{ [key: string]: HTMLElement | null }>({});
 
-  // Sample job data
   const jobs: JobItem[] = [
     {
       id: 1,
@@ -82,7 +93,6 @@ const JobsPage = () => {
     },
   ];
 
-  // Scroll to section
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -92,7 +102,6 @@ const JobsPage = () => {
     }
   };
 
-  // Handle tab click
   const handleTabClick = (tab: "jobs" | "shortlisted" | "appointments" | "instructions" | "archived") => {
     setActiveTab(tab);
     trackEvent("jobs_tab_click", { tab });
@@ -109,10 +118,8 @@ const JobsPage = () => {
     scrollToSection(sectionMap[tab]);
   };
 
-  // Intersection Observer for animations
   React.useEffect(function() {
     if (typeof IntersectionObserver === "undefined") return;
-
     const observer = new IntersectionObserver(
       function(entries) {
         entries.forEach(function(entry) {
@@ -123,27 +130,14 @@ const JobsPage = () => {
       },
       { threshold: 0.1 }
     );
-
     document.querySelectorAll(".animate-on-scroll").forEach(function(el) {
       observer.observe(el);
     });
-
     return function() {
       observer.disconnect();
     };
   }, []);
 
-  // Get job type color
-  const getJobTypeColor = (type: string) => {
-    switch (type.toLowerCase()) {
-      case "full-time": return "var(--psc-success)";
-      case "internal": return "var(--psc-info)";
-      case "contract": return "var(--psc-warning)";
-      default: return "var(--psc-secondary)";
-    }
-  };
-
-  // Handle job click
   const handleJobClick = (job: JobItem) => {
     trackEvent("job_click", { title: job.title });
     if (window.navigator && window.navigator.vibrate) {
@@ -166,33 +160,29 @@ const JobsPage = () => {
         <div className="absolute inset-0">
           <img
             src="/assets/jobs-hero-bg.webp"
-            alt="Jobs at PSC"
-            className="w-full h-full object-cover opacity-40"
-            style={{ objectPosition: "center" }}
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover object-center opacity-40"
+            loading="eager"
           />
         </div>
-        <div className="absolute inset-0" style={{
-          background: "linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.20) 65%, rgba(0,0,0,0) 100%)"
-        }}></div>
-        <div className="relative z-10 w-full px-4 md:px-10 lg:px-40 py-16">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.20) 65%, rgba(0,0,0,0) 100%)",
+          }}
+        ></div>
+        <div className="relative z-10 w-full px-4 md:px-10 lg:px-16 xl:px-40 py-16">
           <div className="max-w-[1280px] mx-auto">
-            <h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 animate-on-scroll"
-              style={{ opacity: 0, transform: "translateY(30px)" }}
-            >
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 animate-on-scroll" style={{ opacity: 0, transform: "translateY(30px)" }}>
               Jobs
             </h1>
             <div className="flex h-[3px] w-[80px] md:w-[110px]">
-              <span
-                className="w-1/2"
-                style={{ backgroundColor: "var(--psc-primary-container)" }}
-              ></span>
+              <span className="w-1/2" style={{ backgroundColor: "var(--psc-primary-container)" }}></span>
               <span className="w-1/2 bg-white"></span>
             </div>
-            <p
-              className="text-white/80 text-lg md:text-xl max-w-2xl mt-4 animate-on-scroll"
-              style={{ opacity: 0, transform: "translateY(30px)" }}
-            >
+            <p className="text-white/80 text-lg md:text-xl max-w-2xl mt-4 animate-on-scroll" style={{ opacity: 0, transform: "translateY(30px)" }}>
               Explore exciting career opportunities in public service
             </p>
           </div>
@@ -200,29 +190,27 @@ const JobsPage = () => {
       </section>
 
       {/* Navigation Tabs */}
-      <section
-        className="py-6 px-4 md:px-10 lg:px-40"
-        style={{ backgroundColor: "var(--psc-surface-container-low)" }}
-      >
+      <section className="py-6 px-4 md:px-10 lg:px-16 xl:px-40" style={{ backgroundColor: "var(--psc-surface-container-low)" }}>
         <div className="max-w-[1280px] mx-auto">
-          <div className="flex flex-wrap gap-2 md:gap-4">
+          <div className="flex flex-wrap gap-2 md:gap-3 p-1 rounded-2xl" style={{ backgroundColor: "var(--psc-surface-container)", border: "1px solid var(--psc-border)" }}>
             {[
               { id: "jobs", label: "Advertised Jobs" },
-              { id: "shortlisted", label: "Shortlisted Candidates" },
+              { id: "shortlisted", label: "Shortlisted" },
               { id: "appointments", label: "Appointments" },
-              { id: "instructions", label: "Video Interview Instructions" },
-              { id: "archived", label: "Archived Jobs" },
-            ].map(function(tab) {
+              { id: "instructions", label: "Interview Guidelines" },
+              { id: "archived", label: "Archived" },
+            ].map(function (tab) {
               const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
-                  onClick={function() { handleTabClick(tab.id as any); }}
-                  className="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300"
+                  onClick={function () { handleTabClick(tab.id as any); }}
+                  className="px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 min-h-[44px] flex-1 sm:flex-none"
                   style={{
-                    backgroundColor: isActive ? "var(--psc-primary-container)" : "transparent",
-                    color: isActive ? "var(--psc-on-primary)" : "var(--psc-on-surface-variant)",
-                    border: isActive ? "none" : "1px solid var(--psc-border)",
+                    backgroundColor: isActive ? "var(--psc-surface)" : "transparent",
+                    color: isActive ? "var(--psc-primary)" : "var(--psc-on-surface-variant)",
+                    boxShadow: isActive ? "0 1px 3px rgba(0,0,0,0.1)" : "none",
+                    border: isActive ? "1px solid var(--psc-border)" : "1px solid transparent",
                   }}
                   aria-current={isActive ? "page" : undefined}
                 >
@@ -235,134 +223,99 @@ const JobsPage = () => {
       </section>
 
       {/* Apply Section */}
-      <section className="py-12 px-4 md:px-10 lg:px-40">
+      <section className="py-16 px-4 md:px-10 lg:px-16 xl:px-40">
         <div className="max-w-[1280px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1 */}
             <div
-              className="rounded-xl p-8 text-center animate-on-scroll"
+              className="rounded-2xl p-6 md:p-8 animate-on-scroll flex flex-col"
               style={{
                 backgroundColor: "var(--psc-surface-container)",
-                border: "1px solid var(--psc-border)",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
                 opacity: 0,
                 transform: "translateY(30px)",
                 transition: "all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               }}
             >
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                style={{ backgroundColor: "var(--psc-primary-container)", opacity: 0.1 }}
-              >
-                <span className="material-symbols-outlined text-3xl" style={{ color: "var(--psc-primary-container)" }}>
-                  work
-                </span>
+              <div className="flex items-center mb-4">
+                
+                <h3 className="text-lg font-bold leading-tight" style={{ color: "var(--psc-on-surface)" }}>
+                  Apply Now Through Our Portal
+                </h3>
               </div>
-              <h3
-                className="text-xl font-bold mb-2"
-                style={{ color: "var(--psc-on-surface)" }}
-              >
-                Apply Now Through Our Portal
-              </h3>
-              <p
-                className="text-sm mb-4"
-                style={{ color: "var(--psc-on-surface-variant)" }}
-              >
-                Submit your application online through our secure portal
+              <p className="text-sm mb-6 flex-1" style={{ color: "var(--psc-on-surface-variant)", lineHeight: 1.6 }}>
+                Submit your application online through our secure portal. Ensure you have all your details ready.
               </p>
               <a
-                href="https://pscims.publicservice.go.ke/jobs/"
+                href={PSCIMS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-white font-bold text-sm transition-all hover:scale-105"
-                style={{ backgroundColor: "var(--psc-primary-container)" }}
+                className="inline-flex items-center text-sm font-bold min-h-[44px] transition-opacity hover:opacity-80"
+                style={{ color: "var(--psc-primary)" }}
               >
-                APPLY ONLINE
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                Enter Portal <span className="material-symbols-outlined text-lg ml-1" aria-hidden="true">arrow_forward</span>
               </a>
             </div>
 
+            {/* Card 2 */}
             <div
-              className="rounded-xl p-8 text-center animate-on-scroll"
+              className="rounded-2xl p-6 md:p-8 animate-on-scroll flex flex-col"
               style={{
                 backgroundColor: "var(--psc-surface-container)",
-                border: "1px solid var(--psc-border)",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
                 opacity: 0,
                 transform: "translateY(30px)",
                 transition: "all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                transitionDelay: "0.15s",
+                transitionDelay: "0.1s",
               }}
             >
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                style={{ backgroundColor: "var(--psc-info)", opacity: 0.1 }}
-              >
-                <span className="material-symbols-outlined text-3xl" style={{ color: "var(--psc-info)" }}>
-                  assignment
-                </span>
+              <div className="flex items-center mb-4">
+                <h3 className="text-lg font-bold leading-tight" style={{ color: "var(--psc-on-surface)" }}>
+                  Check Application Status
+                </h3>
               </div>
-              <h3
-                className="text-xl font-bold mb-2"
-                style={{ color: "var(--psc-on-surface)" }}
-              >
-                Check Application Status
-              </h3>
-              <p
-                className="text-sm mb-4"
-                style={{ color: "var(--psc-on-surface-variant)" }}
-              >
-                Track the progress of your application
+              <p className="text-sm mb-6 flex-1" style={{ color: "var(--psc-on-surface-variant)", lineHeight: 1.6 }}>
+                Track the progress of your application and see if you have been shortlisted.
               </p>
               <a
-                href="https://pscims.publicservice.go.ke/jobs/loginPage.aspx"
+                href={PSCIMS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-white font-bold text-sm transition-all hover:scale-105"
-                style={{ backgroundColor: "var(--psc-primary-container)" }}
+                className="inline-flex items-center text-sm font-bold min-h-[44px] transition-opacity hover:opacity-80"
+                style={{ color: "var(--psc-info)" }}
               >
-                TAKE ME THERE
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                Check Status <span className="material-symbols-outlined text-lg ml-1" aria-hidden="true">arrow_forward</span>
               </a>
             </div>
 
+            {/* Card 3 */}
             <div
-              className="rounded-xl p-8 text-center animate-on-scroll"
+              className="rounded-2xl p-6 md:p-8 animate-on-scroll flex flex-col"
               style={{
                 backgroundColor: "var(--psc-surface-container)",
-                border: "1px solid var(--psc-border)",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
                 opacity: 0,
                 transform: "translateY(30px)",
                 transition: "all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                transitionDelay: "0.3s",
+                transitionDelay: "0.2s",
               }}
             >
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                style={{ backgroundColor: "var(--psc-warning)", opacity: 0.1 }}
-              >
-                <span className="material-symbols-outlined text-3xl" style={{ color: "var(--psc-warning)" }}>
-                  list_alt
-                </span>
+              <div className="flex items-center mb-4">
+                <h3 className="text-lg font-bold leading-tight" style={{ color: "var(--psc-on-surface)" }}>
+                  Advertised Jobs Status
+                </h3>
               </div>
-              <h3
-                className="text-xl font-bold mb-2"
-                style={{ color: "var(--psc-on-surface)" }}
-              >
-                Check Advertised Jobs Status
-              </h3>
-              <p
-                className="text-sm mb-4"
-                style={{ color: "var(--psc-on-surface-variant)" }}
-              >
-                View the status of current job advertisements
+              <p className="text-sm mb-6 flex-1" style={{ color: "var(--psc-on-surface-variant)", lineHeight: 1.6 }}>
+                View the status of current job advertisements across all ministries and departments.
               </p>
               <a
-                href="https://pscims.publicservice.go.ke/jobs/ActiveJobsAdverts.aspx"
+                href={PSCIMS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-white font-bold text-sm transition-all hover:scale-105"
-                style={{ backgroundColor: "var(--psc-primary-container)" }}
+                className="inline-flex items-center text-sm font-bold min-h-[44px] transition-opacity hover:opacity-80"
+                style={{ color: "var(--psc-warning)" }}
               >
-                TAKE ME THERE
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                View Jobs <span className="material-symbols-outlined text-lg ml-1" aria-hidden="true">arrow_forward</span>
               </a>
             </div>
           </div>
@@ -370,114 +323,84 @@ const JobsPage = () => {
       </section>
 
       {/* Advertised Jobs Section */}
-      <section
-        id="adJobs"
-        className="py-16 px-4 md:px-10 lg:px-40"
-        style={{ backgroundColor: "var(--psc-surface-container-low)" }}
-      >
+      <section id="adJobs" className="py-16 px-4 md:px-10 lg:px-16 xl:px-40" style={{ backgroundColor: "var(--psc-surface-container-low)" }}>
         <div className="max-w-[1280px] mx-auto">
-          <div className="flex items-center gap-3 mb-8">
-            <div
-              className="w-1 h-8 rounded-full"
-              style={{ backgroundColor: "var(--psc-primary-container)" }}
-            ></div>
-            <h2
-              className="text-2xl md:text-3xl font-bold"
-              style={{ color: "var(--psc-on-surface)" }}
-            >
-              Advertised Jobs
-            </h2>
-          </div>
+          <SectionHeader eyebrow="Current Openings" title="Advertised Jobs" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {jobs.map(function(job, index) {
+            {jobs.map(function (job, index) {
               return (
                 <div
                   key={job.id}
-                  className="animate-on-scroll rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                  className="animate-on-scroll rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex flex-col"
                   style={{
                     backgroundColor: "var(--psc-surface-container)",
-                    border: "1px solid var(--psc-border)",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.03)",
                     opacity: 0,
                     transform: "translateY(30px)",
                     transition: "all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                    transitionDelay: (index * 0.08) + "s",
+                    transitionDelay: index * 0.08 + "s",
                   }}
                 >
-                  <div className="p-6">
-                    <div className="flex items-start justify-between gap-4 mb-3">
+                  <div className="p-6 flex flex-col flex-1">
+                    <div className="flex items-start justify-between gap-3 mb-4">
                       <span
-                        className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                        className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md flex-shrink-0"
                         style={{
-                          backgroundColor: getJobTypeColor(job.type),
-                          color: "#ffffff",
-                          opacity: 0.8,
+                          backgroundColor: "rgba(230,140,0,0.1)",
+                          color: "var(--psc-primary)",
                         }}
                       >
                         {job.type}
                       </span>
-                      <span
-                        className="text-xs"
-                        style={{ color: "var(--psc-on-surface-light)" }}
-                      >
-                        Deadline: {job.deadline}
+                      <span className="text-xs font-medium" style={{ color: "var(--psc-on-surface-light)" }}>
+                        Closes: {job.deadline}
                       </span>
                     </div>
-                    <h3
-                      className="text-base font-bold mb-2 line-clamp-3"
-                      style={{ color: "var(--psc-on-surface)" }}
-                    >
+                    <h3 className="text-base font-bold mb-3 line-clamp-3 leading-snug" style={{ color: "var(--psc-on-surface)" }}>
                       <a
                         href={job.link}
-                        onClick={function(e) {
+                        onClick={function (e) {
                           e.preventDefault();
                           handleJobClick(job);
                         }}
-                        className="hover:underline"
-                        style={{ color: "var(--psc-on-surface)" }}
+                        className="hover:text-[var(--psc-primary)] transition-colors"
+                        style={{ color: "inherit", textDecoration: "none" }}
                       >
                         {job.title}
                       </a>
                     </h3>
-                    <p
-                      className="text-sm mb-3 line-clamp-2"
-                      style={{ color: "var(--psc-on-surface-variant)" }}
-                    >
+                    <p className="text-sm mb-4 line-clamp-2 flex-1" style={{ color: "var(--psc-on-surface-variant)", lineHeight: 1.6 }}>
                       {job.description}
                     </p>
-                    <div className="flex items-center justify-between mt-4 pt-4 border-t" style={{ borderColor: "var(--psc-border)" }}>
-                      <span
-                        className="text-xs"
-                        style={{ color: "var(--psc-on-surface-light)" }}
-                      >
-                        {job.department} • {job.location}
+                    <div
+                      className="flex items-center justify-between mt-auto pt-4"
+                      style={{ borderTop: "1px solid var(--psc-border-light)" }}
+                    >
+                      <span className="text-xs font-medium" style={{ color: "var(--psc-on-surface-light)" }}>
+                        {job.department} &bull; {job.location}
                       </span>
                       <a
                         href={job.link}
-                        onClick={function(e) {
+                        onClick={function (e) {
                           e.preventDefault();
                           handleJobClick(job);
                         }}
-                        className="inline-flex items-center gap-1 text-sm font-semibold transition-all hover:gap-2"
+                        className="inline-flex items-center text-sm font-bold min-h-[44px] transition-all hover:underline"
                         style={{ color: "var(--psc-primary-container)" }}
                       >
-                        View More
-                        <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                        Details
                       </a>
                     </div>
                   </div>
-                  <div
-                    className="h-1"
-                    style={{ backgroundColor: "var(--psc-primary-container)", opacity: 0.3 }}
-                  ></div>
                 </div>
               );
             })}
           </div>
 
-          <div className="flex justify-center mt-8">
+          <div className="flex justify-center mt-10">
             <button
-              className="px-6 py-2.5 rounded-full font-bold text-sm transition-all hover:scale-105"
+              className="px-8 py-3 rounded-full font-bold text-sm transition-all hover:scale-105 min-h-[44px] shadow-md"
               style={{
                 backgroundColor: "var(--psc-primary-container)",
                 color: "var(--psc-on-primary)",
@@ -490,24 +413,9 @@ const JobsPage = () => {
       </section>
 
       {/* Shortlisted Candidates Section */}
-      <section
-        id="shortCan"
-        className="py-16 px-4 md:px-10 lg:px-40"
-        style={{ backgroundColor: "var(--psc-surface)" }}
-      >
+      <section id="shortCan" className="py-16 px-4 md:px-10 lg:px-16 xl:px-40" style={{ backgroundColor: "var(--psc-surface)" }}>
         <div className="max-w-[1280px] mx-auto">
-          <div className="flex items-center gap-3 mb-8">
-            <div
-              className="w-1 h-8 rounded-full"
-              style={{ backgroundColor: "var(--psc-primary-container)" }}
-            ></div>
-            <h2
-              className="text-2xl md:text-3xl font-bold"
-              style={{ color: "var(--psc-on-surface)" }}
-            >
-              Shortlisted Candidates
-            </h2>
-          </div>
+          <SectionHeader eyebrow="Results" title="Shortlisted Candidates" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
@@ -526,48 +434,46 @@ const JobsPage = () => {
                 date: "2024-11-05",
                 downloads: 233,
               },
-            ].map(function(item, index) {
+            ].map(function (item, index) {
               return (
                 <div
                   key={index}
-                  className="animate-on-scroll rounded-xl p-6 transition-all duration-300 hover:shadow-md"
+                  className="animate-on-scroll rounded-2xl p-6 transition-all duration-300 hover:shadow-md flex flex-col"
                   style={{
                     backgroundColor: "var(--psc-surface-container)",
-                    border: "1px solid var(--psc-border)",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.03)",
                     opacity: 0,
                     transform: "translateX(-20px)",
                     transition: "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                    transitionDelay: (index * 0.08) + "s",
+                    transitionDelay: index * 0.08 + "s",
                   }}
                 >
-                  <h3
-                    className="text-sm font-semibold mb-2 line-clamp-2"
-                    style={{ color: "var(--psc-on-surface)" }}
-                  >
+                  <h3 className="text-sm font-bold mb-3 line-clamp-2 flex-1 leading-snug" style={{ color: "var(--psc-on-surface)" }}>
                     {item.title}
                   </h3>
-                  <div className="flex items-center justify-between text-xs" style={{ color: "var(--psc-on-surface-light)" }}>
-                    <span>📅 {item.date}</span>
-                    <span>📥 {item.downloads} downloads</span>
+                  <div className="flex flex-wrap items-center justify-between text-xs mb-5 font-medium" style={{ color: "var(--psc-on-surface-light)" }}>
+                    <span className="mr-2 bg-[var(--psc-surface-variant)] px-2 py-1 rounded">Date: {item.date}</span>
+                    <span>Downloads: {item.downloads}</span>
                   </div>
-                  <div className="mt-4 flex gap-2">
+                  <div className="flex flex-col sm:flex-row mt-auto">
                     <button
-                      className="px-4 py-1.5 rounded-full text-xs font-semibold transition-colors"
+                      className="px-5 py-2 rounded-lg text-xs font-bold transition-all min-h-[44px] sm:min-h-0 sm:mr-3 mb-2 sm:mb-0 hover:opacity-90"
                       style={{
                         backgroundColor: "var(--psc-primary-container)",
                         color: "var(--psc-on-primary)",
                       }}
                     >
-                      View More
+                      View List
                     </button>
                     <button
-                      className="px-4 py-1.5 rounded-full text-xs font-semibold transition-colors"
+                      className="px-5 py-2 rounded-lg text-xs font-bold transition-all min-h-[44px] sm:min-h-0 hover:bg-[rgba(0,0,0,0.05)]"
                       style={{
-                        backgroundColor: "var(--psc-surface-variant)",
-                        color: "var(--psc-primary)",
+                        backgroundColor: "transparent",
+                        color: "var(--psc-on-surface)",
+                        border: "1px solid var(--psc-border)",
                       }}
                     >
-                      Download
+                      Download PDF
                     </button>
                   </div>
                 </div>
@@ -578,24 +484,9 @@ const JobsPage = () => {
       </section>
 
       {/* Appointments Section */}
-      <section
-        id="appointments"
-        className="py-16 px-4 md:px-10 lg:px-40"
-        style={{ backgroundColor: "var(--psc-surface-container-low)" }}
-      >
+      <section id="appointments" className="py-16 px-4 md:px-10 lg:px-16 xl:px-40" style={{ backgroundColor: "var(--psc-surface-container-low)" }}>
         <div className="max-w-[1280px] mx-auto">
-          <div className="flex items-center gap-3 mb-8">
-            <div
-              className="w-1 h-8 rounded-full"
-              style={{ backgroundColor: "var(--psc-primary-container)" }}
-            ></div>
-            <h2
-              className="text-2xl md:text-3xl font-bold"
-              style={{ color: "var(--psc-on-surface)" }}
-            >
-              Appointments
-            </h2>
-          </div>
+          <SectionHeader eyebrow="Placed Candidates" title="Appointments" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
@@ -609,48 +500,46 @@ const JobsPage = () => {
                 date: "2024-09-15",
                 downloads: 11258,
               },
-            ].map(function(item, index) {
+            ].map(function (item, index) {
               return (
                 <div
                   key={index}
-                  className="animate-on-scroll rounded-xl p-6 transition-all duration-300 hover:shadow-md"
+                  className="animate-on-scroll rounded-2xl p-6 transition-all duration-300 hover:shadow-md flex flex-col"
                   style={{
                     backgroundColor: "var(--psc-surface-container)",
-                    border: "1px solid var(--psc-border)",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.03)",
                     opacity: 0,
                     transform: "translateY(30px)",
                     transition: "all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                    transitionDelay: (index * 0.1) + "s",
+                    transitionDelay: index * 0.1 + "s",
                   }}
                 >
-                  <h3
-                    className="text-sm font-semibold mb-2 line-clamp-2"
-                    style={{ color: "var(--psc-on-surface)" }}
-                  >
+                  <h3 className="text-sm font-bold mb-3 line-clamp-2 flex-1 leading-snug" style={{ color: "var(--psc-on-surface)" }}>
                     {item.title}
                   </h3>
-                  <div className="flex items-center justify-between text-xs" style={{ color: "var(--psc-on-surface-light)" }}>
-                    <span>📅 {item.date}</span>
-                    <span>📥 {item.downloads.toLocaleString()} downloads</span>
+                  <div className="flex flex-wrap items-center justify-between text-xs mb-5 font-medium" style={{ color: "var(--psc-on-surface-light)" }}>
+                    <span className="mr-2 bg-[var(--psc-surface-variant)] px-2 py-1 rounded">Date: {item.date}</span>
+                    <span>Downloads: {item.downloads.toLocaleString()}</span>
                   </div>
-                  <div className="mt-4 flex gap-2">
+                  <div className="flex flex-col sm:flex-row mt-auto">
                     <button
-                      className="px-4 py-1.5 rounded-full text-xs font-semibold transition-colors"
+                      className="px-5 py-2 rounded-lg text-xs font-bold transition-all min-h-[44px] sm:min-h-0 sm:mr-3 mb-2 sm:mb-0 hover:opacity-90"
                       style={{
                         backgroundColor: "var(--psc-primary-container)",
                         color: "var(--psc-on-primary)",
                       }}
                     >
-                      View More
+                      View List
                     </button>
                     <button
-                      className="px-4 py-1.5 rounded-full text-xs font-semibold transition-colors"
+                      className="px-5 py-2 rounded-lg text-xs font-bold transition-all min-h-[44px] sm:min-h-0 hover:bg-[rgba(0,0,0,0.05)]"
                       style={{
-                        backgroundColor: "var(--psc-surface-variant)",
-                        color: "var(--psc-primary)",
+                        backgroundColor: "transparent",
+                        color: "var(--psc-on-surface)",
+                        border: "1px solid var(--psc-border)",
                       }}
                     >
-                      Download
+                      Download PDF
                     </button>
                   </div>
                 </div>
@@ -661,77 +550,36 @@ const JobsPage = () => {
       </section>
 
       {/* Instructions Section */}
-      <section
-        id="videoInter"
-        className="py-16 px-4 md:px-10 lg:px-40"
-        style={{ backgroundColor: "var(--psc-surface)" }}
-      >
+      <section id="videoInter" className="py-16 px-4 md:px-10 lg:px-16 xl:px-40" style={{ backgroundColor: "var(--psc-surface)" }}>
         <div className="max-w-[1280px] mx-auto">
-          <div className="flex items-center gap-3 mb-8">
-            <div
-              className="w-1 h-8 rounded-full"
-              style={{ backgroundColor: "var(--psc-primary-container)" }}
-            ></div>
-            <h2
-              className="text-2xl md:text-3xl font-bold"
-              style={{ color: "var(--psc-on-surface)" }}
-            >
-              Instructions for Online Video Interviews
-            </h2>
-          </div>
+          <SectionHeader eyebrow="Guidelines" title="Instructions for Online Video Interviews" />
 
           <div
-            className="rounded-xl p-8 animate-on-scroll"
+            className="rounded-2xl p-6 md:p-10 animate-on-scroll"
             style={{
               backgroundColor: "var(--psc-surface-container)",
-              border: "1px solid var(--psc-border)",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
               opacity: 0,
               transform: "translateY(30px)",
               transition: "all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             }}
           >
-            <div className="flex items-start gap-4">
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: "var(--psc-primary-container)", opacity: 0.1 }}
-              >
-                <span className="material-symbols-outlined text-2xl" style={{ color: "var(--psc-primary-container)" }}>
-                  video_camera_front
-                </span>
-              </div>
-              <div>
-                <h3
-                  className="text-lg font-bold mb-2"
-                  style={{ color: "var(--psc-on-surface)" }}
-                >
-                  Instructions for Online Video Interviews
+            <div className="flex flex-col md:flex-row items-start">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-xl font-bold mb-3" style={{ color: "var(--psc-on-surface)" }}>
+                  Prepare for your interview
                 </h3>
-                <p
-                  className="text-sm mb-4"
-                  style={{ color: "var(--psc-on-surface-variant)" }}
-                >
-                  Please read the following instructions carefully before your online video interview.
+                <p className="text-sm mb-6" style={{ color: "var(--psc-on-surface-variant)", lineHeight: 1.7 }}>
+                  Please read the following instructions carefully before your online video interview to ensure a smooth experience for both you and the panel.
                 </p>
-                <ul className="space-y-2 text-sm" style={{ color: "var(--psc-on-surface-variant)" }}>
-                  <li className="flex items-start gap-2">
-                    <span style={{ color: "var(--psc-primary-container)" }}>•</span>
-                    Ensure you have a stable internet connection
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span style={{ color: "var(--psc-primary-container)" }}>•</span>
-                    Use a device with a working camera and microphone
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span style={{ color: "var(--psc-primary-container)" }}>•</span>
-                    Find a quiet, well-lit location for the interview
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span style={{ color: "var(--psc-primary-container)" }}>•</span>
-                    Dress professionally as you would for an in-person interview
-                  </li>
+                <ul className="text-sm mb-8" style={{ color: "var(--psc-on-surface-variant)", listStyle: "disc", paddingLeft: "20px", margin: 0 }}>
+                  <li className="mb-3 pl-2">Ensure you have a stable internet connection</li>
+                  <li className="mb-3 pl-2">Use a device with a working camera and microphone</li>
+                  <li className="mb-3 pl-2">Find a quiet, well-lit location for the interview</li>
+                  <li className="mb-3 pl-2">Dress professionally as you would for an in-person interview</li>
                 </ul>
                 <button
-                  className="mt-4 px-6 py-2.5 rounded-full text-white font-bold text-sm transition-all hover:scale-105"
+                  className="px-8 py-3 rounded-full text-white font-bold text-sm transition-all hover:scale-105 min-h-[44px] shadow-md"
                   style={{ backgroundColor: "var(--psc-primary-container)" }}
                 >
                   Download Full Instructions
@@ -743,60 +591,31 @@ const JobsPage = () => {
       </section>
 
       {/* Archived Jobs Section */}
-      <section
-        id="archiveJobs"
-        className="py-16 px-4 md:px-10 lg:px-40"
-        style={{ backgroundColor: "var(--psc-surface-container-low)" }}
-      >
+      <section id="archiveJobs" className="py-16 px-4 md:px-10 lg:px-16 xl:px-40" style={{ backgroundColor: "var(--psc-surface-container-low)" }}>
         <div className="max-w-[1280px] mx-auto">
-          <div className="flex items-center gap-3 mb-8">
-            <div
-              className="w-1 h-8 rounded-full"
-              style={{ backgroundColor: "var(--psc-primary-container)" }}
-            ></div>
-            <h2
-              className="text-2xl md:text-3xl font-bold"
-              style={{ color: "var(--psc-on-surface)" }}
-            >
-              Archived Jobs
-            </h2>
-          </div>
+          <SectionHeader eyebrow="History" title="Archived Jobs" />
 
           <div
-            className="rounded-xl p-12 text-center animate-on-scroll"
+            className="rounded-2xl p-10 md:p-16 text-center animate-on-scroll"
             style={{
               backgroundColor: "var(--psc-surface-container)",
-              border: "1px solid var(--psc-border)",
+              border: "1px dashed var(--psc-border)",
               opacity: 0,
               transform: "translateY(30px)",
               transition: "all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             }}
           >
-            <div
-              className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"
-              style={{ backgroundColor: "var(--psc-surface-variant)" }}
-            >
-              <span className="material-symbols-outlined text-4xl" style={{ color: "var(--psc-on-surface-light)" }}>
-                archive
-              </span>
-            </div>
-            <h3
-              className="text-xl font-bold mb-2"
-              style={{ color: "var(--psc-on-surface)" }}
-            >
+    
+            <h3 className="text-xl font-bold mb-3" style={{ color: "var(--psc-on-surface)" }}>
               No Archived Jobs
             </h3>
-            <p
-              className="max-w-md mx-auto"
-              style={{ color: "var(--psc-on-surface-variant)" }}
-            >
-              Currently, there are no archived jobs. Please check back later for updates.
+            <p className="max-w-md mx-auto text-sm" style={{ color: "var(--psc-on-surface-variant)", lineHeight: 1.6 }}>
+              Currently, there are no archived jobs. Please check back later for updates on past recruitment drives.
             </p>
           </div>
         </div>
       </section>
 
-      {/* CSS for animations */}
       <style>{`
         .jobs-page .animate-on-scroll.visible {
           opacity: 1 !important;
@@ -837,13 +656,6 @@ const JobsPage = () => {
         @media (max-width: 480px) {
           .jobs-page .grid-cols-3 {
             grid-template-columns: 1fr !important;
-          }
-          .jobs-page .flex-wrap {
-            gap: 0.5rem !important;
-          }
-          .jobs-page .px-6 {
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
           }
         }
       `}</style>

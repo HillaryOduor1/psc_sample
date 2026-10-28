@@ -92,7 +92,7 @@ export const defaultContent: SiteContent = {
         secondaryButtonText: 'VIEW PROGRAMMES',
         primaryLink: '/about',
         secondaryLink: '/jobs',
-        image: '/assets/Core Values-psc image3.webp'
+        image: '/assets/Core-Values-psc-image3.jpg'
       },
       {
         badge: 'SAY NO TO CORRUPTION',
