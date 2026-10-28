@@ -8,6 +8,23 @@ interface FABProps {
   linkedinHref?: string;
 }
 
+/*
+ * ES5-safe object merge. Avoids `Object.assign` (Chrome 45+)
+ * and object spread (which compiles to Object.assign in an ES5
+ * build with no polyfill).
+ */
+function mergeStyles(base: React.CSSProperties, override: React.CSSProperties): React.CSSProperties {
+  var merged: any = {};
+  var k: string;
+  for (k in base) {
+    if (Object.prototype.hasOwnProperty.call(base, k)) merged[k] = (base as any)[k];
+  }
+  for (k in override) {
+    if (Object.prototype.hasOwnProperty.call(override, k)) merged[k] = (override as any)[k];
+  }
+  return merged as React.CSSProperties;
+}
+
 export default function SocialFAB(props: FABProps) {
   var facebookHref = props.facebookHref || "https://www.facebook.com/PSCKenya";
   var twitterHref = props.twitterHref || "https://twitter.com/PSCKenya";
@@ -15,7 +32,6 @@ export default function SocialFAB(props: FABProps) {
   var youtubeHref = props.youtubeHref || "https://www.youtube.com/@PSCKenya";
   var linkedinHref = props.linkedinHref || "https://www.linkedin.com/company/psc-kenya";
 
-  // Default to expanded, but we will override this on small screens
   var [expanded, setExpanded] = React.useState(true);
   var [isChatbotOpen, setIsChatbotOpen] = React.useState(false);
   var [isMobile, setIsMobile] = React.useState(false);
@@ -26,7 +42,6 @@ export default function SocialFAB(props: FABProps) {
     function checkWidth() {
       var mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      // On mobile, start collapsed. On desktop, always expanded.
       if (mobile) {
         setExpanded(false);
       } else {
@@ -41,7 +56,6 @@ export default function SocialFAB(props: FABProps) {
     };
   }, []);
 
-  // Prevent background scrolling when chatbot modal is open
   React.useEffect(function () {
     if (isChatbotOpen) {
       var originalOverflow = document.body.style.overflow;
@@ -82,7 +96,6 @@ export default function SocialFAB(props: FABProps) {
     };
   }
 
-  /* Shared hover handlers — one pair used by every button. */
   function handleHoverIn(e: React.MouseEvent<HTMLElement>) {
     e.currentTarget.style.transform = "scale(1.08)";
     e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.28)";
@@ -92,16 +105,9 @@ export default function SocialFAB(props: FABProps) {
     e.currentTarget.style.boxShadow = "0 4px 14px rgba(0,0,0,0.22)";
   }
 
-  /*
-   * Theme-aware colors:
-   * - Light mode: X and Chatbot are black.
-   * - Dark mode: X and Chatbot are white.
-   * - Facebook / YouTube / LinkedIn keep their brand colours in both modes.
-   */
   var contrastBg = "var(--psc-on-surface, #1a1a1a)";
   var contrastFg = "var(--psc-surface, #ffffff)";
 
-  // If we are on mobile and collapsed, hide the stack
   var showStack = !isMobile || expanded;
 
   return (
@@ -172,8 +178,7 @@ export default function SocialFAB(props: FABProps) {
           </a>
         )}
 
-        {/* YouTube — play triangle is cut out of the white glyph
-            via fillRule="evenodd", letting the red button show through. */}
+        {/* YouTube */}
         {showStack && (
           <a
             href={youtubeHref}
@@ -196,7 +201,7 @@ export default function SocialFAB(props: FABProps) {
           </a>
         )}
 
-        {/* LinkedIn — "in" glyph only; the outer square is the button itself. */}
+        {/* LinkedIn */}
         {showStack && (
           <a
             href={linkedinHref}
@@ -221,11 +226,13 @@ export default function SocialFAB(props: FABProps) {
             onClick={toggle}
             aria-label={expanded ? "Hide social links" : "Show social links"}
             aria-expanded={expanded}
-            style={{
-              ...baseButtonStyle("var(--psc-surface-container, #ffffff)", "var(--psc-on-surface, #1a1a1a)"),
-              border: "1px solid var(--psc-border, #d0d5dd)",
-              boxShadow: "0 4px 14px rgba(0,0,0,0.22)",
-            }}
+            style={mergeStyles(
+              baseButtonStyle("var(--psc-surface-container, #ffffff)", "var(--psc-on-surface, #1a1a1a)"),
+              {
+                border: "1px solid var(--psc-border, #d0d5dd)",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.22)",
+              }
+            )}
             onMouseEnter={function (e) {
               e.currentTarget.style.transform = "scale(1.08)";
               e.currentTarget.style.backgroundColor = "var(--psc-surface-variant, #eeeeea)";
@@ -253,15 +260,19 @@ export default function SocialFAB(props: FABProps) {
         )}
       </div>
 
-      {/* Chatbot Modal — unchanged */}
+      {/* Chatbot Modal */}
       {isChatbotOpen && (
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="chatbot-title"
           style={{
+            /* inset: 0  →  explicit longhands (Chrome 87+ only). */
             position: "fixed",
-            inset: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
             zIndex: 10000,
             display: "flex",
             alignItems: "flex-end",
@@ -275,6 +286,7 @@ export default function SocialFAB(props: FABProps) {
             style={{
               width: "100%",
               maxWidth: "360px",
+              maxHeight: "calc(100vh - 3rem)",
               backgroundColor: "var(--psc-surface-container, #ffffff)",
               borderRadius: "16px",
               boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
@@ -334,9 +346,10 @@ export default function SocialFAB(props: FABProps) {
                 alignItems: "center",
                 textAlign: "center",
                 backgroundColor: "var(--psc-surface, #f9f7f0)",
+                overflowY: "auto",
+                WebkitOverflowScrolling: "touch",
               }}
             >
-              
               <h4 style={{ margin: "0 0 8px 0", fontSize: "18px", fontWeight: 700, color: "var(--psc-on-surface, #1a1a1a)" }}>
                 Coming Soon!
               </h4>
