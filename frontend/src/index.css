@@ -5,7 +5,6 @@
 /* =========================================================
    PSC COLOR TOKENS — BASE (will be overridden by JS)
    ========================================================= */
-
 :root {
   /* Primary Brand - PSC Gold/Orange */
   --psc-primary: #895100;
@@ -35,17 +34,14 @@
   --psc-error-container: #ffdad6;
   --psc-on-error: #ffffff;
   --psc-on-error-container: #410002;
-
   --psc-success: #1e7b3a;
   --psc-success-container: #a7f0ba;
   --psc-on-success: #ffffff;
   --psc-on-success-container: #00210a;
-
   --psc-warning: #9b6b00;
   --psc-warning-container: #ffdf9e;
   --psc-on-warning: #ffffff;
   --psc-on-warning-container: #301f00;
-
   --psc-info: #005b9e;
   --psc-info-container: #cbe6ff;
   --psc-on-info: #ffffff;
@@ -74,6 +70,1204 @@
 /* =========================================================
    DARK MODE - will be applied via JS
    ========================================================= */
+.dark {
+  --psc-primary: #f29a00;
+  --psc-primary-container: #ffb23e;
+  --psc-on-primary: #211300;
+  --psc-on-primary-container: #2d1800;
+
+  --psc-surface: #121212;
+  --psc-surface-container: #1b1b1b;
+  --psc-surface-container-low: #161616;
+  --psc-surface-container-high: #202020;
+  --psc-surface-variant: #242424;
+
+  --psc-on-surface: #f5f5f5;
+  --psc-on-surface-medium: #d6d6d6;
+  --psc-on-surface-variant: #c8c8c8;
+  --psc-on-surface-light: #969696;
+
+  --psc-border: #383838;
+  --psc-border-light: #2a2a2a;
+
+  --psc-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --psc-shadow-md: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --psc-shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.5);
+
+  --psc-hover-overlay: rgba(255, 255, 255, 0.06);
+  --psc-active-overlay: rgba(255, 255, 255, 0.12);
+
+  --psc-focus-ring: rgba(242, 154, 0, 0.5);
+}
+
+/* =========================================================
+   BASE STYLES — iPhone 6 / Safari 12 viewport fallbacks
+   The three-tier cascade is:
+     1. 100vh   → ancient fallback
+     2. calc(var(--vh, 1vh) * 100) → Safari 12 (set by inline script)
+     3. 100dvh  → modern browsers
+   ========================================================= */
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--psc-surface);
+  color: var(--psc-on-surface);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: 100dvh;
+}
+
+#root {
+  min-height: 100%;
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: 100dvh;
+  background-color: var(--psc-surface);
+}
+
+/* =========================================================
+   MATERIAL SYMBOLS
+   ========================================================= */
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+.material-symbols-outlined[data-weight="fill"] {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+/* =========================================================
+   THEME TOGGLE — GLOBAL
+   ========================================================= */
+.theme-toggle-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 100 !important;
+  min-width: 2.75rem !important;
+  min-height: 2.75rem !important;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  color: var(--psc-on-surface) !important;
+  border: 1px solid var(--psc-border-light) !important;
+  border-radius: 0.5rem;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.dark .theme-toggle-button {
+  background-color: rgba(255, 255, 255, 0.07) !important;
+  color: var(--psc-on-surface) !important;
+  border-color: var(--psc-border) !important;
+}
+.theme-toggle-button:hover {
+  transform: scale(1.05) !important;
+}
+.theme-toggle-button:active {
+  transform: scale(0.95) !important;
+}
+
+/* =========================================================
+   SKIP TO CONTENT
+   ========================================================= */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--psc-primary-container);
+  color: var(--psc-on-primary);
+  font-weight: 700;
+  border-radius: 0 0 6px 6px;
+  text-decoration: none;
+  z-index: 9999;
+  transition: top 0.2s ease;
+}
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* =========================================================
+   TEXT SELECTION
+   ========================================================= */
+::selection {
+  background-color: var(--psc-primary-container);
+  color: var(--psc-on-primary-container);
+}
+
+/* =========================================================
+   UTILITY — LINE CLAMP
+   ========================================================= */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+.navbar-transparent {
+  background-color: transparent !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.navbar-solid {
+  background-color: var(--psc-surface-container) !important;
+  border-bottom: 1px solid var(--psc-border) !important;
+  box-shadow: var(--psc-shadow-md) !important;
+}
+.dark .navbar-solid {
+  background-color: #181818 !important;
+  border-bottom-color: var(--psc-border) !important;
+  box-shadow: var(--psc-shadow-md) !important;
+}
+
+/* =========================================================
+   SEARCH INPUT
+   ========================================================= */
+.search-input-transparent {
+  background-color: rgba(255, 255, 255, 0.10) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.search-input-transparent::placeholder {
+  color: rgba(255, 255, 255, 0.60) !important;
+}
+.search-input-transparent:focus {
+  background-color: rgba(255, 255, 255, 0.16) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  outline: none;
+}
+.search-input-solid {
+  background-color: var(--psc-surface-variant) !important;
+  color: var(--psc-on-surface) !important;
+  border: 1px solid transparent !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.search-input-solid::placeholder {
+  color: var(--psc-tertiary) !important;
+}
+.search-input-solid:focus {
+  background-color: var(--psc-surface-container) !important;
+  border-color: var(--psc-primary-container) !important;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--psc-focus-ring) !important;
+}
+.dark .search-input-solid {
+  background-color: var(--psc-surface-variant) !important;
+  color: var(--psc-on-surface) !important;
+  border-color: var(--psc-border) !important;
+}
+.dark .search-input-solid::placeholder {
+  color: var(--psc-tertiary) !important;
+}
+.dark .search-input-solid:focus {
+  background-color: var(--psc-surface-container-high) !important;
+  color: var(--psc-on-surface) !important;
+  border-color: var(--psc-primary-container) !important;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--psc-focus-ring) !important;
+}
+
+/* =========================================================
+   NAVIGATION LINKS
+   ========================================================= */
+.nav-link-transparent {
+  color: rgba(255, 255, 255, 0.85) !important;
+  border-bottom-color: transparent !important;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.nav-link-transparent:hover {
+  color: #ffffff !important;
+  border-bottom-color: rgba(255, 255, 255, 0.50) !important;
+}
+.nav-link-transparent-active {
+  color: #ffffff !important;
+  border-bottom-color: #ffffff !important;
+}
+.navbar-solid .nav-link {
+  color: var(--psc-on-surface-variant);
+}
+.navbar-solid .nav-link:hover {
+  color: var(--psc-primary);
+}
+.navbar-solid .nav-link-active {
+  color: var(--psc-primary);
+  border-bottom: 2px solid var(--psc-primary);
+}
+.dark .navbar-solid .nav-link {
+  color: var(--psc-on-surface-variant);
+}
+.dark .navbar-solid .nav-link:hover {
+  color: var(--psc-primary);
+}
+.dark .navbar-solid .nav-link-active {
+  color: var(--psc-primary);
+  border-bottom-color: var(--psc-primary);
+}
+
+/* =========================================================
+   E-RECRUITMENT BUTTON
+   ========================================================= */
+.btn-transparent {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.30) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.btn-transparent:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.50) !important;
+}
+.btn-solid {
+  background-color: var(--psc-primary-container) !important;
+  color: var(--psc-on-primary) !important;
+  border: none !important;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-solid:hover {
+  background-color: #d47d00 !important;
+}
+.dark .btn-solid {
+  background-color: var(--psc-primary-container) !important;
+  color: var(--psc-on-primary) !important;
+}
+.dark .btn-solid:hover {
+  background-color: #ffab2e !important;
+  box-shadow: 0 4px 14px rgba(242, 154, 0, 0.20) !important;
+}
+
+/* =========================================================
+   THEME TOGGLE — TRANSPARENT HERO
+   ========================================================= */
+.theme-toggle-transparent {
+  border-color: rgba(255, 255, 255, 0.40) !important;
+  background-color: rgba(255, 255, 255, 0.10) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.theme-toggle-transparent:hover {
+  background-color: rgba(255, 255, 255, 0.20) !important;
+  border-color: rgba(255, 255, 255, 0.60) !important;
+}
+
+/* =========================================================
+   HERO SECTION — viewport fallbacks for iPhone 6
+   ========================================================= */
+#hero-section {
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: 100dvh;
+  max-height: 100vh;
+  max-height: calc(var(--vh, 1vh) * 100);
+  max-height: 100dvh;
+}
+
+/* =========================================================
+   HERO SLIDES
+   ========================================================= */
+.hero-slide {
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+.hero-slide-active {
+  opacity: 1;
+  z-index: 20;
+}
+.hero-slide-inactive {
+  opacity: 0;
+  z-index: 10;
+}
+
+/* =========================================================
+   HERO IMAGE ZOOM
+   ========================================================= */
+.hero-slide-active .hero-image {
+  animation: zoomIn 8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.hero-image-zoom {
+  animation: heroZoom 10s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+@keyframes zoomIn {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+@keyframes heroZoom {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+/* =========================================================
+   HERO HEADLINE
+   ========================================================= */
+.hero-headline-line {
+  display: block;
+  line-height: 1.1;
+}
+.hero-headline-line span {
+  display: inline;
+  white-space: normal;
+  word-wrap: break-word;
+}
+#hero-section .max-w-\[900px\] {
+  max-width: 900px;
+}
+
+/* =========================================================
+   HERO DOT INDICATORS
+   ========================================================= */
+.hero-dot-active {
+  animation: dotPulse 1.5s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.2); }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--psc-primary-container);
+  outline-offset: 2px;
+}
+.dark button:focus-visible,
+.dark a:focus-visible,
+.dark input:focus-visible,
+.dark textarea:focus-visible,
+.dark select:focus-visible {
+  outline-color: var(--psc-primary-container);
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+@media (max-width: 768px) {
+  #hero-section {
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+    min-height: 100dvh;
+    max-height: 100vh;
+    max-height: calc(var(--vh, 1vh) * 100);
+    max-height: 100dvh;
+  }
+  #hero-section h1 {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+  #hero-section .text-lg {
+    font-size: 0.95rem !important;
+  }
+  #hero-section .max-w-\[900px\] {
+    max-width: 100%;
+  }
+  .hero-headline-line {
+    line-height: 1.15;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+@media (max-width: 480px) {
+  #hero-section h1 {
+    font-size: 1.5rem !important;
+  }
+  #hero-section .flex-wrap {
+    gap: 0.75rem !important;
+  }
+  #hero-section button {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    font-size: 0.8rem !important;
+  }
+  .hero-headline-line {
+    line-height: 1.2;
+  }
+}
+
+/* =========================================================
+   DARK MODE — GENERAL FORM ELEMENTS
+   ========================================================= */
+.dark input,
+.dark textarea,
+.dark select {
+  color-scheme: dark;
+}
+
+/* =========================================================
+   DARK MODE — SCROLLBAR
+   ========================================================= */
+.dark {
+  scrollbar-color: var(--psc-border) var(--psc-surface);
+}
+.dark::-webkit-scrollbar {
+  width: 10px;
+}
+.dark::-webkit-scrollbar-track {
+  background: var(--psc-surface);
+}
+.dark::-webkit-scrollbar-thumb {
+  background: var(--psc-border);
+  border-radius: 999px;
+  border: 2px solid var(--psc-surface);
+}
+.dark::-webkit-scrollbar-thumb:hover {
+  background: #505050;
+}
+
+/* =========================================================
+   DARK MODE — COMMON SURFACE HELPERS
+   ========================================================= */
+.dark .bg-white {
+  background-color: var(--psc-surface-container) !important;
+}
+.dark .bg-gray-50 {
+  background-color: var(--psc-surface) !important;
+}
+.dark .bg-gray-100 {
+  background-color: var(--psc-surface-variant) !important;
+}
+.dark .text-gray-900 {
+  color: var(--psc-on-surface) !important;
+}
+.dark .text-gray-800 {
+  color: var(--psc-on-surface-medium) !important;
+}
+.dark .text-gray-700 {
+  color: var(--psc-on-surface-variant) !important;
+}
+.dark .text-gray-600 {
+  color: var(--psc-on-surface-light) !important;
+}
+.dark .text-gray-500 {
+  color: var(--psc-tertiary) !important;
+}
+.dark .border-gray-200,
+.dark .border-gray-300 {
+  border-color: var(--psc-border) !important;
+}
+.dark .hover\:bg-gray-50:hover {
+  background-color: var(--psc-surface-variant) !important;
+}
+.dark .hover\:bg-gray-100:hover {
+  background-color: var(--psc-surface-container-high) !important;
+}
+
+/* =========================================================
+   LIGHT MODE — PSC ACCENT UTILITIES (GOLD/ORANGE)
+   ========================================================= */
+.text-primary,
+.text-psc-primary {
+  color: var(--psc-primary) !important;
+}
+.bg-primary,
+.bg-psc-primary {
+  background-color: var(--psc-primary-container) !important;
+}
+.border-primary,
+.border-psc-primary {
+  border-color: var(--psc-primary) !important;
+}
+.text-primary-container {
+  color: var(--psc-primary-container) !important;
+}
+.bg-primary-container {
+  background-color: var(--psc-primary-container) !important;
+}
+.hover\:text-primary:hover {
+  color: var(--psc-primary) !important;
+}
+.hover\:bg-primary:hover {
+  background-color: #d47d00 !important;
+}
+.focus\:ring-primary:focus {
+  --tw-ring-color: var(--psc-primary-container) !important;
+}
+.focus\:border-primary:focus {
+  border-color: var(--psc-primary) !important;
+}
+
+/* =========================================================
+   DARK MODE — PSC ACCENT UTILITIES (GOLD/ORANGE)
+   ========================================================= */
+.dark .text-primary,
+.dark .text-psc-primary {
+  color: var(--psc-primary) !important;
+}
+.dark .bg-primary,
+.dark .bg-psc-primary {
+  background-color: var(--psc-primary) !important;
+}
+.dark .border-primary,
+.dark .border-psc-primary {
+  border-color: var(--psc-primary) !important;
+}
+.dark .text-primary-container {
+  color: var(--psc-primary-container) !important;
+}
+.dark .bg-primary-container {
+  background-color: var(--psc-primary-container) !important;
+}
+.dark .hover\:text-primary:hover {
+  color: var(--psc-primary) !important;
+}
+.dark .hover\:bg-primary:hover {
+  background-color: var(--psc-primary) !important;
+}
+.dark .focus\:ring-primary:focus {
+  --tw-ring-color: var(--psc-primary) !important;
+}
+.dark .focus\:border-primary:focus {
+  border-color: var(--psc-primary) !important;
+}
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .navbar-transparent,
+  .navbar-solid,
+  .theme-toggle-button,
+  .skip-to-content {
+    display: none !important;
+  }
+  #hero-section {
+    min-height: auto !important;
+    max-height: none !important;
+  }
+}
+
+/* =========================================================
+   NAVBAR LINKS — no outline, no ring, no box-shadow ever
+   ========================================================= */
+.psc-nav-link,
+.psc-nav-link:focus,
+.psc-nav-link:focus-visible,
+.psc-nav-link:active,
+.psc-nav-link:visited,
+.psc-nav-link:hover {
+  outline: none !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+.psc-navbar a:focus-visible,
+.psc-navbar button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* =========================================================
+   HERO — VIEWPORT & MOBILE RESPONSIVENESS
+   ========================================================= */
+.hero-viewport {
+  position: relative;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  height: 100dvh;
+  min-height: 480px;
+  max-height: 100vh;
+  max-height: calc(var(--vh, 1vh) * 100);
+  max-height: 100dvh;
+  margin-top: 0;
+  padding-top: var(--navbar-height, 4rem);
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .hero-viewport {
+    padding-top: var(--navbar-height-md, 5rem);
+  }
+}
+@media (max-height: 640px) {
+  .hero-viewport {
+    height: auto;
+    min-height: 480px;
+    max-height: none;
+  }
+}
+
+/* Content wrapper inside the hero */
+.hero-content-wrap {
+  padding-top: 1.5rem;
+  padding-bottom: 5rem;
+}
+@media (min-width: 640px) {
+  .hero-content-wrap {
+    padding-top: 2rem;
+    padding-bottom: 6rem;
+  }
+}
+@media (min-width: 1024px) {
+  .hero-content-wrap {
+    padding-top: 2.5rem;
+    padding-bottom: 7rem;
+  }
+}
+
+/* Touch-action for swipe support */
+#hero-section {
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.hero-slide {
+  transition: opacity 0.7s ease-in-out;
+  will-change: opacity;
+}
+
+/* Content wrapper — vertical centering with safe padding on mobile */
+.hero-content-wrap {
+  padding-top: 4.5rem;
+  padding-bottom: 3.5rem;
+}
+@media (min-width: 640px) {
+  .hero-content-wrap {
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+  }
+}
+
+/* Headline line-height tightening on mobile for long headlines */
+.hero-headline .hero-headline-line {
+  line-height: 1.15;
+}
+@media (max-width: 480px) {
+  .hero-headline .hero-headline-line {
+    line-height: 1.12;
+  }
+  .hero-subtext {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .hero-btn {
+    padding-left: 0.875rem !important;
+    padding-right: 0.875rem !important;
+    padding-top: 0.625rem !important;
+    padding-bottom: 0.625rem !important;
+    font-size: 0.7rem !important;
+  }
+}
+
+/* Better tap targets for dots & nav buttons on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .hero-dot {
+    min-width: 14px;
+    min-height: 14px;
+  }
+  .hero-dot[aria-current="true"] {
+    min-width: 26px;
+  }
+  .hero-nav-btn {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+}
+
+/* Nav buttons — hide on very small screens (dots + swipe suffice) */
+@media (max-width: 380px) {
+  .hero-nav-btn {
+    display: none;
+  }
+}
+
+/* Prevent image overflow clipping during zoom on mobile */
+@media (max-width: 640px) {
+  #hero-section img {
+    transform-origin: center center;
+  }
+  #hero-section .hero-slide img {
+    transform: translateZ(0);
+  }
+}
+
+/* =========================================================
+   PSC HERO CAROUSEL — SMOOTH, LEGACY-SAFE TRANSITIONS
+   ========================================================= */
+#hero-section .hero-stage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 0;
+  background-color: #171717;
+}
+
+#hero-section .hero-slide {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transition: opacity 800ms ease-in-out;
+  transition: opacity 800ms ease-in-out;
+}
+#hero-section .hero-slide.is-leaving {
+  opacity: 1;
+  z-index: 2;
+}
+#hero-section .hero-slide.is-active {
+  opacity: 1;
+  z-index: 3;
+  pointer-events: auto;
+  will-change: opacity;
+}
+#hero-section .hero-slide:not(.is-active):not(.is-leaving) {
+  -webkit-transition: none;
+  transition: none;
+}
+
+#hero-section .hero-slide img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+  object-position: center center;
+  -webkit-transform: translate3d(0, 0, 0) scale(1.035);
+  transform: translate3d(0, 0, 0) scale(1.035);
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+#hero-section .hero-slide.is-active img {
+  -webkit-animation: pscHeroImageMotion 8000ms ease-out forwards;
+  animation: pscHeroImageMotion 8000ms ease-out forwards;
+}
+@-webkit-keyframes pscHeroImageMotion {
+  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1.035); }
+  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.085); }
+}
+@keyframes pscHeroImageMotion {
+  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1.035); transform: translate3d(0, 0, 0) scale(1.035); }
+  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.085); transform: translate3d(0, 0, 0) scale(1.085); }
+}
+
+#hero-section .hero-slide-scrim {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: -webkit-linear-gradient(
+    left,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.52) 38%,
+    rgba(0, 0, 0, 0.18) 72%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.52) 38%,
+    rgba(0, 0, 0, 0.18) 72%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+}
+#hero-section .hero-slide-scrim.is-mobile {
+  background: -webkit-linear-gradient(
+    top,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.32) 45%,
+    rgba(0, 0, 0, 0.58) 100%
+  );
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.32) 45%,
+    rgba(0, 0, 0, 0.58) 100%
+  );
+}
+
+#hero-section .hero-content-anim {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+#hero-section .hero-content-anim > * {
+  -webkit-animation: pscHeroTextInNext 600ms ease-out both;
+  animation: pscHeroTextInNext 600ms ease-out both;
+}
+#hero-section .hero-content-anim.dir-prev > * {
+  -webkit-animation-name: pscHeroTextInPrev;
+  animation-name: pscHeroTextInPrev;
+}
+#hero-section .hero-content-anim > *:nth-child(1) { -webkit-animation-delay: 40ms;  animation-delay: 40ms; }
+#hero-section .hero-content-anim > *:nth-child(2) { -webkit-animation-delay: 100ms; animation-delay: 100ms; }
+#hero-section .hero-content-anim > *:nth-child(3) { -webkit-animation-delay: 160ms; animation-delay: 160ms; }
+#hero-section .hero-content-anim > *:nth-child(4) { -webkit-animation-delay: 220ms; animation-delay: 220ms; }
+#hero-section .hero-content-anim > *:nth-child(5) { -webkit-animation-delay: 260ms; animation-delay: 260ms; }
+
+@-webkit-keyframes pscHeroTextInNext {
+  0%   { opacity: 0; -webkit-transform: translate3d(12px, 14px, 0); }
+  100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0); }
+}
+@keyframes pscHeroTextInNext {
+  0%   { opacity: 0; -webkit-transform: translate3d(12px, 14px, 0);  transform: translate3d(12px, 14px, 0); }
+  100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0);        transform: translate3d(0, 0, 0); }
+}
+@-webkit-keyframes pscHeroTextInPrev {
+  0%   { opacity: 0; -webkit-transform: translate3d(-12px, 14px, 0); }
+  100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0); }
+}
+@keyframes pscHeroTextInPrev {
+  0%   { opacity: 0; -webkit-transform: translate3d(-12px, 14px, 0); transform: translate3d(-12px, 14px, 0); }
+  100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0);        transform: translate3d(0, 0, 0); }
+}
+
+#hero-section .hero-accent {
+  color: #e68c00;
+  color: var(--psc-primary-container, #e68c00);
+}
+#hero-section .hero-plain {
+  color: #ffffff;
+}
+#hero-section .hero-badge-accent {
+  background-color: #e68c00;
+  background-color: var(--psc-primary-container, #e68c00);
+}
+#hero-section .hero-badge-plain {
+  background-color: #ffffff;
+}
+
+#hero-section .hero-btn {
+  border: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transition: background-color 200ms ease, border-color 200ms ease;
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+#hero-section .hero-btn-primary {
+  background-color: #e68c00;
+  background-color: var(--psc-primary-container, #e68c00);
+  color: #ffffff;
+}
+#hero-section .hero-btn-primary:hover {
+  background-color: #d47d00;
+}
+#hero-section .hero-btn-secondary {
+  background-color: rgba(0, 0, 0, 0.62);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+#hero-section .hero-btn-secondary:hover {
+  background-color: rgba(0, 0, 0, 0.82);
+  border-color: rgba(255, 255, 255, 0.40);
+}
+
+#hero-section .hero-nav-btn {
+  background-color: rgba(0, 0, 0, 0.42);
+  color: #ffffff;
+  border: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transition: background-color 200ms ease, opacity 200ms ease;
+  transition: background-color 200ms ease, opacity 200ms ease;
+}
+#hero-section .hero-nav-btn:hover {
+  background-color: rgba(0, 0, 0, 0.68);
+}
+
+#hero-section .hero-dot {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.42);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transition: width 260ms ease, background-color 260ms ease;
+  transition: width 260ms ease, background-color 260ms ease;
+}
+#hero-section .hero-dot:hover {
+  background-color: rgba(255, 255, 255, 0.72);
+}
+#hero-section .hero-dot.is-active {
+  width: 24px;
+  background-color: #e68c00;
+  background-color: var(--psc-primary-container, #e68c00);
+}
+
+#hero-section .hero-nav-btn:focus-visible,
+#hero-section .hero-dot:focus-visible,
+#hero-section .hero-btn:focus-visible {
+  outline: 2px solid #ffb23e;
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  #hero-section .hero-slide img {
+    -webkit-transform: translate3d(0, 0, 0) scale(1.02);
+    transform: translate3d(0, 0, 0) scale(1.02);
+  }
+  #hero-section .hero-slide.is-active img {
+    -webkit-animation-name: pscHeroImageMotionMobile;
+    animation-name: pscHeroImageMotionMobile;
+    -webkit-animation-duration: 9000ms;
+    animation-duration: 9000ms;
+  }
+}
+@-webkit-keyframes pscHeroImageMotionMobile {
+  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.06); }
+}
+@keyframes pscHeroImageMotionMobile {
+  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1.02); transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.06); transform: translate3d(0, 0, 0) scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #hero-section .hero-slide,
+  #hero-section .hero-slide:not(.is-active):not(.is-leaving) {
+    -webkit-transition: none !important;
+    transition: none !important;
+  }
+  #hero-section .hero-slide.is-active img {
+    -webkit-animation: none !important;
+    animation: none !important;
+    -webkit-transform: none !important;
+    transform: none !important;
+  }
+  #hero-section .hero-content-anim > * {
+    -webkit-animation: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    -webkit-transform: none !important;
+    transform: none !important;
+  }
+}
+
+/* =========================================================
+   PSC LOADER — box-shadow orbit
+   ========================================================= */
+.psc-loader {
+  --size: 1px;
+  display: block;
+  width: calc(12 * var(--size));
+  height: calc(12 * var(--size));
+  margin: calc(15 * var(--size)) auto;
+  border-radius: 50%;
+  position: relative;
+  box-sizing: border-box;
+  color: var(--psc-primary-container, #e68c00);
+  background-color: transparent;
+  animation: pscLoaderOrbit 2s linear infinite;
+}
+@keyframes pscLoaderOrbit {
+  0% {
+    box-shadow:
+      calc(14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(38 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-38 * var(--size)) 0 0 calc(-2 * var(--size));
+  }
+  25% {
+    box-shadow:
+      calc(14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(38 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-38 * var(--size)) 0 0 calc(2 * var(--size));
+  }
+  50% {
+    box-shadow:
+      calc(14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(38 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-14 * var(--size)) 0 0 calc(2 * var(--size)),
+      calc(-38 * var(--size)) 0 0 calc(-2 * var(--size));
+  }
+  75% {
+    box-shadow:
+      calc(14 * var(--size)) 0 0 calc(2 * var(--size)),
+      calc(38 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-38 * var(--size)) 0 0 calc(-2 * var(--size));
+  }
+  100% {
+    box-shadow:
+      calc(14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(38 * var(--size)) 0 0 calc(2 * var(--size)),
+      calc(-14 * var(--size)) 0 0 calc(-2 * var(--size)),
+      calc(-38 * var(--size)) 0 0 calc(-2 * var(--size));
+  }
+}
+
+@supports not (--test: 1) {
+  .psc-loader {
+    width: 24px;
+    height: 24px;
+    background-color: #e68c00;
+    box-shadow: none;
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .psc-loader {
+    animation-duration: 4s;
+  }
+}
+
+/*@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   PSC COLOR TOKENS — BASE (will be overridden by JS)
+   ========================================================= /
+
+:root {
+  /* Primary Brand - PSC Gold/Orange *
+  --psc-primary: #895100;
+  --psc-primary-container: #e68c00;
+  --psc-on-primary: #ffffff;
+  --psc-on-primary-container: #532f00;
+
+  /* Surfaces - Warm off-white *
+  --psc-surface: #f9f7f0;
+  --psc-surface-container: #ffffff;
+  --psc-surface-container-low: #f5f3ec;
+  --psc-surface-container-high: #f0ede6;
+  --psc-surface-variant: #eeeeea;
+
+  /* Typography - Dark warm tones /
+  --psc-on-surface: #1a1a1a;
+  --psc-on-surface-medium: #3d3d3d;
+  --psc-on-surface-variant: #4a4a4a;
+  --psc-on-surface-light: #6b6b6b;
+
+  /* Borders *
+  --psc-border: #d0d5dd;
+  --psc-border-light: #e5e8ed;
+
+  /* Semantic Colors /
+  --psc-error: #ba1a1a;
+  --psc-error-container: #ffdad6;
+  --psc-on-error: #ffffff;
+  --psc-on-error-container: #410002;
+
+  --psc-success: #1e7b3a;
+  --psc-success-container: #a7f0ba;
+  --psc-on-success: #ffffff;
+  --psc-on-success-container: #00210a;
+
+  --psc-warning: #9b6b00;
+  --psc-warning-container: #ffdf9e;
+  --psc-on-warning: #ffffff;
+  --psc-on-warning-container: #301f00;
+
+  --psc-info: #005b9e;
+  --psc-info-container: #cbe6ff;
+  --psc-on-info: #ffffff;
+  --psc-on-info-container: #001b36;
+
+  /* Neutral Supporting Colors /
+  --psc-secondary: #4a4a4a;
+  --psc-tertiary: #6b6b6b;
+
+  /* Shadows *
+  --psc-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --psc-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --psc-shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.10);
+
+  /* Hover states /
+  --psc-hover-overlay: rgba(0, 0, 0, 0.04);
+  --psc-active-overlay: rgba(0, 0, 0, 0.08);
+
+  /* Focus *
+  --psc-focus-ring: rgba(230, 140, 0, 0.4);
+
+  --navbar-height: 4rem;    /* h-16 = 64px /
+  --navbar-height-md: 5rem; /* md:h-20 = 80px /
+}
+
+/* =========================================================
+   DARK MODE - will be applied via JS
+   ========================================================= /
 
 .dark {
   --psc-primary: #f29a00;
@@ -101,7 +1295,7 @@
 
 /* =========================================================
    BASE STYLES
-   ========================================================= */
+   ========================================================= *
 
 html {
   scroll-behavior: smooth;
@@ -127,7 +1321,7 @@ body {
 
 /* =========================================================
    MATERIAL SYMBOLS
-   ========================================================= */
+   ========================================================= /
 
 .material-symbols-outlined {
   font-variation-settings:
@@ -147,7 +1341,7 @@ body {
 
 /* =========================================================
    THEME TOGGLE — GLOBAL
-   ========================================================= */
+   ========================================================= *
 
 .theme-toggle-button {
   display: inline-flex !important;
@@ -187,7 +1381,7 @@ body {
 
 /* =========================================================
    SKIP TO CONTENT
-   ========================================================= */
+   ========================================================= /
 
 .skip-to-content {
   position: absolute;
@@ -209,7 +1403,7 @@ body {
 
 /* =========================================================
    TEXT SELECTION
-   ========================================================= */
+   ========================================================= /
 
 ::selection {
   background-color: var(--psc-primary-container);
@@ -218,7 +1412,7 @@ body {
 
 /* =========================================================
    UTILITY — LINE CLAMP
-   ========================================================= */
+   ========================================================= *
 
 .line-clamp-2 {
   display: -webkit-box;
@@ -236,7 +1430,7 @@ body {
 
 /* =========================================================
    NAVBAR
-   ========================================================= */
+   ========================================================= /
 
 .navbar-transparent {
   background-color: transparent !important;
@@ -260,7 +1454,7 @@ body {
 
 /* =========================================================
    SEARCH INPUT
-   ========================================================= */
+   ========================================================= *
 
 .search-input-transparent {
   background-color: rgba(255, 255, 255, 0.10) !important;
@@ -317,7 +1511,7 @@ body {
 
 /* =========================================================
    NAVIGATION LINKS
-   ========================================================= */
+   ========================================================= /
 
 .nav-link-transparent {
   color: rgba(255, 255, 255, 0.85) !important;
@@ -363,7 +1557,7 @@ body {
 
 /* =========================================================
    E-RECRUITMENT BUTTON
-   ========================================================= */
+   ========================================================= *
 
 .btn-transparent {
   background-color: rgba(255, 255, 255, 0.15) !important;
@@ -402,7 +1596,7 @@ body {
 
 /* =========================================================
    THEME TOGGLE — TRANSPARENT HERO
-   ========================================================= */
+   ========================================================= /
 
 .theme-toggle-transparent {
   border-color: rgba(255, 255, 255, 0.40) !important;
@@ -420,7 +1614,7 @@ body {
 
 /* =========================================================
    HERO SECTION
-   ========================================================= */
+   ========================================================= /
 
 #hero-section {
   min-height: 100vh;
@@ -431,7 +1625,7 @@ body {
 
 /* =========================================================
    HERO SLIDES
-   ========================================================= */
+   ========================================================= /
 
 .hero-slide {
   transition: opacity 1s ease-in-out, transform 1s ease-in-out;
@@ -449,7 +1643,7 @@ body {
 
 /* =========================================================
    HERO IMAGE ZOOM
-   ========================================================= */
+   ========================================================= /
 
 .hero-slide-active .hero-image {
   animation: zoomIn 8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
@@ -471,7 +1665,7 @@ body {
 
 /* =========================================================
    HERO HEADLINE
-   ========================================================= */
+   ========================================================= /
 
 .hero-headline-line {
   display: block;
@@ -490,7 +1684,7 @@ body {
 
 /* =========================================================
    HERO DOT INDICATORS
-   ========================================================= */
+   ========================================================= /
 
 .hero-dot-active {
   animation: dotPulse 1.5s ease-in-out infinite;
@@ -503,7 +1697,7 @@ body {
 
 /* =========================================================
    ACCESSIBILITY
-   ========================================================= */
+   ========================================================= /
 
 button:focus-visible,
 a:focus-visible,
@@ -524,7 +1718,7 @@ select:focus-visible {
 
 /* =========================================================
    REDUCED MOTION
-   ========================================================= */
+   ========================================================= /
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -538,7 +1732,7 @@ select:focus-visible {
 
 /* =========================================================
    RESPONSIVE — TABLET
-   ========================================================= */
+   ========================================================= /
 
 @media (max-width: 768px) {
   #hero-section {
@@ -564,7 +1758,7 @@ select:focus-visible {
 
 /* =========================================================
    RESPONSIVE — MOBILE
-   ========================================================= */
+   ========================================================= /
 
 @media (max-width: 480px) {
   #hero-section h1 {
@@ -587,7 +1781,7 @@ select:focus-visible {
 
 /* =========================================================
    DARK MODE — GENERAL FORM ELEMENTS
-   ========================================================= */
+   ========================================================= /
 
 .dark input,
 .dark textarea,
@@ -597,7 +1791,7 @@ select:focus-visible {
 
 /* =========================================================
    DARK MODE — SCROLLBAR
-   ========================================================= */
+   ========================================================= /
 
 .dark {
   scrollbar-color: var(--psc-border) var(--psc-surface);
@@ -623,7 +1817,7 @@ select:focus-visible {
 
 /* =========================================================
    DARK MODE — COMMON SURFACE HELPERS
-   ========================================================= */
+   ========================================================= /
 
 .dark .bg-white {
   background-color: var(--psc-surface-container) !important;
@@ -672,7 +1866,7 @@ select:focus-visible {
 
 /* =========================================================
    LIGHT MODE — PSC ACCENT UTILITIES (GOLD/ORANGE)
-   ========================================================= */
+   ========================================================= /
 
 .text-primary,
 .text-psc-primary {
@@ -715,7 +1909,7 @@ select:focus-visible {
 
 /* =========================================================
    DARK MODE — PSC ACCENT UTILITIES (GOLD/ORANGE)
-   ========================================================= */
+   ========================================================= /
 
 .dark .text-primary,
 .dark .text-psc-primary {
@@ -758,7 +1952,7 @@ select:focus-visible {
 
 /* =========================================================
    PRINT
-   ========================================================= */
+   ========================================================= /
 
 @media print {
   body {
@@ -778,7 +1972,7 @@ select:focus-visible {
 }
 /* =========================================================
    NAVBAR LINKS — no outline, no ring, no box-shadow ever
-   ========================================================= */
+   ========================================================= /
 
 .psc-nav-link,
 .psc-nav-link:focus,
@@ -793,7 +1987,7 @@ select:focus-visible {
 }
 
 /* Also neutralise the global a:focus-visible rule for any descendant
-   of the navbar so dropdown triggers don't get the yellow outline either. */
+   of the navbar so dropdown triggers don't get the yellow outline either. /
 .psc-navbar a:focus-visible,
 .psc-navbar button:focus-visible {
   outline: none !important;
@@ -812,7 +2006,7 @@ select:focus-visible {
  *   - The content is pushed down by the navbar height so it's visible.
  * The navbar is transparent until the user scrolls past the hero,
  * so the image is visible *behind* the navbar.
- */
+ *
 
 .hero-viewport {
   position: relative;
@@ -823,9 +2017,9 @@ select:focus-visible {
   max-height: 100vh;
   max-height: calc(var(--vh, 1vh) * 100);
   max-height: 100dvh;
-  /* No negative margin — the navbar is fixed and floats above. */
+  /* No negative margin — the navbar is fixed and floats above. /
   margin-top: 0;
-  /* Push content past the fixed navbar height */
+  /* Push content past the fixed navbar height *
   padding-top: var(--navbar-height, 4rem);
   box-sizing: border-box;
 }
@@ -836,7 +2030,7 @@ select:focus-visible {
   }
 }
 
-/* On very short screens, allow natural height instead of forcing overflow */
+/* On very short screens, allow natural height instead of forcing overflow /
 @media (max-height: 640px) {
   .hero-viewport {
     height: auto;
@@ -845,7 +2039,7 @@ select:focus-visible {
   }
 }
 
-/* Content wrapper inside the hero */
+/* Content wrapper inside the hero /
 .hero-content-wrap {
   padding-top: 1.5rem;
   padding-bottom: 5rem;
@@ -865,7 +2059,7 @@ select:focus-visible {
   }
 }
 
-/* Touch-action for swipe support */
+/* Touch-action for swipe support /
 #hero-section {
   touch-action: pan-y;
   -webkit-user-select: none;
@@ -877,7 +2071,7 @@ select:focus-visible {
   will-change: opacity;
 }
 
-/* Content wrapper — vertical centering with safe padding on mobile */
+/* Content wrapper — vertical centering with safe padding on mobile /
 .hero-content-wrap {
   padding-top: 4.5rem;
   padding-bottom: 3.5rem;
@@ -890,7 +2084,7 @@ select:focus-visible {
   }
 }
 
-/* Headline line-height tightening on mobile for long headlines */
+/* Headline line-height tightening on mobile for long headlines *
 .hero-headline .hero-headline-line {
   line-height: 1.15;
 }
@@ -914,7 +2108,7 @@ select:focus-visible {
   }
 }
 
-/* Better tap targets for dots & nav buttons on touch devices */
+/* Better tap targets for dots & nav buttons on touch devices /
 @media (hover: none) and (pointer: coarse) {
   .hero-dot {
     min-width: 14px;
@@ -929,36 +2123,36 @@ select:focus-visible {
   }
 }
 
-/* Nav buttons — hide on very small screens (dots + swipe suffice) */
+/* Nav buttons — hide on very small screens (dots + swipe suffice) /
 @media (max-width: 380px) {
   .hero-nav-btn {
     display: none;
   }
 }
 
-/* Prevent image overflow clipping during zoom on mobile */
+/* Prevent image overflow clipping during zoom on mobile /
 @media (max-width: 640px) {
   #hero-section img {
     transform-origin: center center;
   }
   #hero-section .hero-slide img {
-    /* Force GPU compositing for smoother transitions on mobile */
+    /* Force GPU compositing for smoother transitions on mobile /
     transform: translateZ(0);
   }
 }
 
-/* xs breakpoint (Tailwind doesn't ship one by default; add if using it) */
+/* xs breakpoint (Tailwind doesn't ship one by default; add if using it) /
 @media (min-width: 420px) {
   /* Only needed if you use xs: classes; if not using tailwind config,
-     replace xs: classes above with sm: or remove them. */
+     replace xs: classes above with sm: or remove them. /
 }
 /* =========================================================
    PSC HERO CAROUSEL — SMOOTH, LEGACY-SAFE TRANSITIONS
    Replaces all earlier .hero-slide / .hero-image / zoomIn /
    dotPulse hero rules. Android 6 (Chrome 44) / ES5 safe.
-   ========================================================= */
+   ========================================================= *
 
-/* ---------- Slide stage ---------- */
+/* ---------- Slide stage ---------- /
 
 #hero-section .hero-stage {
   position: absolute;
@@ -976,7 +2170,7 @@ select:focus-visible {
    over .is-leaving z:2) and fades 0 -> 1. The outgoing slide
    stays fully opaque underneath, so the midpoint of the fade
    never dims. Only one element animates per transition.
-   ---------------------------------------------- */
+   ---------------------------------------------- /
 
 #hero-section .hero-slide {
   position: absolute;
@@ -996,13 +2190,13 @@ select:focus-visible {
   transition: opacity 800ms ease-in-out;
 }
 
-/* Outgoing slide: holds at full opacity while the next fades in. */
+/* Outgoing slide: holds at full opacity while the next fades in. /
 #hero-section .hero-slide.is-leaving {
   opacity: 1;
   z-index: 2;
 }
 
-/* Incoming slide: fades in on top. */
+/* Incoming slide: fades in on top. /
 #hero-section .hero-slide.is-active {
   opacity: 1;
   z-index: 3;
@@ -1012,13 +2206,13 @@ select:focus-visible {
 
 /* Slides that are neither active nor leaving snap to 0 with no
    transition — saves the compositor a pointless 1->0 fade under
-   the active slide on every transition. */
+   the active slide on every transition. /
 #hero-section .hero-slide:not(.is-active):not(.is-leaving) {
   -webkit-transition: none;
   transition: none;
 }
 
-/* ---------- Background images ---------- */
+/* ---------- Background images ---------- /
 
 #hero-section .hero-slide img {
   position: absolute;
@@ -1042,7 +2236,7 @@ select:focus-visible {
 }
 
 /* Only the ACTIVE slide animates. At most 2 composited layers exist
-   at any time (active + leaving) instead of 6. */
+   at any time (active + leaving) instead of 6. /
 #hero-section .hero-slide.is-active img {
   -webkit-animation: pscHeroImageMotion 8000ms ease-out forwards;
   animation: pscHeroImageMotion 8000ms ease-out forwards;
@@ -1058,7 +2252,7 @@ select:focus-visible {
   100% { -webkit-transform: translate3d(0, 0, 0) scale(1.085); transform: translate3d(0, 0, 0) scale(1.085); }
 }
 
-/* ---------- Background contrast overlay ---------- */
+/* ---------- Background contrast overlay ---------- /
 
 #hero-section .hero-slide-scrim {
   position: absolute;
@@ -1097,7 +2291,7 @@ select:focus-visible {
   );
 }
 
-/* ---------- Text entrance ---------- */
+/* ---------- Text entrance ---------- *
 
 #hero-section .hero-content-anim {
   -webkit-backface-visibility: hidden;
@@ -1114,7 +2308,7 @@ select:focus-visible {
   animation-name: pscHeroTextInPrev;
 }
 
-/* Short stagger — enough to feel polished, not enough to delay reading. */
+/* Short stagger — enough to feel polished, not enough to delay reading. /
 #hero-section .hero-content-anim > *:nth-child(1) { -webkit-animation-delay: 40ms;  animation-delay: 40ms; }
 #hero-section .hero-content-anim > *:nth-child(2) { -webkit-animation-delay: 100ms; animation-delay: 100ms; }
 #hero-section .hero-content-anim > *:nth-child(3) { -webkit-animation-delay: 160ms; animation-delay: 160ms; }
@@ -1144,7 +2338,7 @@ select:focus-visible {
 /* ---------- Headline accent colours ----------
    Fallback value FIRST, then var(). Chrome 44 does not support
    CSS custom properties, so the literal must stand on its own.
-   ---------------------------------------------- */
+   ---------------------------------------------- *
 
 #hero-section .hero-accent {
   color: #e68c00;
@@ -1164,7 +2358,7 @@ select:focus-visible {
   background-color: #ffffff;
 }
 
-/* ---------- CTA buttons ---------- */
+/* ---------- CTA buttons ---------- /
 
 #hero-section .hero-btn {
   border: 0;
@@ -1197,7 +2391,7 @@ select:focus-visible {
   border-color: rgba(255, 255, 255, 0.40);
 }
 
-/* ---------- Navigation arrows ---------- */
+/* ---------- Navigation arrows ---------- /
 
 #hero-section .hero-nav-btn {
   background-color: rgba(0, 0, 0, 0.42);
@@ -1215,7 +2409,7 @@ select:focus-visible {
   background-color: rgba(0, 0, 0, 0.68);
 }
 
-/* ---------- Dot indicators ---------- */
+/* ---------- Dot indicators ---------- /
 
 #hero-section .hero-dot {
   width: 10px;
@@ -1243,7 +2437,7 @@ select:focus-visible {
   background-color: var(--psc-primary-container, #e68c00);
 }
 
-/* ---------- Focus rings (visible against the dark hero) ---------- */
+/* ---------- Focus rings (visible against the dark hero) ---------- *
 
 #hero-section .hero-nav-btn:focus-visible,
 #hero-section .hero-dot:focus-visible,
@@ -1255,11 +2449,11 @@ select:focus-visible {
 /* ---------- Mobile: slower, shorter zoom ----------
    Mobile has its OWN keyframes whose start value matches the
    base scale, so there is no snap when a slide activates.
-   ---------------------------------------------- */
+   ---------------------------------------------- /
 
 #hero-section .hero-slide img {
   /* Mobile-safe start; overridden by the keyframe above on desktop
-     (which starts at 1.035 — same value, no visual difference). */
+     (which starts at 1.035 — same value, no visual difference). /
 }
 
 @media (max-width: 640px) {
@@ -1286,7 +2480,7 @@ select:focus-visible {
   100% { -webkit-transform: translate3d(0, 0, 0) scale(1.06); transform: translate3d(0, 0, 0) scale(1.06); }
 }
 
-/* ---------- Reduced motion: kill every hero animation ---------- */
+/* ---------- Reduced motion: kill every hero animation ---------- /
 
 @media (prefers-reduced-motion: reduce) {
   #hero-section .hero-slide,
@@ -1314,7 +2508,7 @@ select:focus-visible {
    PSC LOADER — box-shadow orbit
    Theme-aware via --psc-primary-container.
    Falls back to a solid dot where CSS vars are unsupported.
-   ========================================================= */
+   ========================================================= /
 
 .psc-loader {
   --size: 1px;
@@ -1371,7 +2565,7 @@ select:focus-visible {
 
 /* Chrome < 49 / older Safari: no CSS custom properties.
    The whole box-shadow animation is invalid there, so swap
-   in a plain solid dot. */
+   in a plain solid dot. /
 @supports not (--test: 1) {
   .psc-loader {
     width: 24px;
@@ -1383,9 +2577,9 @@ select:focus-visible {
 }
 
 /* Slower, calmer rhythm for reduced-motion users — the loader
-   still communicates "working", just without the busy pulse. */
+   still communicates "working", just without the busy pulse. *
 @media (prefers-reduced-motion: reduce) {
   .psc-loader {
     animation-duration: 4s;
   }
-}
+}*/

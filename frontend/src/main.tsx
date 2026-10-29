@@ -1,3 +1,4 @@
+// src/main.tsx
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import "core-js/stable";
@@ -5,35 +6,53 @@ import "regenerator-runtime/runtime";
 
 import App from "./App";
 import "./index.css";
-import { ErrorBoundary } from './ErrorBoundary';
+import { ErrorBoundary } from "./ErrorBoundary";
 
-// Fallback for smooth scrolling on ES5 browsers
-if (typeof window !== 'undefined' && !('scrollBehavior' in document.documentElement.style)) {
+// ---------------------------------------------------------------
+// Smooth-scroll fallback for ES5 browsers (e.g. older Safari,
+// IE11) where scrollTo() ignores the { behavior: "smooth" } option.
+// ---------------------------------------------------------------
+if (
+  typeof window !== "undefined" &&
+  !("scrollBehavior" in document.documentElement.style)
+) {
   const originalScrollTo = window.scrollTo;
-  window.scrollTo = function(x, y) {
-    if (typeof x === 'object') {
-      originalScrollTo.call(window, x.left || 0, x.top || 0);
+  (window as any).scrollTo = (
+    x?: ScrollToOptions | number,
+    y?: number
+  ): void => {
+    if (typeof x === "object" && x !== null) {
+      // First overload: scrollTo(options)
+      originalScrollTo(x);
     } else {
-      originalScrollTo.call(window, x, y);
+      // Second overload: scrollTo(x, y)
+      originalScrollTo(x as number, y as number);
     }
   };
 }
 
+// ---------------------------------------------------------------
 // Register service worker
+// ---------------------------------------------------------------
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(function() {});
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker
+        .register("/sw.js", { updateViaCache: "none" })
+        .catch(function () {});
     });
   }
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', registerServiceWorker);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", registerServiceWorker);
 } else {
   registerServiceWorker();
 }
 
+// ---------------------------------------------------------------
+// Mount the app
+// ---------------------------------------------------------------
 const rootElement = document.getElementById("root");
 if (!rootElement) {
   throw new Error("Root element not found");

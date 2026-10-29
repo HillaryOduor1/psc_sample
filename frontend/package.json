@@ -14,8 +14,8 @@
     "@opentelemetry/api": "1.9.1",
     "@opentelemetry/instrumentation-fetch": "0.220.0",
     "@opentelemetry/instrumentation-xml-http-request": "0.220.0",
-    "@opentelemetry/sdk-trace-base": "2.7.1",
-    "@opentelemetry/sdk-trace-web": "2.7.1",
+    "@opentelemetry/sdk-trace-base": "^2.12.0",
+    "@opentelemetry/sdk-trace-web": "^2.12.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "core-js": "3.48.0",
@@ -27,7 +27,7 @@
     "react-google-recaptcha": "3.1.0",
     "react-google-recaptcha-v3": "1.11.0",
     "react-helmet-async": "3.0.0",
-    "react-router-dom": "6.30.3",
+    "react-router-dom": "^6.30.6",
     "regenerator-runtime": "0.14.1",
     "tailwind-merge": "3.5.0",
     "vite-plugin-prerender": "1.0.8",
@@ -43,14 +43,16 @@
     "@vitejs/plugin-legacy": "6.0.0",
     "@vitejs/plugin-react": "5.1.1",
     "autoprefixer": "10.4.23",
-    "axios": "1.14.0",
+    "axios": "^1.21.0",
     "eslint": "9.39.1",
     "eslint-plugin-react-hooks": "7.0.1",
     "eslint-plugin-react-refresh": "0.4.24",
     "globals": "16.5.0",
     "json-schema-to-typescript": "15.0.4",
+    "postcss-100vh-fix": "^2.0.0",
     "tailwindcss": "3.4.17",
+    "terser": "^5.51.2",
     "typescript": "5.4.5",
-    "vite": "6.4.1"
+    "vite": "^6.4.5"
   }
 }

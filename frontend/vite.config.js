@@ -1,3 +1,89 @@
+
+// vite.config.js
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import legacy from "@vitejs/plugin-legacy";
+
+export default defineConfig({
+  plugins: [
+    react(),
+
+    legacy({
+      // Targets for the LEGACY (ES5) bundle.
+      // 'IE 11' ensures ES5 output for the oldest browsers.
+      targets: [
+        "IE 11",
+        "iOS >= 12",
+        "Safari >= 12",
+        "defaults",
+        "not dead",
+      ],
+
+      // Additional DOM polyfills needed by the legacy bundle.
+      additionalLegacyPolyfills: [
+        "regenerator-runtime/runtime",
+        "whatwg-fetch",
+        "core-js/stable",
+      ],
+
+      // Generate the legacy chunks (ES5 / SystemJS).
+      renderLegacyChunks: true,
+
+      // Keep polyfill detection for the modern bundle as well.
+      modernPolyfills: true,
+
+      // Explicitly include essential polyfills.
+      polyfills: [
+        "es.promise",
+        "es.map",
+        "es.set",
+        "es.array.includes",
+        "es.object.assign",
+      ],
+    }),
+  ],
+
+  build: {
+    // The modern bundle is transpiled to Safari 12 syntax.
+    // (Vite cannot target ES5 directly – the legacy plugin handles ES5.)
+    target: "safari12",
+
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom", "react-router-dom"],
+        },
+      },
+    },
+  },
+
+  server: {
+    host: "0.0.0.0",
+    port: 5173,
+    strictPort: true,
+
+    proxy: {
+      "/api": {
+        target: "http://localhost:5000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, "/api/v1"),
+        configure: (proxy) => {
+          proxy.on("error", (err) => console.log("proxy error", err));
+          proxy.on("proxyReq", (proxyReq, req) =>
+            console.log(
+              "Proxying:",
+              req.method,
+              req.url,
+              "→",
+              proxyReq.path
+            )
+          );
+        },
+      },
+    },
+  },
+});
+/* 
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import legacy from "@vitejs/plugin-legacy";
@@ -39,7 +125,7 @@ export default defineConfig({
       }
     }
   }
-});
+});*/
 
 /*
 import { defineConfig } from "vite";
