@@ -85,7 +85,7 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
     return (
       <div className="flex items-center justify-center min-h-screen bg-background-light dark:bg-background-dark text-[var(--text)] p-6">
         <div className="max-w-md w-full bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 text-center border border-border">
-          <div className="text-5xl mb-6">⚠️</div>
+          <div className="text-5xl mb-6"></div>
           <h1 className="text-2xl font-bold mb-3 text-[var(--text)]">{title}</h1>
           <p className="text-muted-foreground mb-8 leading-relaxed">{message}</p>
           {isRecoverable && (
