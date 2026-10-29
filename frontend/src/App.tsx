@@ -46,6 +46,9 @@ const VideosPage = React.lazy(() => import("./pages/media/VideosPage"));
 const PressReleasesPage = React.lazy(() => import("./pages/media/PressReleasesPage"));
 const TendersPage = React.lazy(() => import("./pages/tenders/TendersPage"));
 const FAQPage = React.lazy(() => import("./pages/faq/FAQPage"));
+// src/App.tsx (near the other React.lazy imports)
+//const NewsDetailPage = React.lazy(() => import("./pages/home/sections/NewsDetailPage"));
+const NewsDetailPage = React.lazy(() => import("./pages/home/sections/NewsDetailPage"));
 
 function AppContent() {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
@@ -88,6 +91,7 @@ function AppContent() {
               <Route path="/media/gallery" element={<GalleryPage />} />
               <Route path="/media/videos" element={<VideosPage />} />
               <Route path="/media/press-releases" element={<PressReleasesPage />} />
+              <Route path="/news/:slug" element={<NewsDetailPage />} />
               <Route path="/news" element={<NewsPage />} />
               <Route path="/tenders" element={<TendersPage />} />
               <Route path="/faqs" element={<FAQPage />} />
