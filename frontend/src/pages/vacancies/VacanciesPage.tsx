@@ -4,7 +4,7 @@ import SectionTitle from '../../components/SectionTitle';
 
 const VacanciesPage = () => {
   React.useEffect(() => {
-    document.title = 'Vacancies | LIS Kenya';
+    document.title = 'Vacancies | PSC Kenya';
   }, []);
 
   return (

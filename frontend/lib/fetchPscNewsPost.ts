@@ -11,35 +11,63 @@ export interface PscNewsDetail {
   href: string;
 }
 
-function toText(value: unknown): string {
-  if (value == null) return '';
-  if (typeof value === 'string') return value;
-  if (typeof value === 'object' && 'rendered' in (value as any)) {
-    return String((value as any).rendered ?? '');
+function toText(v: unknown): string {
+  if (v == null) return "";
+  if (typeof v === "string") return v;
+  if (typeof v === "object" && "rendered" in (v as any)) {
+    return String((v as any).rendered ?? "");
   }
-  return String(value);
+  return String(v);
 }
 
-export async function fetchPscNewsPost(slug: string): Promise<PscNewsDetail> {
-  const res = await fetch(
-    `/api/psc-news-post?slug=${encodeURIComponent(slug)}`,
-    { headers: { Accept: 'application/json' } }
-  );
+function getImage(raw: any): string {
+  if (raw.jetpack_featured_media_url) return raw.jetpack_featured_media_url;
+  const media = raw._embedded?.["wp:featuredmedia"]?.[0];
+  if (media?.source_url) return media.source_url;
+  if (media?.media_details?.sizes?.full?.source_url) {
+    return media.media_details.sizes.full.source_url;
+  }
+  return "";
+}
 
-  if (res.status === 404) throw new Error('NOT_FOUND');
+function formatDate(iso: string | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+export async function fetchPscNewsPost(
+  identifier: string | number
+): Promise<PscNewsDetail> {
+  const isId = /^\d+$/.test(String(identifier));
+  const qs = isId
+    ? `id=${identifier}`
+    : `slug=${encodeURIComponent(String(identifier))}`;
+
+  const res = await fetch(`/api/psc-news-post?${qs}`, {
+    headers: { Accept: "application/json" },
+  });
+
+  if (res.status === 404) throw new Error("NOT_FOUND");
   if (!res.ok) throw new Error(`PSC news detail failed: ${res.status}`);
 
   const raw: any = await res.json();
 
   return {
-    slug: raw?.slug ?? slug,
+    slug: raw?.slug ?? "",
     title: toText(raw?.title),
-    content: toText(raw?.content),
+    content: toText(raw?.content), // full HTML string
     excerpt: toText(raw?.excerpt),
-    image: raw?.image ?? '/assets/fallback-news.jpg',
-    date: raw?.date ?? '',
-    formattedDate: raw?.formattedDate ?? '',
-    author: raw?.author ?? 'Public Service Commission',
-    href: raw?.href ?? 'https://www.publicservice.go.ke/',
+    image: getImage(raw),
+    date: raw?.date ?? "",
+    formattedDate: raw?.formattedDate ?? "",
+    author: raw?.author ?? "Public Service Commission",
+    href: raw?.href ?? "https://www.publicservice.go.ke/",
   };
 }

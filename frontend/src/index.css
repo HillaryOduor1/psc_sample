@@ -2,9 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* =========================================================
-   PSC COLOR TOKENS — BASE (will be overridden by JS)
-   ========================================================= */
+/* PSC COLOR TOKENS — BASE (will be overridden by JS)*/
 :root {
   /* Primary Brand - PSC Gold/Orange */
   --psc-primary: #895100;
@@ -67,9 +65,7 @@
   --navbar-height-md: 5rem; /* md:h-20 = 80px */
 }
 
-/* =========================================================
-   DARK MODE - will be applied via JS
-   ========================================================= */
+/*DARK MODE - will be applied via JS */
 .dark {
   --psc-primary: #f29a00;
   --psc-primary-container: #ffb23e;

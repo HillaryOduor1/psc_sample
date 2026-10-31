@@ -3,68 +3,86 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import legacy from "@vitejs/plugin-legacy";
 
-// 🚀 Simple in-memory cache for Vite dev server
 const newsCache = new Map();
 
 function pscNewsCachePlugin() {
   return {
-    name: 'psc-news-cache',
+    name: "psc-news-cache",
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        // Only intercept our specific API routes
-        if (!req.url?.startsWith('/api/psc-news') && !req.url?.startsWith('/api/psc-news-post')) {
+        if (
+          !req.url?.startsWith("/api/psc-news") &&
+          !req.url?.startsWith("/api/psc-news-post")
+        ) {
           return next();
         }
 
         const cacheKey = req.url;
         const cached = newsCache.get(cacheKey);
-
-        // Serve from cache if it's less than 10 minutes old
         if (cached && Date.now() - cached.time < 10 * 60 * 1000) {
-          res.setHeader('Content-Type', 'application/json');
-          res.setHeader('X-Cache', 'HIT');
-          return res.end(JSON.stringify(cached.data));
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(cached.data));
+          return;
         }
 
-        // Fetch from WordPress
         try {
           let wpUrl;
-          if (req.url.startsWith('/api/psc-news-post')) {
-            const urlObj = new URL(req.url, 'http://localhost');
-            const slug = urlObj.searchParams.get('slug');
-            wpUrl = `https://www.publicservice.go.ke/wp-json/wp/v2/posts?slug=${slug}&_embed&_fields=id,slug,date,link,title,content,excerpt,_embedded`;
+          if (req.url.startsWith("/api/psc-news-post")) {
+            const urlObj = new URL(req.url, "http://localhost");
+            const identifier =
+              urlObj.searchParams.get("slug") ||
+              urlObj.searchParams.get("id") ||
+              "";
+            if (/^\d+$/.test(identifier)) {
+              // Numeric → hit the by-ID endpoint
+              wpUrl = `https://www.publicservice.go.ke/wp-json/wp/v2/posts/${identifier}?_embed`;
+            } else {
+              // Otherwise look up by slug
+              wpUrl = `https://www.publicservice.go.ke/wp-json/wp/v2/posts?slug=${encodeURIComponent(
+                identifier
+              )}&_embed`;
+            }
           } else {
-            wpUrl = `https://www.publicservice.go.ke/wp-json/wp/v2/posts?per_page=3&_embed&_fields=id,slug,date,link,title,excerpt,_embedded`;
+            wpUrl =
+              "https://www.publicservice.go.ke/wp-json/wp/v2/posts?per_page=3&_embed";
           }
 
           const wpRes = await fetch(wpUrl);
           const data = await wpRes.json();
-
-          // Save to cache
           newsCache.set(cacheKey, { time: Date.now(), data });
 
-          res.setHeader('Content-Type', 'application/json');
-          res.setHeader('X-Cache', 'MISS');
+          res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify(data));
+        // eslint-disable-next-line no-unused-vars
         } catch (err) {
           res.statusCode = 500;
-          res.end(JSON.stringify({ error: 'Failed to fetch from WordPress' }));
+          res.end(JSON.stringify({ error: "Failed to fetch from WordPress" }));
         }
       });
-    }
+    },
   };
 }
 
 export default defineConfig({
   plugins: [
     react(),
-    pscNewsCachePlugin(), // 👈 Add the cache plugin here
+    pscNewsCachePlugin(),
     legacy({
       targets: ["IE 11", "iOS >= 12", "Safari >= 12", "defaults", "not dead"],
-      additionalLegacyPolyfills: ["regenerator-runtime/runtime", "whatwg-fetch", "core-js/stable"],
+      additionalLegacyPolyfills: [
+        "regenerator-runtime/runtime",
+        "whatwg-fetch",
+        "core-js/stable",
+      ],
       renderLegacyChunks: true,
       modernPolyfills: true,
-      polyfills: ["es.promise", "es.map", "es.set", "es.array.includes", "es.object.assign"],
+      polyfills: [
+        "es.promise",
+        "es.map",
+        "es.set",
+        "es.array.includes",
+        "es.object.assign",
+      ],
     }),
   ],
   build: {
@@ -82,14 +100,20 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     proxy: {
-      '/api': {
+      "/api": {
         target: "http://localhost:5000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, "/api/v1"),
         configure: (proxy) => {
           proxy.on("error", (err) => console.log("proxy error", err));
           proxy.on("proxyReq", (proxyReq, req) =>
-            console.log("Proxying:", req.method, req.url, "→", proxyReq.path)
+            console.log(
+              "Proxying:",
+              req.method,
+              req.url,
+              "→",
+              proxyReq.path
+            )
           );
         },
       },

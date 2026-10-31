@@ -16,20 +16,37 @@ import RouteProgressBar from "./components/RouteProgressBar";
 import ClickFeedback from "./components/ClickFeedback";
 import SocialFAB from "./components/SocialFAB";
 
+// ── Core Pages ──
 const HomePage = React.lazy(() => import("./pages/home/HomePage"));
 const AboutPage = React.lazy(() => import("./pages/AboutPage"));
-const JobsPage = React.lazy(() => import("./pages/jobs/JobsPage"));
-const InternshipPage = React.lazy(() => import("./pages/jobs/InternshipPage"));
-const VacanciesPage = React.lazy(() => import("./pages/vacancies/VacanciesPage"));
-const RecruitmentPortalPage = React.lazy(() => import("./pages/jobs/RecruitmentPortalPage"));
-const PoliciesPage = React.lazy(() => import("./pages/policies/PoliciesPage"));
-const NewsPage = React.lazy(() => import("./pages/news/NewsPage"));
 const ContactPage = React.lazy(() => import("./pages/ContactPage"));
+const SearchPage = React.lazy(() => import("./pages/SearchPage"));
+const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
+
+// ── Legal / Utility ──
 const PrivacyPolicy = React.lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfUse = React.lazy(() => import("./pages/TermsOfUse"));
 const Accessibility = React.lazy(() => import("./pages/Accessibility"));
-const SearchPage = React.lazy(() => import("./pages/SearchPage"));
-const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
+
+// ── Jobs ──
+const JobsPage = React.lazy(() => import("./pages/jobs/JobsPage"));
+const InternshipPage = React.lazy(() => import("./pages/jobs/InternshipPage"));
+const RecruitmentPortalPage = React.lazy(() => import("./pages/jobs/RecruitmentPortalPage"));
+const VacanciesPage = React.lazy(() => import("./pages/vacancies/VacanciesPage"));
+
+// ── Media ──
+const MediaPage = React.lazy(() => import("./pages/media/MediaPage"));
+const EventsPage = React.lazy(() => import("./pages/media/EventsPage"));
+const AnnouncementsPage = React.lazy(() => import("./pages/media/AnnouncementsPage"));
+const GalleryPage = React.lazy(() => import("./pages/media/GalleryPage"));
+const VideosPage = React.lazy(() => import("./pages/media/VideosPage"));
+const PressReleasesPage = React.lazy(() => import("./pages/media/PressReleasesPage"));
+
+// ── News ──
+const NewsPage = React.lazy(() => import("./pages/news/NewsPage"));
+const NewsDetailPage = React.lazy(() => import("./pages/home/sections/NewsDetailPage"));
+
+// ── Resources ──
 const ResourcesPage = React.lazy(() => import("./pages/resources/ResourcesPage"));
 const ReportsPage = React.lazy(() => import("./pages/resources/ReportsPage"));
 const PublicationsPage = React.lazy(() => import("./pages/resources/PublicationsPage"));
@@ -38,17 +55,15 @@ const GuidelinesPage = React.lazy(() => import("./pages/resources/GuidelinesPage
 const CircularsPage = React.lazy(() => import("./pages/resources/CircularsPage"));
 const DownloadsPage = React.lazy(() => import("./pages/resources/DownloadsPage"));
 const FAQsPage = React.lazy(() => import("./pages/resources/FAQsPage"));
-const MediaPage = React.lazy(() => import("./pages/media/MediaPage"));
-const EventsPage = React.lazy(() => import("./pages/media/EventsPage"));
-const AnnouncementsPage = React.lazy(() => import("./pages/media/AnnouncementsPage"));
-const GalleryPage = React.lazy(() => import("./pages/media/GalleryPage"));
-const VideosPage = React.lazy(() => import("./pages/media/VideosPage"));
-const PressReleasesPage = React.lazy(() => import("./pages/media/PressReleasesPage"));
+const PoliciesPage = React.lazy(() => import("./pages/policies/PoliciesPage"));
+
+// ── Other ──
 const TendersPage = React.lazy(() => import("./pages/tenders/TendersPage"));
 const FAQPage = React.lazy(() => import("./pages/faq/FAQPage"));
-// src/App.tsx (near the other React.lazy imports)
-//const NewsDetailPage = React.lazy(() => import("./pages/home/sections/NewsDetailPage"));
-const NewsDetailPage = React.lazy(() => import("./pages/home/sections/NewsDetailPage"));
+const LoginPage = React.lazy(() => import("./pages/LoginPage"));
+const ResearchPage = React.lazy(() => import("./pages/ResearchPage"));
+const ResearchDetails = React.lazy(() => import("./pages/ResearchDetails"));
+const AreaDetail = React.lazy(() => import("./pages/AreaDetail"));
 
 function AppContent() {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
@@ -64,18 +79,25 @@ function AppContent() {
         <ScrollToTop />
         <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+        
         <main id="main-content" tabIndex={-1}>
           <Routes>
             <Route element={<PublicLayout />}>
+              {/* Core */}
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/search" element={<SearchPage />} />
+
+              {/* Jobs & Careers */}
               <Route path="/jobs" element={<JobsPage />} />
               <Route path="/jobs/vacancies" element={<VacanciesPage />} />
               <Route path="/jobs/recruitment" element={<RecruitmentPortalPage />} />
               <Route path="/internship" element={<InternshipPage />} />
               <Route path="/vacancies" element={<VacanciesPage />} />
+
+              {/* Resources */}
               <Route path="/resources" element={<ResourcesPage />} />
-              <Route path="/resources/policies" element={<PoliciesPage />} />
               <Route path="/resources/reports" element={<ReportsPage />} />
               <Route path="/resources/publications" element={<PublicationsPage />} />
               <Route path="/resources/forms" element={<FormsPage />} />
@@ -83,27 +105,45 @@ function AppContent() {
               <Route path="/resources/circulars" element={<CircularsPage />} />
               <Route path="/resources/downloads" element={<DownloadsPage />} />
               <Route path="/resources/faqs" element={<FAQsPage />} />
+              
+              {/* Policies has both a root alias and a resources sub-path */}
               <Route path="/policies" element={<PoliciesPage />} />
+              <Route path="/resources/policies" element={<PoliciesPage />} />
+
+              {/* Media Centre */}
               <Route path="/media" element={<MediaPage />} />
-              <Route path="/media/news" element={<NewsPage />} />
               <Route path="/media/events" element={<EventsPage />} />
               <Route path="/media/announcements" element={<AnnouncementsPage />} />
               <Route path="/media/gallery" element={<GalleryPage />} />
               <Route path="/media/videos" element={<VideosPage />} />
               <Route path="/media/press-releases" element={<PressReleasesPage />} />
-              <Route path="/news/:slug" element={<NewsDetailPage />} />
+              
+              {/* News (has both media and root paths) */}
+              <Route path="/media/news" element={<NewsPage />} />
               <Route path="/news" element={<NewsPage />} />
+              <Route path="/news/:id" element={<NewsDetailPage />} />
+
+              {/* Other Directories */}
               <Route path="/tenders" element={<TendersPage />} />
               <Route path="/faqs" element={<FAQPage />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/contact" element={<ContactPage />} />
+              
+              {/* Auth & Research */}
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/research" element={<ResearchPage />} />
+              <Route path="/research/:id" element={<ResearchDetails />} />
+              <Route path="/areas/:id" element={<AreaDetail />} />
+
+              {/* Legal */}
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfUse />} />
               <Route path="/accessibility" element={<Accessibility />} />
+
+              {/* 404 Catch-all */}
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </main>
+
         <SocialFAB />
         <BackToTop />
         <ClickFeedback />
