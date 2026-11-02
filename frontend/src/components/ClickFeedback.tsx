@@ -1,19 +1,8 @@
-// src/components/ClickFeedback.tsx
 import * as React from "react";
 
-/*
- * Global click-feedback system.
- *
- * For every clickable element (button, a, [role=button], submit inputs),
- * this component injects a ripple <span> at the click point. The ripple
- * expands and fades over 600ms, giving the user immediate visual feedback
- * that their click was registered — even if the handler is async and the
- * network hasn't responded yet.
- *
- * Works on Chrome 44: uses only DOM API, no CSS animations library, no
- * pointer events (uses mouse + touch + keyboard events for maximum
- * compatibility).
- */
+/*Global click-feedback system.For every clickable element (button, a, [role=button], submit inputs),
+  this component injects a ripple <span> at the click point. The ripple expands and fades over 600ms, giving the user immediate visual feedback that their click was registered — even if the handler is async and the network hasn't responded yet. Works on Chrome 44: uses only DOM API, no CSS animations library, no pointer events (uses mouse + touch + keyboard events for maximum
+  compatibility).*/
 export default function ClickFeedback() {
   React.useEffect(function () {
     function isClickable(el: Element | null): HTMLElement | null {

@@ -1,4 +1,3 @@
-// frontend/api/psc-news-post.ts
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const TIMEOUT_MS = 8000;

@@ -1,5 +1,3 @@
-// src/pages/jobs/RecruitmentPortalPage.tsx
-
 export default function RecruitmentPortalPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 pt-32 pb-20">

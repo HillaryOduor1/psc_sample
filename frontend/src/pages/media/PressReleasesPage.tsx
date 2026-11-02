@@ -1,5 +1,3 @@
-// src/pages/media/PressReleasesPage.tsx
-
 export default function PressReleasesPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 pt-32 pb-20">

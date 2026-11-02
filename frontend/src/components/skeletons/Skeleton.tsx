@@ -1,4 +1,3 @@
-// src/components/skeletons/Skeleton.tsx
 import * as React from "react";
 
 interface SkeletonProps {

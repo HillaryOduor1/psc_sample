@@ -1,5 +1,3 @@
-// src/pages/resources/ReportsPage.tsx
-
 export default function ReportsPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 pt-32 pb-20">

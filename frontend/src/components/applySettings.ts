@@ -1,4 +1,3 @@
-// applySettings.ts
 import type { AppSettings } from "../stores/settings-store";
 
 export function applySettings(settings: AppSettings) {

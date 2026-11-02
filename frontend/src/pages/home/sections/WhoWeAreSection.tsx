@@ -1,4 +1,3 @@
-// src/pages/home/sections/WhoWeAreSection.tsx
 import { useContent } from '../../../content/useContext';
 import { trackEvent } from '../../../analytics';
 import { useNavigate } from 'react-router-dom';

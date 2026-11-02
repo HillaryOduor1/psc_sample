@@ -1,4 +1,3 @@
-// src/pages/news/NewsPage.tsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SectionTitle from "../../components/SectionTitle";

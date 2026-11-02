@@ -1,4 +1,3 @@
-// src/pages/faq/FAQPage.tsx
 import * as React from 'react';
 import SectionTitle from '../../components/SectionTitle';
 

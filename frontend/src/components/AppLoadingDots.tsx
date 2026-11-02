@@ -1,4 +1,3 @@
-// src/components/AppLoadingDots.tsx
 import * as React from "react";
 
 export default function AppLoadingDots() {

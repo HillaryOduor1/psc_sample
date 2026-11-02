@@ -1,4 +1,3 @@
-// src/pages/home/sections/PartnersSection.tsx
 import { trackEvent } from '../../../analytics';
 
 interface Partner {

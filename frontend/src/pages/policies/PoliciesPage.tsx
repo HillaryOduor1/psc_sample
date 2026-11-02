@@ -1,4 +1,3 @@
-// src/pages/policies/PoliciesPage.tsx
 import * as React from 'react';
 import SectionTitle from '../../components/SectionTitle'; 
 

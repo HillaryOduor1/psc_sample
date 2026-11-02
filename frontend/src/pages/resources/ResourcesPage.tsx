@@ -1,4 +1,3 @@
-// src/pages/resources/ResourcesPage.tsx
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import SectionTitle from '../../components/SectionTitle'; 

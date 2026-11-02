@@ -1,4 +1,3 @@
-// src/pages/internship/InternshipPage.tsx
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { trackEvent } from "../../analytics";
@@ -218,7 +217,7 @@ const InternshipPage = () => {
                 </p>
               </div>
               <a
-                href="https://pscims.publicservice.go.ke/jobs/ActiveAdvertsInternsInternshipExt.aspx"
+                href="https://pscims-demo.runasp.net/jobs/ActiveAdvertsInternsInternshipExt.aspx"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-white font-bold text-sm transition-all hover:scale-105"
@@ -274,8 +273,8 @@ const InternshipPage = () => {
                     {item.title}
                   </h3>
                   <div className="flex items-center justify-between text-xs" style={{ color: "var(--psc-on-surface-light)" }}>
-                    <span>📅 {item.date}</span>
-                    <span>📥 {item.downloads.toLocaleString()} downloads</span>
+                    <span>{item.date}</span>
+                    <span>{item.downloads.toLocaleString()} downloads</span>
                   </div>
                   <div className="mt-4 flex gap-2">
                     <button
@@ -346,8 +345,8 @@ const InternshipPage = () => {
                     {item.title}
                   </h3>
                   <div className="flex items-center justify-between text-xs" style={{ color: "var(--psc-on-surface-light)" }}>
-                    <span>📅 {item.date}</span>
-                    <span>📥 {item.downloads.toLocaleString()} downloads</span>
+                    <span>{item.date}</span>
+                    <span>{item.downloads.toLocaleString()} downloads</span>
                   </div>
                   <div className="mt-4 flex gap-2">
                     <button
@@ -418,8 +417,8 @@ const InternshipPage = () => {
                     {item.title}
                   </h3>
                   <div className="flex items-center justify-between text-xs" style={{ color: "var(--psc-on-surface-light)" }}>
-                    <span>📅 {item.date}</span>
-                    <span>📥 {item.downloads.toLocaleString()} downloads</span>
+                    <span>{item.date}</span>
+                    <span>{item.downloads.toLocaleString()} downloads</span>
                   </div>
                   <div className="mt-4 flex gap-2">
                     <button

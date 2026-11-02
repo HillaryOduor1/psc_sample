@@ -1,4 +1,3 @@
-// src/pages/home/sections/CTABannerSection.tsx
 import { useContent } from '../../../content/useContext';
 import { trackEvent } from '../../../analytics';
 

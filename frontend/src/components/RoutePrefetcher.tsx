@@ -1,20 +1,14 @@
-// src/components/RoutePrefetcher.tsx
 import * as React from "react";
 
 /*
- * RoutePrefetcher
- *
- * Starts downloading a route's JS chunk BEFORE the user clicks a Link.
- * - On hover (mouseenter) over any <a> whose href starts with "/", prefetches.
- * - On mousedown (touch or mouse), prefetches — fires before click, giving
- *   the download a ~100ms head start.
- * - After mount, prefetches the top 3 routes during idle time.
- *
- * The prefetched chunk goes into the browser's HTTP cache; when the user
- * actually navigates, React.lazy's import() resolves instantly from cache.
- *
- * Works on Chrome 44: uses only addEventListener + requestIdleCallback
- * (with setTimeout fallback). No pointer events, no IntersectionObserver.
+  RoutePrefetcher: Starts downloading a route's JS chunk BEFORE the user clicks a Link.
+  On hover (mouseenter) over any <a> whose href starts with "/", prefetches.
+  On mousedown (touch or mouse), prefetches — fires before click, giving the download a ~100ms head start.
+  After mount, prefetches the top 3 routes during idle time.
+  The prefetched chunk goes into the browser's HTTP cache; when the user actually navigates,
+  React.lazy's import() resolves instantly from cache.
+  Works on Chrome 44: uses only addEventListener + requestIdleCallback (with setTimeout fallback).
+  No pointer events, no IntersectionObserver.
  */
 
 type RouteMap = { [path: string]: () => Promise<any> };
@@ -30,19 +24,32 @@ var inflightRoutes: { [path: string]: Promise<any> | null } = {};
 
 function normalizePath(href: string): string {
   // Strip origin if present, strip query/hash, ensure leading slash
-  var p = href;
+  var normalizedHref = href;
+
   try {
-    if (p.indexOf("http") === 0) {
-      var u = new URL(p);
-      p = u.pathname;
+    if (normalizedHref.indexOf("http") === 0) {
+      var parsedUrl = new URL(normalizedHref);
+      normalizedHref = parsedUrl.pathname;
     }
-  } catch (e) { /* ignore */ }
-  var q = p.indexOf("?");
-  if (q !== -1) p = p.substring(0, q);
-  var h = p.indexOf("#");
-  if (h !== -1) p = p.substring(0, h);
-  if (p.charAt(0) !== "/") p = "/" + p;
-  return p;
+  } catch (error) {
+    // ignore malformed URLs
+  }
+
+  var queryIndex = normalizedHref.indexOf("?");
+  if (queryIndex !== -1) {
+    normalizedHref = normalizedHref.substring(0, queryIndex);
+  }
+
+  var hashIndex = normalizedHref.indexOf("#");
+  if (hashIndex !== -1) {
+    normalizedHref = normalizedHref.substring(0, hashIndex);
+  }
+
+  if (normalizedHref.charAt(0) !== "/") {
+    normalizedHref = "/" + normalizedHref;
+  }
+
+  return normalizedHref;
 }
 
 function prefetchOnce(path: string, routes: RouteMap): void {
@@ -52,22 +59,26 @@ function prefetchOnce(path: string, routes: RouteMap): void {
   var loader = routes[path];
   if (!loader) return;
 
-  var p = loader();
-  inflightRoutes[path] = p;
-  p.then(function () {
-    loadedRoutes[path] = true;
-    inflightRoutes[path] = null;
-  }).catch(function () {
-    // Silent — real navigation will surface the error via ErrorBoundary
-    inflightRoutes[path] = null;
-  });
+  var loadPromise = loader();
+  inflightRoutes[path] = loadPromise;
+
+  loadPromise
+    .then(function () {
+      loadedRoutes[path] = true;
+      inflightRoutes[path] = null;
+    })
+    .catch(function () {
+      // Silent — real navigation will surface the error via ErrorBoundary
+      inflightRoutes[path] = null;
+    });
 }
 
 function scheduleIdle(fn: () => void): void {
   if (typeof window === "undefined") return;
-  var ric = (window as any).requestIdleCallback;
-  if (typeof ric === "function") {
-    ric(fn, { timeout: 2500 });
+
+  var requestIdleCallback = (window as any).requestIdleCallback;
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(fn, { timeout: 2500 });
   } else {
     window.setTimeout(fn, 1200);
   }
@@ -78,13 +89,13 @@ export default function RoutePrefetcher(props: RoutePrefetcherProps) {
   var idleRoutes = props.idleRoutes || [];
 
   React.useEffect(function () {
-    function tryFindHref(el: Element | null): string | null {
-      var node: Element | null = el;
-      while (node) {
-        if (node instanceof HTMLAnchorElement) {
-          return node.getAttribute("href");
+    function tryFindHref(element: Element | null): string | null {
+      var currentNode: Element | null = element;
+      while (currentNode) {
+        if (currentNode instanceof HTMLAnchorElement) {
+          return currentNode.getAttribute("href");
         }
-        node = node.parentElement;
+        currentNode = currentNode.parentElement;
       }
       return null;
     }
@@ -94,41 +105,46 @@ export default function RoutePrefetcher(props: RoutePrefetcherProps) {
       if (href.indexOf("http") === 0) return; // external, skip
       if (href.indexOf("mailto:") === 0) return;
       if (href.indexOf("tel:") === 0) return;
-      var path = normalizePath(href);
-      prefetchOnce(path, routes);
+
+      var normalizedPath = normalizePath(href);
+      prefetchOnce(normalizedPath, routes);
     }
 
-    function handleMouseOver(e: MouseEvent) {
-      var href = tryFindHref(e.target as Element);
+    function handleMouseOver(event: MouseEvent) {
+      var href = tryFindHref(event.target as Element);
       prefetchFor(href);
     }
 
-    function handleTouchStart(e: TouchEvent) {
-      var t = e.target as Element;
-      var href = tryFindHref(t);
+    function handleTouchStart(event: TouchEvent) {
+      var targetElement = event.target as Element;
+      var href = tryFindHref(targetElement);
       prefetchFor(href);
     }
 
-    function handleMouseDown(e: MouseEvent) {
-      var href = tryFindHref(e.target as Element);
+    function handleMouseDown(event: MouseEvent) {
+      var href = tryFindHref(event.target as Element);
       prefetchFor(href);
     }
 
-    function handleFocus(e: FocusEvent) {
-      var href = tryFindHref(e.target as Element);
+    function handleFocus(event: FocusEvent) {
+      var href = tryFindHref(event.target as Element);
       prefetchFor(href);
     }
 
     // Capture phase — runs even if Link handlers call stopPropagation
     document.addEventListener("mouseover", handleMouseOver, true);
     document.addEventListener("mousedown", handleMouseDown, true);
-    document.addEventListener("touchstart", handleTouchStart, { capture: true, passive: true } as any);
+    document.addEventListener(
+      "touchstart",
+      handleTouchStart,
+      { capture: true, passive: true } as any
+    );
     document.addEventListener("focusin", handleFocus, true);
 
     // Idle-prefetch the priority routes
     scheduleIdle(function () {
-      for (var i = 0; i < idleRoutes.length; i++) {
-        prefetchOnce(idleRoutes[i], routes);
+      for (var routeIndex = 0; routeIndex < idleRoutes.length; routeIndex++) {
+        prefetchOnce(idleRoutes[routeIndex], routes);
       }
     });
 

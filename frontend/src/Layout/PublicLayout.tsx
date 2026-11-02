@@ -1,4 +1,3 @@
-// src/components/layout/PublicLayout.tsx
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Layout/Footer";
 
@@ -16,39 +15,3 @@ export default function PublicLayout() {
     </div>
   );
 }
-
-/*
-// src/components/layout/PublicLayout.tsx
-import { Outlet } from 'react-router-dom';
-import Footer from '../components/Layout/Footer'; 
-
-const PublicLayout = () => {
-  return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow">
-        <Outlet />
-      </div>
-      <Footer />
-    </div>
-  );
-};
-
-export default PublicLayout;*/
-
-
-/*// src/components/layout/PublicLayout.tsx
-import { Outlet } from 'react-router-dom';
-import Footer from '../components/Layout/Footer';
-
-const PublicLayout = () => {
-  return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow pt-16">
-        <Outlet />
-      </div>
-      <Footer />
-    </div>
-  );
-};
-
-export default PublicLayout;*/

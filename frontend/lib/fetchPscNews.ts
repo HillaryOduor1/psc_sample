@@ -1,4 +1,3 @@
-// src/lib/fetchPscNews.ts
 export interface PscNewsItem {
   id: number;
   slug: string;

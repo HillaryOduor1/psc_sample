@@ -1,4 +1,3 @@
-// src/pages/home/sections/PublicationsCTASection.tsx
 import { trackEvent } from '../../../analytics';
 
 const PublicationsCTASection = () => {

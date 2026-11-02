@@ -1,4 +1,3 @@
-// src/pages/jobs/JobsPage.tsx
 import * as React from "react";
 import { trackEvent } from "../../analytics";
 
@@ -13,7 +12,7 @@ interface JobItem {
   link: string;
 }
 
-const PSCIMS_URL = "https://pscims-demo-abdae3amewazb9ae.uaenorth-01.azurewebsites.net/jobs/Default.aspx";
+const PSCIMS_URL = "https://pscims-demo.runasp.net/";
 
 // Helper for section headers to replace the vertical bars
 const SectionHeader = ({ eyebrow, title }: { eyebrow: string; title: string }) => (

@@ -1,4 +1,3 @@
-// src/components/SocialFAB.tsx
 import * as React from "react";
 
 interface FABProps {
@@ -8,11 +7,7 @@ interface FABProps {
   linkedinHref?: string;
 }
 
-/*
- * ES5-safe object merge. Avoids `Object.assign` (Chrome 45+)
- * and object spread (which compiles to Object.assign in an ES5
- * build with no polyfill).
- */
+/*ES5-safe object merge. Avoids `Object.assign` (Chrome 45+) and object spread (which compiles to Object.assign in an ES5 build with no polyfill).*/
 function mergeStyles(base: React.CSSProperties, override: React.CSSProperties): React.CSSProperties {
   var merged: any = {};
   var k: string;

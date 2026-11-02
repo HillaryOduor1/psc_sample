@@ -1,5 +1,3 @@
-// src/content/contentTypes.ts
-
 // Hero headline part for accent coloring (e.g., orange text)
 export interface HeroHeadlinePart {
   text: string;
@@ -18,7 +16,32 @@ export interface HeroSlide {
   image?: string; // Path to image in public folder
 }
 
+// Legal and accessibility content types
+export interface TermsContent {
+  title?: string;
+  lastUpdated?: string;
+  sections?: Array<{ heading?: string; content?: string }>;
+  [key: string]: unknown;
+}
+
+export interface PolicyContent {
+  title?: string;
+  lastUpdated?: string;
+  sections?: Array<{ heading?: string; content?: string }>;
+  [key: string]: unknown;
+}
+
+export interface AccessibilityContent {
+  title?: string;
+  lastUpdated?: string;
+  sections?: Array<{ heading?: string; content?: string }>;
+  [key: string]: unknown;
+}
+
 export interface SiteContent {
+  termsOfUse: TermsContent;
+  privacyPolicy: PolicyContent;
+  accessibility: AccessibilityContent;
   // Navigation
   navigation?: Array<{ 
     name: string; 

@@ -1,4 +1,3 @@
-// frontend/api/psc-news.ts
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const UPSTREAM_URL =

@@ -1,4 +1,3 @@
-// src/pages/home/sections/QuickActionsSection.tsx
 import { Link } from 'react-router-dom';
 import { trackEvent } from '../../../analytics';
 

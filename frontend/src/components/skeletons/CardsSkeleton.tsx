@@ -1,4 +1,3 @@
-// src/components/skeletons/CardsSkeleton.tsx
 import * as React from "react";
 import Skeleton from "./Skeleton";
 

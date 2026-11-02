@@ -1,4 +1,3 @@
-// src/lib/fetchPscNewsPost.ts
 export interface PscNewsDetail {
   slug: string;
   title: string;

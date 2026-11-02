@@ -1,4 +1,3 @@
-// src/pages/home/sections/OpportunitiesSection.tsx
 import { useState } from 'react';
 import { trackEvent } from '../../../analytics';
 

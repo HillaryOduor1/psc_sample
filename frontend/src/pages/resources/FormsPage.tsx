@@ -1,5 +1,3 @@
-// src/pages/resources/FormsPage.tsx
-
 export default function FormsPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 pt-32 pb-20">
