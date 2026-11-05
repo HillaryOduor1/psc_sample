@@ -366,6 +366,8 @@ var HeroSection = function () {
                 loading={index < 2 ? 'eager' : 'lazy'}
                 /* LCP FIX: Tell browser this is the highest priority image */
                 fetchPriority={index === 0 ? "high" : "low"}
+                /* MOBILE FIX: Adjust object position so faces aren't cut off */
+                style={{ objectPosition: isMobile ? 'center 30%' : 'center center' }}
               />
               <div className={'hero-slide-scrim' + (isMobile ? ' is-mobile' : '')} />
             </div>

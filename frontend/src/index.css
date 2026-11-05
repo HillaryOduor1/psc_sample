@@ -1016,23 +1016,26 @@ select:focus-visible {
 
 @media (max-width: 640px) {
   #hero-section .hero-slide img {
-    -webkit-transform: translate3d(0, 0, 0) scale(1.02);
-    transform: translate3d(0, 0, 0) scale(1.02);
+    /* Stop the initial zoom-in */
+    -webkit-transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
   }
   #hero-section .hero-slide.is-active img {
+    /* Change the animation to scale ONLY up to 1.02 (barely noticeable, but adds life) */
     -webkit-animation-name: pscHeroImageMotionMobile;
     animation-name: pscHeroImageMotionMobile;
     -webkit-animation-duration: 9000ms;
     animation-duration: 9000ms;
   }
 }
+
 @-webkit-keyframes pscHeroImageMotionMobile {
-  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1.02); }
-  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.06); }
+  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1); }
+  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.02); }
 }
 @keyframes pscHeroImageMotionMobile {
-  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1.02); transform: translate3d(0, 0, 0) scale(1.02); }
-  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.06); transform: translate3d(0, 0, 0) scale(1.06); }
+  0%   { -webkit-transform: translate3d(0, 0, 0) scale(1); transform: translate3d(0, 0, 0) scale(1); }
+  100% { -webkit-transform: translate3d(0, 0, 0) scale(1.02); transform: translate3d(0, 0, 0) scale(1.02); }
 }
 
 @media (prefers-reduced-motion: reduce) {
