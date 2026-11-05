@@ -1,3 +1,11 @@
+fixed backend vulnerabilities:
+1.Handlebars: JavaScript Injection via AST Type Confusion in compile (bypass of CVE-2026-33937) 
+2.Handlebars: JavaScript Injection via Own Property Check Bypass
+vulnerability by upgrading handlebars to version 4.7.10
+3.joi: Quadratic regular-expression backtracking in `Joi.string().isoDate()`  fixed by upgrading joi to version "joi": "^18.3.1",
+4.Axios: Prototype Pollution Gadget in axios toFormData Options by upgrading axios to version 1.20.0
+5.Axios: Denial of Service via Unhandled 'error' Event in HTTP/2 ClientHttp2Session Initialization by upgrading axios to version 1.20.0
+
 backend starts at 23957
 frontend
  ┣ dist

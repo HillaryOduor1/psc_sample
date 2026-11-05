@@ -19,7 +19,7 @@ const logger = {
     // Always log errors, but format them nicely
     if (import.meta.env.PROD) {
       // In production, send to error reporting service
-      console.error('[LIS Error]', ...args);
+      console.error('[PSC-Sample Error]', ...args);
     } else {
       console.error(...args);
     }

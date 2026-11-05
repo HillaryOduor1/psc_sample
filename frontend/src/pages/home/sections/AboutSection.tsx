@@ -223,6 +223,11 @@ const AboutSection = ({ isFullPage = false }: AboutSectionProps) => {
   // Render just the home section if not full page
   if (!isFullPage) {
     const features = about.features || [];
+    
+    // FIX: Fallback to local image if the content provider is pointing to the external WP URL
+    const imageSrc = about.image && about.image.includes("publicservice.go.ke") 
+      ? "/assets/about-image-4.webp" 
+      : (about.image || "/assets/about-image-4.webp");
 
     return (
       <section
@@ -270,7 +275,7 @@ const AboutSection = ({ isFullPage = false }: AboutSectionProps) => {
                   alt="Team collaborating in a modern office"
                   className="w-full h-full object-cover transition-opacity duration-500"
                   style={{ opacity: imgLoaded ? 1 : 0 }}
-                  src={about.image}
+                  src={imageSrc}
                   onLoad={() => setImgLoaded(true)}
                   onError={() => setImgError(true)}
                 />
@@ -638,7 +643,7 @@ const AboutSection = ({ isFullPage = false }: AboutSectionProps) => {
                 }}
               ></div>
               <img
-                src={about.image}
+                src={"/assets/about-image-4.webp"}
                 alt="Public Service Commission"
                 className="rounded-2xl shadow-2xl w-full object-cover"
                 style={{
