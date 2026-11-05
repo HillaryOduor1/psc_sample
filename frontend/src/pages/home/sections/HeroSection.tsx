@@ -26,7 +26,7 @@ var TRANSITION_MS = 900;
 var TRANSITION_LOCK_MS = TRANSITION_MS + 50;
 var SWIPE_MIN_DISTANCE = 45;
 var SWIPE_MAX_DURATION = 700;
-var FALLBACK_IMAGE = '/assets/Our Vision-psc image1.webp';
+var FALLBACK_IMAGE = '/assets/our-vision-psc-image1.webp';
 
 var DEFAULT_SLIDES: SlideContent[] = [
   {
@@ -35,7 +35,7 @@ var DEFAULT_SLIDES: SlideContent[] = [
     subtext: 'Join the ranks of success and explore a world of possibilities with our internship and job placement programs.',
     primaryButtonText: 'ABOUT PSC', secondaryButtonText: 'VIEW PROGRAMMES',
     primaryLink: '/about', secondaryLink: '/jobs',
-    image: '/assets/Our Vision-psc image1.webp'
+    image: '/assets/our-vision-psc-image1.webp'
   },
   {
     badge: 'OUR MISSION',
@@ -43,7 +43,7 @@ var DEFAULT_SLIDES: SlideContent[] = [
     subtext: 'Through continuous improvement, we aim to meet the evolving needs of citizens and uphold the highest standards of public service.',
     primaryButtonText: 'ABOUT PSC', secondaryButtonText: 'VIEW PROGRAMMES',
     primaryLink: '/about', secondaryLink: '/jobs',
-    image: '/assets/Our Mission-psc image2.webp'
+    image: '/assets/our-mission-psc-image2.webp'
   },
   {
     badge: 'CORE VALUES',
@@ -51,20 +51,20 @@ var DEFAULT_SLIDES: SlideContent[] = [
     subtext: 'We place a strong emphasis on understanding and meeting the needs of the public while maintaining the highest standards of integrity and accountability.',
     primaryButtonText: 'ABOUT PSC', secondaryButtonText: 'VIEW PROGRAMMES',
     primaryLink: '/about', secondaryLink: '/jobs',
-    image: '/assets/Core-Values-psc-image3.jpg'
+    image: '/assets/core-values-psc-image3.jpg'
   },
   {
     badge: 'SAY NO TO CORRUPTION',
     headline: [[{ text: "Report Any Incident of" }], [{ text: "Corruption And Unethical" }], [{ text: "Conduct Here !!", accent: true }]],
     subtext: 'The Commission does not charge for any Services, i.e Job Placements, Promotions, Approval of Instruments or Advisory',
     primaryButtonText: 'REPORT NOW', primaryLink: '/report-corruption',
-    image: '/assets/Say No To Corruption-psc image4.webp'
+    image: '/assets/say-no-to-corruption-psc-image4.webp'
   },
   {
     badge: 'CAUTION',
     headline: [[{ text: "The PSC Provides" }], [{ text: "Services Free of Charge", accent: true }]],
     subtext: 'Beware of fraudsters posing as PSC staff and soliciting money in exchange for our services such as shortlisting for advertised jobs, appointment, promotion, and disciplinary matters or appeals. The Commission provides services free of charge',
-    image: '/assets/caution-psc image5.webp'
+    image: '/assets/caution-psc-image5.webp'
   },
   {
     badge: 'OUR MOTTO',
@@ -72,7 +72,7 @@ var DEFAULT_SLIDES: SlideContent[] = [
     subtext: 'Join the ranks of success and explore a world of possibilities with our internship and job placement programs.',
     primaryButtonText: 'ABOUT PSC', secondaryButtonText: 'VIEW PROGRAMMES',
     primaryLink: '/about', secondaryLink: '/jobs',
-    image: '/assets/our motto active-psc image6.webp'
+    image: '/assets/our-motto-active-psc-image6.webp'
   }
 ];
 
@@ -131,12 +131,6 @@ var HeroSection = function () {
     (hero && hero.slides && hero.slides.length > 0) ? hero.slides : DEFAULT_SLIDES;
   var totalSlides = slides.length;
 
-  /*
-   * index + direction + previous index live in ONE state object so a
-   * slide change produces a single render (React <18 does not batch
-   * inside setTimeout). `prev` drives the "is-leaving" class that keeps
-   * the outgoing slide opaque underneath the incoming crossfade.
-   */
   var viewStatePair = React.useState({ index: 0, dir: 1, prev: -1 });
   var viewState = viewStatePair[0];
   var setViewState = viewStatePair[1];
@@ -144,7 +138,6 @@ var HeroSection = function () {
   var slideDirection = viewState.dir;
   var previousSlide = viewState.prev;
 
-  /* Refs — read by the timer chain so it never captures stale values. */
   var currentSlideRef = React.useRef(0);
   var transitioningRef = React.useRef(false);
   var pausedRef = React.useRef(false);
@@ -211,10 +204,6 @@ var HeroSection = function () {
     followLink(slide.secondaryLink);
   }
 
-  /*
-   * Commit a slide change. Guarded by the transition lock so rapid
-   * clicks / timer ticks can never start a half-finished transition.
-   */
   function commitSlide(index: number, dir: number) {
     if (transitioningRef.current) return;
     if (index === currentSlideRef.current) return;
@@ -261,17 +250,12 @@ var HeroSection = function () {
     commitSlide((currentSlideRef.current + 1) % total, 1);
   }
 
-  /*
-   * Single self-rescheduling timeout chain. One timer for the whole
-   * component lifetime, reading refs on every tick — no stale
-   * closures, no double timers, no freeze after slide 2.
-   */
   function restartTimer() {
     if (autoTimerRef.current !== null) {
       window.clearTimeout(autoTimerRef.current);
       autoTimerRef.current = null;
     }
-    if (reduceMotion) return;                    // respect prefers-reduced-motion
+    if (reduceMotion) return;
     if (totalSlidesRef.current < 2) return;
 
     autoTimerRef.current = window.setTimeout(function () {
@@ -306,7 +290,6 @@ var HeroSection = function () {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* Pause autoplay while the pointer or keyboard focus is inside. */
   function handleMouseEnter() { pausedRef.current = true; }
   function handleMouseLeave() { pausedRef.current = false; }
   function handleFocusIn() { pausedRef.current = true; }
@@ -329,7 +312,6 @@ var HeroSection = function () {
     }
   }
 
-  /* Stop the timer while the tab is hidden. */
   React.useEffect(function () {
     function handleVisibilityChange() {
       pausedRef.current = !!document.hidden;
@@ -362,7 +344,6 @@ var HeroSection = function () {
       aria-label="Hero Carousel"
       aria-roledescription="carousel"
     >
-      {/* ---------------- background slides ---------------- */}
       <div className="hero-stage">
         {slides.map(function (slide, index) {
           var isActive = index === currentSlide;
@@ -383,6 +364,8 @@ var HeroSection = function () {
                 alt={slide.badge || 'PSC hero slide'}
                 draggable={false}
                 loading={index < 2 ? 'eager' : 'lazy'}
+                /* LCP FIX: Tell browser this is the highest priority image */
+                fetchPriority={index === 0 ? "high" : "low"}
               />
               <div className={'hero-slide-scrim' + (isMobile ? ' is-mobile' : '')} />
             </div>
@@ -390,13 +373,8 @@ var HeroSection = function () {
         })}
       </div>
 
-      {/* ---------------- foreground content ---------------- */}
       <div className="absolute inset-0 z-20 flex flex-col justify-center hero-content-wrap">
         <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 max-w-[1400px] mx-auto">
-          {/*
-            key={currentSlide} remounts the block on every slide change so
-            the staggered CSS entrance animation replays automatically.
-          */}
           <div key={currentSlide} className={contentAnimClass}>
             {currentSlideData.badge && (
               <div className="mb-2 sm:mb-3 md:mb-4">
@@ -446,7 +424,6 @@ var HeroSection = function () {
         </div>
       </div>
 
-      {/* ---------------- controls ---------------- */}
       <button
         type="button"
         onClick={prevSlide}

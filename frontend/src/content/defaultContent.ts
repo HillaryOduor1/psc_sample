@@ -59,7 +59,7 @@ export const defaultContent: SiteContent = {
         secondaryButtonText: 'VIEW PROGRAMMES',
         primaryLink: '/about',
         secondaryLink: '/jobs',
-        image: '/assets/Our Vision-psc image1.webp'
+        image: '/assets/our-vision-psc-image1.webp'
       },
       {
         badge: 'OUR MISSION',
@@ -74,7 +74,7 @@ export const defaultContent: SiteContent = {
         secondaryButtonText: 'VIEW PROGRAMMES',
         primaryLink: '/about',
         secondaryLink: '/jobs',
-        image: '/assets/Our Mission-psc image2.webp'
+        image: '/assets/our-mission-psc-image2.webp'
       },
       {
         badge: 'CORE VALUES',
@@ -89,7 +89,7 @@ export const defaultContent: SiteContent = {
         secondaryButtonText: 'VIEW PROGRAMMES',
         primaryLink: '/about',
         secondaryLink: '/jobs',
-        image: '/assets/Core-Values-psc-image3.jpg'
+        image: '/assets/core-values-psc-image3.jpg'
       },
       {
         badge: 'SAY NO TO CORRUPTION',
@@ -101,7 +101,7 @@ export const defaultContent: SiteContent = {
         subtext: 'The Commission does not charge for any Services, i.e Job Placements, Promotions, Approval of Instruments or Advisory',
         primaryButtonText: 'REPORT NOW',
         primaryLink: '/report-corruption',
-        image: '/assets/Say No To Corruption-psc image4.webp'
+        image: '/assets/say-no-to-corruption-psc-image4.webp'
       },
       {
         badge: 'CAUTION',
@@ -110,7 +110,7 @@ export const defaultContent: SiteContent = {
           [{ text: "Services Free of Charge", accent: true }]
         ],
         subtext: 'Beware of fraudsters posing as PSC staff and soliciting money in exchange for our services such as shortlisting for advertised jobs, appointment, promotion, and disciplinary matters or appeals. The Commission provides services free of charge',
-        image: '/assets/caution-psc image5.webp'
+        image: '/assets/caution-psc-image5.webp'
       },
       {
         badge: 'OUR MOTTO',
@@ -123,7 +123,7 @@ export const defaultContent: SiteContent = {
         secondaryButtonText: 'VIEW PROGRAMMES',
         primaryLink: '/about',
         secondaryLink: '/jobs',
-        image: '/assets/our motto active-psc image6.webp'
+        image: '/assets/our-motto-active-psc-image6.webp'
       }
     ]
   },
@@ -275,4 +275,7 @@ export const defaultContent: SiteContent = {
       mostPopular: false
     },
   ],
+  termsOfUse: {} as SiteContent['termsOfUse'],
+  privacyPolicy: {} as SiteContent['privacyPolicy'],
+  accessibility: {} as SiteContent['accessibility']
 };

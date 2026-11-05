@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CLS Fix: Match fallback font metrics to 'Inter' */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  ascent-override: 90.49%;
+  descent-override: 22.56%;
+  line-gap-override: 0.00%;
+  size-adjust: 107.40%;
+}
 /* PSC COLOR TOKENS: BASE (will be overridden by JS)*/
 :root {
   /* Primary Brand - PSC Gold/Orange */

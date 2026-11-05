@@ -145,16 +145,23 @@
     <meta name="apple-mobile-web-app-title" content="PSC Kenya" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-    <!-- FAVICON SET — /public/assets/favicon-96x96.png -->
+    <!-- FAVICON SET -->
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-96x96.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-96x96.png" />
     <link rel="shortcut icon" href="/assets/favicon-96x96.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-96x96.png" />
 
-    <!-- PERFORMANCE — FONT LOADING -->
+    <!-- PERFORMANCE — FONTS & PRELOADS -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Preload the API to speed up News Fetching -->
+    <link rel="preconnect" href="https://www.publicservice.go.ke" crossorigin />
+
+    <!-- Preload the Hero LCP Image -->
+    <link rel="preload" as="image" href="/assets/Our Vision-psc image1.webp" fetchpriority="high" />
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" crossorigin="anonymous" />
 
@@ -183,6 +190,10 @@
       html.dark {
         background-color: #121212;
         color: #f5f5f5;
+      }
+      /* Force layout stability for fonts to prevent CLS */
+      body {
+        font-display: swap;
       }
     </style>
 
