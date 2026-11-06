@@ -118,12 +118,12 @@ const Footer = function() {
   };
 
   return (
-    <footer className="bg-[#1A1A1A] text-white">
+    <footer className="bg-[#1A1A1A] text-white overflow-hidden">
       <div className="w-full py-12 px-4 md:px-8 max-w-[1280px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           
           {/* Contact Info Column */}
-          <div>
+          <div className="min-w-0">
             <h4 className="text-lg font-medium text-white mb-4">Contact Us</h4>
             <ul className="space-y-3 text-[#D7DED8] text-sm">
               <li className="flex items-start gap-3">
@@ -131,7 +131,7 @@ const Footer = function() {
                   <path d="M14.6533 24.29C14.4626 24.4261 14.2342 24.4992 14 24.4992C13.7657 24.4992 13.5373 24.4261 13.3467 24.29C7.71282 20.2743 1.73365 12.0143 7.77815 6.04567C9.43699 4.41247 11.6721 3.49798 14 3.5C16.3333 3.5 18.5722 4.41584 20.2218 6.0445C26.2663 12.0132 20.2872 20.272 14.6533 24.29Z" stroke="#FCB300" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M14.0001 13.9999C14.6189 13.9999 15.2124 13.7541 15.65 13.3165C16.0876 12.8789 16.3334 12.2854 16.3334 11.6666C16.3334 11.0477 16.0876 10.4543 15.65 10.0167C15.2124 9.57909 14.6189 9.33325 14.0001 9.33325C13.3812 9.33325 12.7878 9.57909 12.3502 10.0167C11.9126 10.4543 11.6667 11.0477 11.6667 11.6666C11.6667 12.2854 11.9126 12.8789 12.3502 13.3165C12.7878 13.7541 13.3812 13.9999 14.0001 13.9999Z" stroke="#FCB300" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <span>
+                <span className="min-w-0 break-words">
                   <u>Commission House, Harambee Avenue</u>
                   <br />P. O. Box 30095-00100, Nairobi
                 </span>
@@ -140,63 +140,63 @@ const Footer = function() {
                 <svg className="w-5 h-5 flex-shrink-0 mt-0.5" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M24.1478 17.733L18.9831 15.4219C18.7829 15.3352 18.5643 15.2998 18.3469 15.3189C18.1296 15.338 17.9205 15.411 17.7384 15.5312C17.7239 15.5405 17.71 15.5507 17.6969 15.5619L14.9844 17.8741C14.924 17.9109 14.8555 17.9322 14.7849 17.9362C14.7143 17.9402 14.6438 17.9268 14.5797 17.897C12.8034 17.0395 10.9649 15.2152 10.1074 13.4597C10.077 13.396 10.0629 13.3258 10.0664 13.2554C10.0698 13.185 10.0907 13.1165 10.127 13.0561L12.4458 10.2987C12.4567 10.2856 12.4666 10.2714 12.4764 10.2572C12.5963 10.0754 12.669 9.86666 12.6881 9.64976C12.7072 9.43285 12.6721 9.21461 12.5858 9.01468L10.2703 3.85875C10.1585 3.59761 9.96506 3.37978 9.71893 3.23798C9.4728 3.09618 9.1873 3.03806 8.90532 3.07234C7.52892 3.25381 6.26564 3.93013 5.35143 4.97496C4.43723 6.01979 3.93463 7.36168 3.93751 8.75C3.93751 17.1937 10.8063 24.0625 19.25 24.0625C20.6383 24.0654 21.9802 23.5628 23.025 22.6486C24.0699 21.7344 24.7462 20.4711 24.9277 19.0947C24.9617 18.814 24.9042 18.5298 24.7637 18.2844C24.6231 18.0391 24.4071 17.8457 24.1478 17.733ZM24.0625 18.9853C23.9081 20.151 23.3343 21.2205 22.4486 21.9939C21.5629 22.7672 20.4258 23.1916 19.25 23.1875C11.2897 23.1875 4.81251 16.7103 4.81251 8.75C4.80844 7.57416 5.23276 6.43708 6.00615 5.55137C6.77954 4.66566 7.84904 4.09195 9.0147 3.9375C9.03218 3.93641 9.04972 3.93641 9.0672 3.9375C9.15351 3.93823 9.23768 3.96448 9.3091 4.01294C9.38053 4.0614 9.43602 4.12991 9.46861 4.20984L11.7775 9.36578C11.8045 9.42879 11.8162 9.49726 11.8118 9.56565C11.8075 9.63404 11.7871 9.70045 11.7524 9.75953L9.4347 12.5158C9.42376 12.53 9.41282 12.5431 9.40298 12.5584C9.27951 12.7473 9.20679 12.9647 9.19184 13.1898C9.1769 13.4149 9.22024 13.6401 9.31767 13.8436C10.2681 15.7894 12.2281 17.7352 14.1958 18.6856C14.4007 18.7824 14.6271 18.8245 14.8531 18.8079C15.0791 18.7912 15.2969 18.7163 15.4853 18.5905L15.5258 18.5598L18.2416 16.2498C18.2997 16.2143 18.3654 16.1932 18.4332 16.188C18.5011 16.1829 18.5693 16.194 18.632 16.2203L23.7956 18.5347C23.8828 18.571 23.9559 18.6344 24.004 18.7157C24.052 18.7969 24.0726 18.8915 24.0625 18.9853Z" fill="#FCB300"/>
                 </svg>
-                <span>{contactInfo.phone}</span>
+                <span className="min-w-0 break-words">{contactInfo.phone}</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 flex-shrink-0 mt-0.5" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M24.1478 17.733L18.9831 15.4219C18.7829 15.3352 18.5643 15.2998 18.3469 15.3189C18.1296 15.338 17.9205 15.411 17.7385 15.5312C17.7239 15.5405 17.71 15.5507 17.6969 15.5619L14.9844 17.8741C14.9241 17.9112 14.8556 17.9327 14.7849 17.9367C14.7143 17.9407 14.6438 17.9271 14.5797 17.897C12.8035 17.0395 10.9649 15.2152 10.1074 13.4597C10.077 13.396 10.0629 13.3258 10.0664 13.2554C10.0698 13.185 10.0907 13.1165 10.127 13.0561L12.4458 10.2987C12.4567 10.2856 12.4666 10.2714 12.4764 10.2572C12.5963 10.0754 12.669 9.86666 12.6881 9.64976C12.7072 9.43285 12.6721 9.21461 12.5858 9.01468L10.2703 3.85875C10.1585 3.59761 9.96506 3.37978 9.71893 3.23798C9.4728 3.09618 9.1873 3.03806 8.90532 3.07234C7.52892 3.25381 6.26564 3.93013 5.35143 4.97496C4.43723 6.01979 3.93463 7.36168 3.93751 8.75C3.93751 17.1937 10.8063 24.0625 19.25 24.0625C20.6383 24.0654 21.9802 23.5628 23.0251 22.6486C24.0699 21.7344 24.7462 20.4711 24.9277 19.0947C24.9617 18.814 24.9042 18.5298 24.7637 18.2844C24.6231 18.0391 24.4071 17.8457 24.1478 17.733ZM24.0625 18.9842C23.9083 20.1501 23.3347 21.2198 22.449 21.9934C21.5632 22.7671 20.426 23.1915 19.25 23.1875C11.2897 23.1875 4.81251 16.7103 4.81251 8.75C4.80844 7.57416 5.23276 6.43708 6.00615 5.55137C6.77954 4.66566 7.84904 4.09195 9.0147 3.9375C9.03218 3.93641 9.04972 3.93641 9.0672 3.9375C9.15351 3.93823 9.23768 3.96448 9.3091 4.01294C9.38053 4.0614 9.43603 4.12991 9.46861 4.20984L11.7775 9.36578C11.8045 9.42879 11.8162 9.49726 11.8118 9.56565C11.8075 9.63404 11.7871 9.70045 11.7524 9.75953L9.4347 12.5158C9.42376 12.53 9.41283 12.5431 9.40298 12.5584C9.27951 12.7473 9.20679 12.9647 9.19184 13.1898C9.1769 13.4149 9.22024 13.6401 9.31767 13.8436C10.2681 15.7894 12.2281 17.7352 14.1958 18.6856C14.4007 18.7824 14.6271 18.8245 14.8531 18.8079C15.0791 18.7912 15.2969 18.7163 15.4853 18.5905L15.5258 18.5598L18.2416 16.2498C18.2997 16.2143 18.3654 16.1932 18.4333 16.188C18.5011 16.1829 18.5693 16.194 18.632 16.2203L23.7956 18.5347C23.8826 18.5709 23.9555 18.6342 24.0036 18.7152C24.0517 18.7962 24.0723 18.8905 24.0625 18.9842ZM16.1875 7.875C16.1875 7.75896 16.2336 7.64768 16.3157 7.56564C16.3977 7.48359 16.509 7.4375 16.625 7.4375H19.6875V4.375C19.6875 4.25896 19.7336 4.14768 19.8157 4.06564C19.8977 3.98359 20.009 3.9375 20.125 3.9375C20.241 3.9375 20.3523 3.98359 20.4344 4.06564C20.5164 4.14768 20.5625 4.25896 20.5625 4.375V7.4375H23.625C23.741 7.4375 23.8523 7.48359 23.9344 7.56564C24.0164 7.64768 24.0625 7.75896 24.0625 7.875C24.0625 7.99103 24.0164 8.10231 23.9344 8.18436C23.8523 8.2664 23.741 8.3125 23.625 8.3125H20.5625V11.375C20.5625 11.491 20.5164 11.6023 20.4344 11.6844C20.3523 11.7664 20.241 11.8125 20.125 11.8125C20.009 11.8125 19.8977 11.7664 19.8157 11.6844C19.7336 11.6023 19.6875 11.491 19.6875 11.375V8.3125H16.625C16.509 8.3125 16.3977 8.2664 16.3157 8.18436C16.2336 8.10231 16.1875 7.99103 16.1875 7.875Z" fill="#FCB300"/>
                 </svg>
-                <span><b>Call Centre: </b>{contactInfo.callCenter}</span>
+                <span className="min-w-0 break-words"><b>Call Centre: </b>{contactInfo.callCenter}</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 flex-shrink-0 mt-0.5" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M5.83325 5.83325H20.9999C21.9282 5.83325 22.8184 6.202 23.4748 6.85838C24.1312 7.51476 24.4999 8.40499 24.4999 9.33325V19.8333C24.4999 20.7615 24.1312 21.6517 23.4748 22.3081C22.8184 22.9645 21.9282 23.3333 20.9999 23.3333H5.83325C4.90499 23.3333 4.01476 22.9645 3.35838 22.3081C2.702 21.6517 2.33325 20.7615 2.33325 19.8333V9.33325C2.33325 8.40499 2.702 7.51476 3.35838 6.85838C4.01476 6.202 4.90499 5.83325 5.83325 5.83325ZM5.83325 6.99992C5.24992 6.99992 4.73659 7.19825 4.33992 7.54825L13.4166 13.4166L22.4933 7.54825C22.0966 7.19825 21.5833 6.99992 20.9999 6.99992H5.83325ZM13.4166 14.8283L3.65159 8.49325C3.55825 8.74992 3.49992 9.04159 3.49992 9.33325V19.8333C3.49992 20.4521 3.74575 21.0456 4.18334 21.4832C4.62092 21.9208 5.21441 22.1666 5.83325 22.1666H20.9999C21.6188 22.1666 22.2122 21.9208 22.6498 21.4832C23.0874 21.0456 23.3333 20.4521 23.3333 19.8333V9.33325C23.3333 9.04159 23.2749 8.74992 23.1816 8.49325L13.4166 14.8283Z" fill="#FCB300"/>
                 </svg>
-                <span>{contactInfo.email}</span>
+                <span className="min-w-0 break-words">{contactInfo.email}</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 flex-shrink-0 mt-0.5" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M14 26.25C20.7655 26.25 26.25 20.7655 26.25 14C26.25 7.23451 20.7655 1.75 14 1.75C7.23451 1.75 1.75 7.23451 1.75 14C1.75 20.7655 7.23451 26.25 14 26.25Z" stroke="#FCB300" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M14 7V14L17.5 17.5" stroke="#FCB300" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <span>{contactInfo.workingHours}</span>
+                <span className="min-w-0 break-words">{contactInfo.workingHours}</span>
               </li>
             </ul>
           </div>
 
           {/* Quick Links Column */}
-          <div>
+          <div className="min-w-0">
             <h4 className="text-lg font-medium text-white mb-4">Quick Links</h4>
-            <div className="grid grid-cols-2 gap-2">
-              <ul className="space-y-2 text-[#D7DED8] text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+              <ul className="space-y-1 text-[#D7DED8] text-sm">
                 {quickLinksLeft.map(function(link, index) {
                   return (
-                    <li key={index}>
+                    <li key={index} className="min-w-0">
                       <button
                         onClick={function() { handleLinkClick(link.name, link.href); }}
-                        className="flex items-center gap-2 hover:text-[#FCB300] transition-colors duration-200 min-h-[44px] text-left"
+                        className="flex items-center gap-2 hover:text-[#FCB300] transition-colors duration-200 min-h-[44px] text-left w-full"
                       >
                         <svg className="w-3 h-3 text-[#FCB300] flex-shrink-0" fill="currentColor" viewBox="0 0 448 512">
                           <path d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"/>
                         </svg>
-                        {link.name}
+                        <span className="truncate">{link.name}</span>
                       </button>
                     </li>
                   );
                 })}
               </ul>
-              <ul className="space-y-2 text-[#D7DED8] text-sm">
+              <ul className="space-y-1 text-[#D7DED8] text-sm">
                 {quickLinksRight.map(function(link, index) {
                   return (
-                    <li key={index}>
+                    <li key={index} className="min-w-0">
                       <button
                         onClick={function() { handleLinkClick(link.name, link.href); }}
-                        className="flex items-center gap-2 hover:text-[#FCB300] transition-colors duration-200 min-h-[44px] text-left"
+                        className="flex items-center gap-2 hover:text-[#FCB300] transition-colors duration-200 min-h-[44px] text-left w-full"
                       >
                         <svg className="w-3 h-3 text-[#FCB300] flex-shrink-0" fill="currentColor" viewBox="0 0 448 512">
                           <path d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"/>
                         </svg>
-                        {link.name}
+                        <span className="truncate">{link.name}</span>
                       </button>
                     </li>
                   );
@@ -206,23 +206,23 @@ const Footer = function() {
           </div>
 
           {/* Newsletter & Social Column */}
-          <div>
+          <div className="min-w-0">
             <h4 className="text-lg font-medium text-white mb-4">Subscribe to Our Newsletter</h4>
             <p className="text-[#D7DED8] text-sm mb-4">
               Subscribe to our newsletter today for the latest insights into shaping the future of public service!
             </p>
             
-            <form className="mb-6" onSubmit={function(e) { e.preventDefault(); }}>
-              <div className="flex flex-col sm:flex-row gap-2">
+            <form className="mb-6 w-full" onSubmit={function(e) { e.preventDefault(); }}>
+              <div className="flex flex-col sm:flex-row gap-2 w-full">
                 <input
                   type="email"
                   placeholder="Enter Email"
-                  className="flex-1 px-4 py-2.5 rounded-lg bg-white/10 border border-[#2B4A3C] text-white placeholder-[#D7DED8] focus:outline-none focus:border-[#FCB300] transition-colors min-h-[44px]"
+                  className="flex-1 min-w-0 w-full px-4 py-2.5 rounded-lg bg-white/10 border border-[#2B4A3C] text-white placeholder-[#D7DED8] focus:outline-none focus:border-[#FCB300] transition-colors min-h-[44px]"
                   required
                 />
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-[#FCB300] hover:bg-[#E6A300] text-[#1A1A1A] font-bold rounded-lg transition-colors duration-200 whitespace-nowrap min-h-[44px]"
+                  className="w-full sm:w-auto px-6 py-2.5 bg-[#FCB300] hover:bg-[#E6A300] text-[#1A1A1A] font-bold rounded-lg transition-colors duration-200 whitespace-nowrap min-h-[44px]"
                 >
                   Sign Up
                 </button>
@@ -231,7 +231,7 @@ const Footer = function() {
 
             <div className="mb-6">
               <h5 className="text-sm font-medium text-white mb-3">Follow Us</h5>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {socialLinks.map(function(social, index) {
                   return (
                     <a
@@ -250,12 +250,12 @@ const Footer = function() {
               </div>
             </div>
 
-            {/* Website Total Views (Moved Above Bottom Bar) */}
-            <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-[#2B4A3C] w-fit mt-4">
-              <svg className="w-4 h-4 text-[#FCB300]" fill="currentColor" viewBox="0 0 576 512">
+            {/* Website Total Views */}
+            <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-[#2B4A3C] w-fit mt-4 max-w-full">
+              <svg className="w-4 h-4 text-[#FCB300] flex-shrink-0" fill="currentColor" viewBox="0 0 576 512">
                 <path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zm0 96c70.7 0 128 57.3 128 128s-57.3 128-128 128-128-57.3-128-128 57.3-128 128-128zm0 64c-35.3 0-64 28.7-64 64s28.7 64 64 64 64-28.7 64-64-28.7-64-64-64z"/>
               </svg>
-              <span className="font-medium text-sm">
+              <span className="font-medium text-sm break-words">
                 Website's Total Views: <span className="text-[#FCB300] font-bold">{formatNumber(totalViews)}</span>
               </span>
             </div>

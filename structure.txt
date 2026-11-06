@@ -4,8 +4,12 @@ fixed backend vulnerabilities:
 vulnerability by upgrading handlebars to version 4.7.10
 3.joi: Quadratic regular-expression backtracking in `Joi.string().isoDate()`  fixed by upgrading joi to version "joi": "^18.3.1",
 4.Axios: Prototype Pollution Gadget in axios toFormData Options by upgrading axios to version 1.20.0
-5.Axios: Denial of Service via Unhandled 'error' Event in HTTP/2 ClientHttp2Session Initialization by upgrading axios to version 1.20.0
-
+5.Axios: Denial of Service via Unhandled 'error' Event in HTTP/2 ClientHttp2Session Initialization
+6.Axios: ReDoS (O(N²)) in shouldBypassProxy host normalization, reachable via untrusted redirect Location by upgrading axios to version 1.20.0
+7.multer vulnerable to Denial of Service via crafted multipart field names fixed by upgrading to "multer": ">=2.5.0"
+8.compression vulnerable to Denial of Service via memory leak on premature response close fixed by upgrading to "compression": ">=1.8.2"
+9.Mongoose: Prototype pollution in mongoose update casting via __proto__-prefixed dotted path (Schema._getSchema/path getter) fixed by upgrading to "mongoose": ">=9.7.2"
+10.Nodemailer: Quadratic (O(n^2)) DKIM header unfolding lets a large folded header cause remote denial of service during signing fixed by upgrading to  "nodemailer": ">=10.1.4"
 backend starts at 23957
 frontend
  ┣ dist

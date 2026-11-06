@@ -377,7 +377,7 @@ var HeroSection = function () {
                 alt={slide.badge || 'PSC hero slide'}
                 draggable={false}
                 loading={index < 2 ? 'eager' : 'lazy'}
-                fetchPriority={index === 0 ? "high" : "low"}
+                {...{ fetchpriority: index === 0 ? "high" : "low" }}
               />
               <div className="hero-slide-scrim" />
             </div>
@@ -436,10 +436,14 @@ var HeroSection = function () {
         </div>
       </div>
 
+      {/* 
+        FIXED: Changed 'hidden md:flex' to 'flex' so they show on mobile. 
+        Adjusted left/right positioning for mobile (left-2 / right-2) so they don't overlap the text.
+      */}
       <button
         type="button"
         onClick={prevSlide}
-        className="hero-nav-btn absolute left-2 sm:left-3 md:left-6 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center hidden md:flex"
+        className="hero-nav-btn absolute left-2 sm:left-3 md:left-6 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center"
         aria-label="Previous slide"
       >
         <span className="material-symbols-outlined text-lg md:text-2xl">chevron_left</span>
@@ -447,7 +451,7 @@ var HeroSection = function () {
       <button
         type="button"
         onClick={nextSlide}
-        className="hero-nav-btn absolute right-2 sm:right-3 md:right-6 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center hidden md:flex"
+        className="hero-nav-btn absolute right-2 sm:right-3 md:right-6 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center"
         aria-label="Next slide"
       >
         <span className="material-symbols-outlined text-lg md:text-2xl">chevron_right</span>

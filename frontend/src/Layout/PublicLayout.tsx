@@ -4,13 +4,14 @@ import Footer from "../components/Layout/Footer";
 export default function PublicLayout() {
   return (
     <div className="flex min-h-screen flex-col">
-      {/*
-        Push page content below the fixed navbar (h-16 on mobile, h-20 on md+).
-        Hero sections on the home page can cancel this with -mt-16 md:-mt-20.
+      {/* 
+        The Outlet renders the page content (like the Hero section).
+        We removed the pt-16/pt-20 here because the Hero section handles its own spacing, 
+        and the Navbar is fixed/sticky.
       */}
-      <div className="flex-grow pt-16 md:pt-20">
+      <main id="main-content" className="flex-grow">
         <Outlet />
-      </div>
+      </main>
       <Footer />
     </div>
   );

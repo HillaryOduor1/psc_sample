@@ -370,18 +370,13 @@ body {
   touch-action: pan-y;
   -webkit-user-select: none;
   user-select: none;
+  /* Fixed height calculation for modern mobile browsers */
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
-  height: 100dvh;
+  height: 100dvh; 
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-}
-
-@media (min-width: 768px) {
-  #hero-section {
-    padding-top: var(--navbar-height-md, 5rem);
-  }
 }
 
 #hero-section .hero-stage {
@@ -393,7 +388,7 @@ body {
   overflow: hidden;
   z-index: 0;
   background-color: #121212;
-  display: block; 
+  display: block;
 }
 
 #hero-section .hero-slide {
@@ -413,7 +408,7 @@ body {
   -webkit-transition: opacity 800ms ease-in-out;
   transition: opacity 800ms ease-in-out;
   will-change: opacity;
-  display: block; 
+  display: block;
 }
 #hero-section .hero-slide.is-leaving {
   opacity: 1;
@@ -437,15 +432,15 @@ body {
   width: 100%;
   height: 100%;
   border: 0;
-  
-  object-fit: cover; 
-  object-position: center center; 
+
+  object-fit: cover;
+  object-position: center center;
   background-color: #121212;
-  
+
   /* SMOOTH TRANSITION BETWEEN PORTRAIT AND LANDSCAPE */
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
-  
+
   -webkit-transform: translate3d(0, 0, 0) scale(1);
   transform: translate3d(0, 0, 0) scale(1);
   -webkit-transform-origin: center center;
@@ -477,7 +472,7 @@ body {
   }
 }
 
-/* HEAVY GRADIENT FOR MOBILE CONTRAST */
+/* HEAVY GRADIENT FOR MOBILE + TABLET CONTRAST */
 #hero-section .hero-slide-scrim {
   position: absolute;
   top: 0;
@@ -498,7 +493,8 @@ body {
   );
 }
 
-@media (min-width: 768px) {
+/* DESKTOP — lighter left-to-right gradient */
+@media (min-width: 1025px) {
   #hero-section .hero-slide-scrim {
     background: -webkit-linear-gradient(
       left,
@@ -526,17 +522,21 @@ body {
   z-index: 20;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   width: 100%;
   padding-top: 0;
-  padding-bottom: 4.5rem; 
+  /* Reduced bottom padding for mobile to save space */
+  padding-bottom: 2.5rem; 
+  /* Allow scrolling if content is too long for tiny screens */
+  overflow-y: auto;
 }
 
 @media (min-width: 768px) {
   #hero-section .hero-content-wrap {
-    justify-content: center; 
-    padding-top: 5rem;
+    justify-content: center;
+    padding-top: 8rem;
     padding-bottom: 5rem;
+    overflow-y: visible;
   }
 }
 
@@ -685,33 +685,35 @@ body {
     text-shadow: none;
   }
 
+  /* Sharply reduced font sizes to prevent overflow */
   #hero-section h1,
   #hero-section .hero-headline {
-    font-size: 1.75rem !important;
-    line-height: 1.25 !important;
+    font-size: 1.6rem !important;
+    line-height: 1.15 !important;
   }
-  
+
   #hero-section .hero-subtext {
-    font-size: 0.875rem !important;
-    line-height: 1.5 !important;
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    margin-top: 0.5rem;
   }
 
   #hero-section .hero-content-anim > *:nth-child(2) {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.25rem !important;
   }
   #hero-section .hero-content-anim > *:nth-child(3) {
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.75rem !important;
   }
 
   #hero-section .hero-btn {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
-    padding-top: 0.5rem !important;
-    padding-bottom: 0.5rem !important;
+    padding-top: 0.6rem !important;
+    padding-bottom: 0.6rem !important;
     font-size: 0.75rem !important;
     width: 100%;
     justify-content: center;
@@ -737,11 +739,6 @@ body {
   }
 }
 
-@media (max-width: 380px) {
-  #hero-section .hero-nav-btn {
-    display: none;
-  }
-}
 
 button:focus-visible,
 a:focus-visible,
@@ -1083,7 +1080,6 @@ select:focus-visible {
   height: auto;
   object-fit: contain;
 }
-
 /*@tailwind base;
 @tailwind components;
 @tailwind utilities;
